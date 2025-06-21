@@ -22,11 +22,6 @@
             <groupId>com.paohaijiao.javelin</groupId>
             <artifactId>javelin-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.paohaijiao.javelin</groupId>
-            <artifactId>jquick-base</artifactId>
-            <scope>compile</scope>
-        </dependency>
 
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
