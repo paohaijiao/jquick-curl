@@ -1,0 +1,1 @@
+curl https://example.com/api

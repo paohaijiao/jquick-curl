@@ -1,0 +1,121 @@
+GET 请求
+curl https://example.com/api
+带参数的 GET 请求
+curl "https://example.com/api?param1=value1&param2=value2"
+POST 请求
+curl -X POST https://example.com/api
+POST 请求带 JSON 数据
+curl -X POST https://example.com/api \
+  -H "Content-Type: application/json" \
+  -d '{"key1":"value1", "key2":"value2"}'
+POST 请求带表单数据
+curl -X POST https://example.com/api \
+  -d "param1=value1" \
+  -d "param2=value2"
+请求头
+添加自定义请求头
+curl -H "Authorization: Bearer token123" \
+  -H "X-Custom-Header: myvalue" \
+  https://example.com/api
+设置 User-Agent
+curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+  https://example.com
+认证
+基本认证
+curl -u username:password https://example.com
+Bearer Token 认证
+curl -H "Authorization: Bearer your_token" https://example.com/api
+文件操作
+下载文件
+curl -O https://example.com/file.zip
+指定下载文件名
+curl -o custom_name.zip https://example.com/file.zip
+上传文件
+curl -X POST -F "file=@localfile.txt" https://example.com/upload
+多文件上传
+curl -X POST \
+  -F "file1=@file1.txt" \
+  -F "file2=@file2.txt" \
+  https://example.com/upload
+显示请求详情 (verbose)
+curl -v https://example.com
+只显示响应头
+curl -I https://example.com
+显示请求和响应头
+curl -i https://example.com
+重定向
+跟随重定向
+curl -L https://example.com
+限制重定向次数
+curl -L --max-redirs 3 https://example.com
+其他选项
+设置超时
+curl --connect-timeout 30 --max-time 60 https://example.com
+使用代理
+curl -x http://proxy.example.com:8080 https://example.com
+保存和读取 Cookie
+# 保存 Cookie
+curl -c cookies.txt https://example.com
+# 使用 Cookie
+curl -b cookies.txt https://example.com
+忽略 SSL 证书验证 (不安全，仅测试用)
+curl -k https://example.com
+指定 SSL 版本
+curl --tlsv1.2 https://example.com
+高级用法
+多部分表单提交
+curl -X POST https://example.com/api \
+  -F "user=john" \
+  -F "file=@photo.jpg" \
+  -F "description=My photo"
+流式上传
+curl -T - https://example.com/upload < file.txt
+压缩传输
+curl --compressed https://example.com/largefile
+限速下载
+curl --limit-rate 100K -O https://example.com/largefile.zip
+使用 SOCKS 代理
+curl --socks5-hostname 127.0.0.1:9050 https://example.com
+发送原始 HTTP 请求
+curl -X POST https://example.com \
+  --data-binary @request.txt
+跟踪重定向过程
+curl -v -L https://example.com/redirect
+使用 HTTP/2
+curl --http2 https://example.com
+发送 PATCH 请求
+curl -X PATCH https://example.com/api/resource/1 \
+  -H "Content-Type: application/json" \
+  -d '{"status":"active"}'
+发送 DELETE 请求
+curl -X DELETE https://example.com/api/resource/123
+发送 PUT 请求
+curl -X PUT https://example.com/api/resource/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name":"new_name"}'
+发送自定义 HTTP 方法
+
+curl -X PURGE https://example.com/cache/item1
+使用数据 URL
+
+curl "data:text/plain;base64,SGVsbG8gV29ybGQh"
+同时发送多个请求 (使用并行)
+curl --parallel \
+  --parallel-immediate \
+  --config <(cat <<EOF
+url = "https://example.com/1"
+output = "/tmp/1"
+url = "https://example.com/2"
+output = "/tmp/2"
+EOF
+)
+
+private void handleBasicAuth(String credentials) {
+        String[] parts = credentials.split(":", 2);
+        if (parts.length == 2) {
+            String username = parts[0];
+            String password = parts[1];
+            String auth = Credentials.basic(username, password);
+            requestBuilder.header("Authorization", auth);
+        }
+    }
