@@ -15,7 +15,7 @@
  */
 package com.github.paohaijiao.enums;
 
-import com.paohaijiao.javelin.exception.JAssert;
+import com.github.paohaijiao.exception.JAssert;
 import lombok.Getter;
 
 @Getter

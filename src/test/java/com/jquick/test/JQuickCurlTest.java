@@ -18,7 +18,7 @@ package com.jquick.test;
 import com.github.paohaijiao.anno.JTimeout;
 import com.github.paohaijiao.handler.JCurlCommandInvocationHandler;
 import com.github.paohaijiao.model.JResult;
-import com.paohaijiao.javelin.param.JContext;
+import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickCurlLexer;
 import com.github.paohaijiao.parser.JQuickCurlParser;
 import com.github.paohaijiao.visitor.JQuickCurlCommonVisitor;

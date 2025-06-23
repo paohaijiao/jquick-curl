@@ -16,14 +16,13 @@
 package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.model.*;
-import com.paohaijiao.javelin.model.*;
 import com.github.paohaijiao.enums.JHttpMethod;
 import com.github.paohaijiao.enums.JProxryType;
-import com.paohaijiao.javelin.exception.JAssert;
-import com.paohaijiao.javelin.param.JContext;
+import com.github.paohaijiao.exception.JAssert;
+import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickCurlLexer;
 import com.github.paohaijiao.parser.JQuickCurlParser;
-import com.paohaijiao.javelin.util.JStringUtils;
+import com.github.paohaijiao.util.JStringUtils;
 import okhttp3.*;
 import okio.ByteString;
 import org.antlr.v4.runtime.CharStreams;
