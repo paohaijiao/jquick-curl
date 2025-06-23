@@ -16,6 +16,7 @@
 package com.jquick.test;
 
 import com.github.paohaijiao.anno.JTimeout;
+import com.github.paohaijiao.handler.JCurlCommandInvocationHandler;
 import com.github.paohaijiao.model.JResult;
 import com.paohaijiao.javelin.param.JContext;
 import com.github.paohaijiao.parser.JQuickCurlLexer;
@@ -243,6 +244,12 @@ public class JQuickCurlTest {
         params.put("url","http://localhost:8080/api/users/all");
         JQuickCurlCommonVisitor visitor = new JQuickCurlCommonVisitor(params);
         JResult result = (JResult)visitor.visit(tree);
+        System.out.println(result);
+    }
+    @Test
+    public void testvariable1() throws IOException {
+        ApiService apiService = JCurlCommandInvocationHandler.createProxy(ApiService.class);
+        String result = apiService.fetchData();
         System.out.println(result);
     }
 }

@@ -1,0 +1,54 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
+ */
+package com.github.paohaijiao.handler;
+
+import com.github.paohaijiao.anno.JCurlCommand;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+/**
+ * packageName com.github.paohaijiao.handler
+ *
+ * @author Martin
+ * @version 1.0.0
+ * @className JCurlCommandInvocationHandler
+ * @date 2025/6/23
+ * @description
+ */
+public class JCurlCommandInvocationHandler implements InvocationHandler {
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        JCurlCommand curlCommand = method.getAnnotation(JCurlCommand.class);
+        if (curlCommand == null || !curlCommand.execute()) {
+            throw new UnsupportedOperationException("Method is not annotated with @JCurlCommand");
+        }
+
+        // 执行 curl 命令
+        Process process = Runtime.getRuntime().exec(curlCommand.value());
+
+        return new Object();
+    }
+    public static <T> T createProxy(Class<T> interfaceClass) {
+        return (T) Proxy.newProxyInstance(
+                interfaceClass.getClassLoader(),
+                new Class<?>[]{interfaceClass},
+                new JCurlCommandInvocationHandler()
+        );
+    }
+}
