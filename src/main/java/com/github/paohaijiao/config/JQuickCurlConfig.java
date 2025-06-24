@@ -14,6 +14,7 @@
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 package com.github.paohaijiao.config;
+import lombok.Data;
 import okhttp3.ConnectionPool;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -33,25 +34,23 @@ import java.util.concurrent.TimeUnit;
  * @date 2025/6/21
  * @description
  */
+@Data
 public class JQuickCurlConfig {
 
-    private static final long DEFAULT_CONNECT_TIMEOUT = 10_000;
-    private static final long DEFAULT_READ_TIMEOUT = 10_000;
-    private static final long DEFAULT_WRITE_TIMEOUT = 10_000;
-    private static final int DEFAULT_MAX_IDLE_CONNECTIONS = 5;
-    private static final long DEFAULT_KEEP_ALIVE_DURATION = 5;
 
-    private long connectTimeout = DEFAULT_CONNECT_TIMEOUT;
-    private long readTimeout = DEFAULT_READ_TIMEOUT;
-    private long writeTimeout = DEFAULT_WRITE_TIMEOUT;
-    private int maxIdleConnections = DEFAULT_MAX_IDLE_CONNECTIONS;
-    private long keepAliveDuration = DEFAULT_KEEP_ALIVE_DURATION;
+
+    private long connectTimeout = 1000000000;
+    private long readTimeout = 1000000000;
+    private long writeTimeout = 1000000000;
+    private long callTimeout = 1000000000;
+    private int maxIdleConnections = 1000000000;
+    private long keepAliveDuration = 1000000000;
     private TimeUnit timeUnit = TimeUnit.MILLISECONDS;
     private final List<Interceptor> interceptors = new ArrayList<>();
     private final List<Interceptor> networkInterceptors = new ArrayList<>();
-    private boolean retryOnConnectionFailure = true;
-    private boolean followRedirects = true;
-    private boolean followSslRedirects = true;
+    private Boolean retryOnConnectionFailure = true;
+    private Boolean followRedirects = true;
+    private Boolean followSslRedirects = true;
 
 
     private static final JQuickCurlConfig INSTANCE = new JQuickCurlConfig();
@@ -111,32 +110,22 @@ public class JQuickCurlConfig {
         this.followSslRedirects = follow;
         return this;
     }
-
-    public OkHttpClient createClient() {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(connectTimeout, timeUnit)
-                .readTimeout(readTimeout, timeUnit)
-                .writeTimeout(writeTimeout, timeUnit)
-                .connectionPool(new ConnectionPool(maxIdleConnections, keepAliveDuration, timeUnit))
-                .retryOnConnectionFailure(retryOnConnectionFailure)
-                .followRedirects(followRedirects)
-                .followSslRedirects(followSslRedirects);
-
-        interceptors.forEach(builder::addInterceptor);
-        networkInterceptors.forEach(builder::addNetworkInterceptor);
-        return builder.build();
+    public JQuickCurlConfig build() {
+        return this;
     }
+
+
     public JQuickCurlConfig loadFromProperties(Properties props) {
         this.connectTimeout = Long.parseLong(props.getProperty("quick.curl.connect.timeout",
-                String.valueOf(DEFAULT_CONNECT_TIMEOUT)));
+                String.valueOf(connectTimeout)));
         this.readTimeout = Long.parseLong(props.getProperty("quick.curl.read.timeout",
-                String.valueOf(DEFAULT_READ_TIMEOUT)));
+                String.valueOf(readTimeout)));
         this.writeTimeout = Long.parseLong(props.getProperty("quick.curl.write.timeout",
-                String.valueOf(DEFAULT_WRITE_TIMEOUT)));
+                String.valueOf(writeTimeout)));
         this.maxIdleConnections = Integer.parseInt(props.getProperty("quick.curl.pool.max.idle",
-                String.valueOf(DEFAULT_MAX_IDLE_CONNECTIONS)));
+                String.valueOf(maxIdleConnections)));
         this.keepAliveDuration = Long.parseLong(props.getProperty("quick.curl.pool.keep.alive",
-                String.valueOf(DEFAULT_KEEP_ALIVE_DURATION)));
+                String.valueOf(keepAliveDuration)));
         return this;
     }
     public JQuickCurlConfig loadFromClasspathResource(String resourceName) throws IOException {
@@ -148,20 +137,5 @@ public class JQuickCurlConfig {
             props.load(is);
             return loadFromProperties(props);
         }
-    }
-    public long getConnectTimeout() {
-        return connectTimeout;
-    }
-
-    public long getReadTimeout() {
-        return readTimeout;
-    }
-
-    public long getWriteTimeout() {
-        return writeTimeout;
-    }
-
-    public TimeUnit getTimeUnit() {
-        return timeUnit;
     }
 }

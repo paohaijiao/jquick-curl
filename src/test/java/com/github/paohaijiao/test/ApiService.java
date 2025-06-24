@@ -1,4 +1,4 @@
-package com.jquick.test;
+package com.github.paohaijiao.test;
 
 import com.github.paohaijiao.anno.JCurlCommand;
 

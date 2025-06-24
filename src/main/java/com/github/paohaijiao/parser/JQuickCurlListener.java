@@ -1,4 +1,4 @@
-// Generated from D:/idea/jthornruleGrammer/QuickLang/JQuickCurl.g4 by ANTLR 4.13.2
+// Generated from D:/idea/jthornruleGrammer/QuickRest/JQuickCurl.g4 by ANTLR 4.13.2
 package com.github.paohaijiao.parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -77,16 +77,6 @@ public interface JQuickCurlListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitHttp2Option(JQuickCurlParser.Http2OptionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link JQuickCurlParser#headOption}.
-	 * @param ctx the parse tree
-	 */
-	void enterHeadOption(JQuickCurlParser.HeadOptionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link JQuickCurlParser#headOption}.
-	 * @param ctx the parse tree
-	 */
-	void exitHeadOption(JQuickCurlParser.HeadOptionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JQuickCurlParser#ignoreOption}.
 	 * @param ctx the parse tree

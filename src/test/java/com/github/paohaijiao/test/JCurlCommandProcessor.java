@@ -13,32 +13,28 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.jquick.test;
+package com.github.paohaijiao.test;
 
 import com.github.paohaijiao.anno.JCurlCommand;
-import com.github.paohaijiao.anno.JTimeout;
-import com.github.paohaijiao.support.JQuickCurlRunner;
+import com.github.paohaijiao.support.CurlCommandProcessor;
 
 /**
  * packageName com.jquick.test
  *
  * @author Martin
  * @version 1.0.0
- * @className JCurlCommandTests
+ * @className JCurlCommandProcessor
  * @date 2025/6/21
  * @description
  */
-public class JCurlCommandTests {
-    public static void main(String[] args) throws Exception {
-        JQuickCurlRunner.runCurlCommands(new JCurlCommandTests());
-    }
-
-    @JTimeout(connect = 2000, read = 5000)
-    @JCurlCommand("curl -X GET https:/localhost/users")
-    public void testGetUsers() {
-    }
-
-    @JCurlCommand("curl -X POST https://localhost/users -d 'name=John&age=30'")
-    public void testCreateUser() {
+public class JCurlCommandProcessor {
+    @JCurlCommand(
+            value = "curl -X POST 'https://api.example.com/login' " +
+                    "-H 'Content-Type: application/json' " +
+                    "-d '{\"username\":\"test\",\"password\":\"123456\"}'", expectedStatus = 200,
+            validationScript = "$haha.html"
+    )
+    public void testLoginApi() throws Exception {
+        CurlCommandProcessor.processClass(JCurlCommandProcessor.class);
     }
 }

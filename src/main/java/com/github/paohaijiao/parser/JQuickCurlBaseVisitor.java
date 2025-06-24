@@ -1,4 +1,4 @@
-// Generated from D:/idea/jthornruleGrammer/QuickLang/JQuickCurl.g4 by ANTLR 4.13.2
+// Generated from D:/idea/jthornruleGrammer/QuickRest/JQuickCurl.g4 by ANTLR 4.13.2
 package com.github.paohaijiao.parser;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -61,13 +61,6 @@ public class JQuickCurlBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitHttp2Option(JQuickCurlParser.Http2OptionContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitHeadOption(JQuickCurlParser.HeadOptionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

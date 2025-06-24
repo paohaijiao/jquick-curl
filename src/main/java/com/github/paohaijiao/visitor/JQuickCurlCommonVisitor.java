@@ -15,10 +15,11 @@
  */
 package com.github.paohaijiao.visitor;
 
-import com.github.paohaijiao.model.*;
+import com.github.paohaijiao.config.JQuickCurlConfig;
 import com.github.paohaijiao.enums.JHttpMethod;
 import com.github.paohaijiao.enums.JProxryType;
 import com.github.paohaijiao.exception.JAssert;
+import com.github.paohaijiao.model.*;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickCurlLexer;
 import com.github.paohaijiao.parser.JQuickCurlParser;
@@ -40,6 +41,15 @@ import java.util.Base64;
 public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
     public JQuickCurlCommonVisitor(JContext context){
       this.context = context;
+      this.config =  JQuickCurlConfig.getInstance();
+    }
+    public JQuickCurlCommonVisitor(JQuickCurlConfig config){
+        this.context = context;
+        this.config =  config;
+    }
+    public JQuickCurlCommonVisitor(JContext context,JQuickCurlConfig config){
+        this.context = context;
+        this.config =  config;
     }
     public JQuickCurlCommonVisitor( ){
         this.context = new JContext();
@@ -183,16 +193,17 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
             visitHttp2Option(ctx.http2Option());
         }else if (ctx.ignoreOption() != null) {
             visitIgnoreOption(ctx.ignoreOption());
-        }else if(ctx.headOption() != null) {
-            visitHeadOption(ctx.headOption());
         }
+//        else if(ctx.headOption() != null) {
+//            visitHeadOption(ctx.headOption());
+//        }
         return null;
     }
-    @Override
-    public String visitHeadOption(JQuickCurlParser.HeadOptionContext ctx) {
-        this.requestType= JHttpMethod.HEAD.getCode();
-        return null;
-    }
+//    @Override
+//    public String visitHeadOption(JQuickCurlParser.HeadOptionContext ctx) {
+//        this.requestType= JHttpMethod.HEAD.getCode();
+//        return null;
+//    }
 
     /**
      * PASS
@@ -268,8 +279,8 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
 
     @Override
     public Object visitLocationOption(JQuickCurlParser.LocationOptionContext ctx) {
-        followRedirects = true;
-        return followRedirects;
+        this.config.followRedirects(true) ;
+        return true;
     }
     @Override
     public String visitDownloadOption(JQuickCurlParser.DownloadOptionContext ctx) {

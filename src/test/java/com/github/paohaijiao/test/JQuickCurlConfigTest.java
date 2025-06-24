@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.jquick.test;
+package com.github.paohaijiao.test;
 
 import com.github.paohaijiao.config.JQuickCurlConfig;
 import okhttp3.OkHttpClient;

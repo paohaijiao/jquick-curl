@@ -19,12 +19,11 @@ import com.github.paohaijiao.enums.JCurlLevelLog;
 import com.github.paohaijiao.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import okio.Buffer;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import okio.Buffer;
-
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -64,12 +63,9 @@ public class JLoggingInterceptor implements Interceptor {
             throw e;
         }
         long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-        try{
-            Response clonedResponse = HttpUtil.cloneResponse(response);
-            logResponse(response, tookMs);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        log.info("chain response: {} ms", tookMs);
+        log.info("chain response: " + response);
+        System.out.println("chain response: " + response);
         return response;
     }
     private void logRequest(Request request) throws IOException {

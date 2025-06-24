@@ -16,8 +16,10 @@
 package com.github.paohaijiao.executor;
 
 import com.github.paohaijiao.antlr.impl.JAbstractAntlrExecutor;
-import com.github.paohaijiao.model.JResult;
+import com.github.paohaijiao.config.JQuickCurlConfig;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
+import com.github.paohaijiao.model.JResult;
+import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickCurlLexer;
 import com.github.paohaijiao.parser.JQuickCurlParser;
 import com.github.paohaijiao.visitor.JQuickCurlCommonVisitor;
@@ -27,6 +29,23 @@ import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.TokenStream;
 
 public class JQuickCurlExecutor extends JAbstractAntlrExecutor<String, JResult> {
+    private JContext context=new JContext();
+    private JQuickCurlConfig config=JQuickCurlConfig.getInstance();
+    public JQuickCurlExecutor(JContext context){
+        this.context = context;
+        this.config =  JQuickCurlConfig.getInstance();
+    }
+    public JQuickCurlExecutor(JQuickCurlConfig config){
+        this.context = context;
+        this.config =  config;
+    }
+    public JQuickCurlExecutor(JContext context,JQuickCurlConfig config){
+        this.context = context;
+        this.config =  config;
+    }
+    public JQuickCurlExecutor( ){
+        this.context = new JContext();
+    }
     @Override
     protected Lexer createLexer(CharStream input) {
         return new JQuickCurlLexer(input);
@@ -41,7 +60,7 @@ public class JQuickCurlExecutor extends JAbstractAntlrExecutor<String, JResult> 
     protected JResult parse(Parser parser) throws JAntlrExecutionException {
         JQuickCurlParser calcParser = (JQuickCurlParser) parser;
         JQuickCurlParser.CurlCommandContext tree = calcParser.curlCommand();
-        JQuickCurlCommonVisitor visitor = new JQuickCurlCommonVisitor();
+        JQuickCurlCommonVisitor visitor = new JQuickCurlCommonVisitor(this.context,this.config);
         return visitor.visitCurlCommand(tree);
     }
 }

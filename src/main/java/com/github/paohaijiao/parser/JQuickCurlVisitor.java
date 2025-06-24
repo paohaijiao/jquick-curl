@@ -1,4 +1,4 @@
-// Generated from D:/idea/jthornruleGrammer/QuickLang/JQuickCurl.g4 by ANTLR 4.13.2
+// Generated from D:/idea/jthornruleGrammer/QuickRest/JQuickCurl.g4 by ANTLR 4.13.2
 package com.github.paohaijiao.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -52,12 +52,6 @@ public interface JQuickCurlVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitHttp2Option(JQuickCurlParser.Http2OptionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link JQuickCurlParser#headOption}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitHeadOption(JQuickCurlParser.HeadOptionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JQuickCurlParser#ignoreOption}.
 	 * @param ctx the parse tree

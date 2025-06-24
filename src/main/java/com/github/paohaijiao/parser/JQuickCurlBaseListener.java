@@ -1,4 +1,4 @@
-// Generated from D:/idea/jthornruleGrammer/QuickLang/JQuickCurl.g4 by ANTLR 4.13.2
+// Generated from D:/idea/jthornruleGrammer/QuickRest/JQuickCurl.g4 by ANTLR 4.13.2
 package com.github.paohaijiao.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -96,18 +96,6 @@ public class JQuickCurlBaseListener implements JQuickCurlListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitHttp2Option(JQuickCurlParser.Http2OptionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterHeadOption(JQuickCurlParser.HeadOptionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitHeadOption(JQuickCurlParser.HeadOptionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
