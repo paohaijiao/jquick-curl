@@ -55,7 +55,9 @@ public class JCurlCommandProcessorTest {
         JQuickCurlConfig config = JQuickCurlConfig.getInstance();
         JMethodReferenceStrategy wrapper = new JMethodReferenceStrategy();
         Method method=wrapper.getMethod(JCurlCommandProcessorTest::testQueryUser);
-        Object result=  new JCurlCommandProcessor(context,config).processMethod(null,method,null);
+        JQuickCurlReq req=new  JQuickCurlReq();
+        req.put("hello", "1");
+        Object result=  new JCurlCommandProcessor(context,config).processMethod(null,method,req);
         System.out.println(result);
     }
 

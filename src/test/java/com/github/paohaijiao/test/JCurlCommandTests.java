@@ -17,7 +17,10 @@ package com.github.paohaijiao.test;
 
 import com.github.paohaijiao.anno.JCurlCommand;
 import com.github.paohaijiao.anno.JTimeout;
-import com.github.paohaijiao.support.JQuickCurlRunner;
+import com.github.paohaijiao.model.JResult;
+import com.github.paohaijiao.support.JQuickCurlBatchRunner;
+
+import java.util.List;
 
 /**
  * packageName com.jquick.test
@@ -30,7 +33,8 @@ import com.github.paohaijiao.support.JQuickCurlRunner;
  */
 public class JCurlCommandTests {
     public static void main(String[] args) throws Exception {
-        JQuickCurlRunner.runCurlCommands(new JCurlCommandTests());
+        List<JResult> list= new JQuickCurlBatchRunner().runCurlCommands(new JCurlCommandTests());
+        System.out.println(list);
     }
 
     @JTimeout(connect = 2000, read = 5000)

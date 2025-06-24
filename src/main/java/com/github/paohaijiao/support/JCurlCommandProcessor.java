@@ -66,6 +66,7 @@ public class JCurlCommandProcessor {
             throw new IllegalArgumentException("Method must be annotated with @CurlCommand");
         }
         String curlCommand = resolveCurlCommand(annotation.value(), method, args);
+        buildContext(args);
         JQuickCurlExecutor executor = new JQuickCurlExecutor(this.context,this.config);
         executor.addErrorListener(error -> {System.err.printf("Failed: Line %d:%d - %s%n", error.getLine(), error.getCharPosition(), error.getMessage());System.err.println("规则栈: " + error.getRuleStack());});
         try {
@@ -151,12 +152,35 @@ public class JCurlCommandProcessor {
         }
         return list;
     }
-    public Object processMethod(Object instance,Method method, Object[] args) throws Exception {
+    public JResult processMethod(Object instance,Method method, Object[] args) throws Exception {
         JCurlCommandProcessor processor = new JCurlCommandProcessor(this.context,this.config);
+        if (method.isAnnotationPresent(JCurlCommand.class)) {
+            JResult object= processor.process(instance, method, args);
+            return object;
+        }
+        return null;
+    }
+    public Object processMethod(Object instance,Method method, Object arg) throws Exception {
+        JCurlCommandProcessor processor = new JCurlCommandProcessor(this.context,this.config);
+        Object[] args = new Object[]{arg};
         if (method.isAnnotationPresent(JCurlCommand.class)) {
             Object object= processor.process(instance, method, args);
             return object;
         }
         return null;
+    }
+    private void buildContext(Object[] args){
+        if (args == null || args.length == 0) {
+            return;
+        }
+        for (Object arg : args) {
+            if(arg instanceof HashMap){
+                HashMap<String,?> map= (HashMap)arg;
+                for(String key: map.keySet()){
+                    this.context.put(key,map.get(key));
+                }
+
+            }
+        }
     }
 }
