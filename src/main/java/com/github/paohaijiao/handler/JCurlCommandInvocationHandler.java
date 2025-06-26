@@ -16,6 +16,12 @@
 package com.github.paohaijiao.handler;
 
 import com.github.paohaijiao.anno.JCurlCommand;
+import com.github.paohaijiao.config.JQuickCurlConfig;
+import com.github.paohaijiao.domain.req.JQuickCurlReq;
+import com.github.paohaijiao.factory.JMethodReferenceStrategy;
+import com.github.paohaijiao.model.JResult;
+import com.github.paohaijiao.param.JContext;
+import com.github.paohaijiao.support.JCurlCommandProcessor;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -31,18 +37,33 @@ import java.lang.reflect.Proxy;
  * @description
  */
 public class JCurlCommandInvocationHandler implements InvocationHandler {
+    private JContext context=new JContext();
+    private JQuickCurlConfig config=JQuickCurlConfig.getInstance();
+    public JCurlCommandInvocationHandler() {
+        this.context =new JContext();
+        this.config =JQuickCurlConfig.getInstance();
+    }
+    public JCurlCommandInvocationHandler(JQuickCurlConfig config) {
+        this.context =new JContext();
+        this.config =config;
+    }
 
+    public JCurlCommandInvocationHandler(JContext context) {
+        this.context =context;
+        this.config =JQuickCurlConfig.getInstance();
+    }
+    public JCurlCommandInvocationHandler(JContext context, JQuickCurlConfig config) {
+        this.context =context;
+        this.config =config;
+    }
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         JCurlCommand curlCommand = method.getAnnotation(JCurlCommand.class);
         if (curlCommand == null || !curlCommand.execute()) {
             throw new UnsupportedOperationException("Method is not annotated with @JCurlCommand");
         }
-
-        // 执行 curl 命令
-        Process process = Runtime.getRuntime().exec(curlCommand.value());
-
-        return new Object();
+        JResult result=  new JCurlCommandProcessor(context,config).processMethod(null,method,args);
+        return result;
     }
     public static <T> T createProxy(Class<T> interfaceClass) {
         return (T) Proxy.newProxyInstance(
