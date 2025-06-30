@@ -82,7 +82,7 @@ public class JResultGenericConverter<T> implements JResponseConverter<T> {
     private boolean isJsonContent(JResult result) {
         if(result.getMediaType() != null){
             String mediaType=result.getMediaType().toString();
-            if(mediaType.equals("application/json")&&result.getString() != null){
+            if(mediaType.contains("application/json")&&result.getString() != null){//match the application/json; charset=utf-8
                 return true;
             }
         }

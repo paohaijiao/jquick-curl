@@ -21,6 +21,7 @@
         <dependency>
             <groupId>com.github.paohaijiao</groupId>
             <artifactId>javelin-core</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>

@@ -34,8 +34,11 @@ import java.util.List;
  * @description
  */
 public class JQuickCurlBatchRunner {
+
     private JContext context=new JContext();
+
     private JQuickCurlConfig config=JQuickCurlConfig.getInstance();
+
     public JQuickCurlBatchRunner() {
         this.context =new JContext();
         this.config =JQuickCurlConfig.getInstance();

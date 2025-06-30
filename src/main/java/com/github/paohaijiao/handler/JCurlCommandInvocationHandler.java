@@ -16,16 +16,20 @@
 package com.github.paohaijiao.handler;
 
 import com.github.paohaijiao.anno.JCurlCommand;
+import com.github.paohaijiao.anno.JTimeout;
 import com.github.paohaijiao.config.JQuickCurlConfig;
 import com.github.paohaijiao.domain.req.JQuickCurlReq;
-import com.github.paohaijiao.factory.JMethodReferenceStrategy;
+import com.github.paohaijiao.factory.JCurlResultFactory;
+import com.github.paohaijiao.generic.JGenericTypeReference;
 import com.github.paohaijiao.model.JResult;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.support.JCurlCommandProcessor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 
 /**
  * packageName com.github.paohaijiao.handler
@@ -36,6 +40,7 @@ import java.lang.reflect.Proxy;
  * @date 2025/6/23
  * @description
  */
+@Slf4j
 public class JCurlCommandInvocationHandler implements InvocationHandler {
     private JContext context=new JContext();
     private JQuickCurlConfig config=JQuickCurlConfig.getInstance();
@@ -62,8 +67,43 @@ public class JCurlCommandInvocationHandler implements InvocationHandler {
         if (curlCommand == null || !curlCommand.execute()) {
             throw new UnsupportedOperationException("Method is not annotated with @JCurlCommand");
         }
-        JResult result=  new JCurlCommandProcessor(context,config).processMethod(null,method,args);
-        return result;
+        log.info("the current command is {}", curlCommand.value());
+        for (int i = 0; i < args.length; i++) {
+            Object object = args[i];
+            if (object instanceof JQuickCurlReq) {
+                JQuickCurlReq req = (JQuickCurlReq) object;
+                for(String key:req.keySet()){
+                    context.put(key,req.get(key));
+                }
+            }
+        }
+        JTimeout timeout = method.getAnnotation(JTimeout.class);
+        if (timeout != null&&null!=this.config ) {
+            this.config.setReadTimeout(timeout.read());
+            this.config.setConnectTimeout(timeout.connect());
+            this.config.setWriteTimeout(timeout.write());
+        }
+        Class<?> returnType = method.getReturnType();
+        JResult rawResult=  new JCurlCommandProcessor(context,config).processMethod(null,method,args);
+        if (returnType.equals(JResult.class)) {
+            return rawResult;
+        } else if (returnType.equals(Void.TYPE)) {
+            return null;
+        }else{
+            try {
+                Type genericReturnType = method.getGenericReturnType();
+                JGenericTypeReference<?> typeReference = new JGenericTypeReference<Object>() {
+                    @Override
+                    public Type getType() {
+                        return genericReturnType;
+                    }
+                };
+                return JCurlResultFactory.convertResponse(rawResult, typeReference);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
     public static <T> T createProxy(Class<T> interfaceClass) {
         return (T) Proxy.newProxyInstance(

@@ -16,6 +16,7 @@
 package com.github.paohaijiao.factory;
 import com.github.paohaijiao.generic.JGenericTypeReference;
 import com.github.paohaijiao.model.JResult;
+import com.github.paohaijiao.model.JSONObject;
 import com.github.paohaijiao.result.impl.JMapResponseConverter;
 import com.github.paohaijiao.result.impl.JPassthroughResponseConverter;
 import com.github.paohaijiao.result.JResponseConverter;
@@ -45,6 +46,7 @@ public class JCurlResultFactory<T> {
         converters.put(String.class, new JStringResponseConverter());
         converters.put(JResult.class, new JPassthroughResponseConverter());
         converters.put(Map.class, new JMapResponseConverter());
+        converters.put(JSONObject.class, new JMapResponseConverter());
     }
     @SuppressWarnings("unchecked")
     public static <T> T convertResponse(JResult response, Class<T> targetType) throws IOException {
