@@ -40,6 +40,7 @@
         <dependency>
             <groupId>com.github.paohaijiao</groupId>
             <artifactId>jquick-json</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
