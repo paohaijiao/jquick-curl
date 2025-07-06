@@ -53,7 +53,8 @@ public class JCurlResultFactory<T> {
         if (converter == null) {
             if(targetType instanceof Object){
                 JSONSerializer serializer = JSONSerializerFactory.createJQuickSerializer();
-                T t = serializer.deserialize(response.getString(), targetType);
+                String result=response.getString();
+                T t = serializer.deserialize(result, targetType);
                 return t;
             }else{
                 throw new IllegalArgumentException("No converter registered for type: " + targetType);

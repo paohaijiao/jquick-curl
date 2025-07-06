@@ -13,12 +13,13 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.test;
+package com.github.paohaijiao.test.curl.batch;
 
 import com.github.paohaijiao.anno.JCurlCommand;
 import com.github.paohaijiao.anno.JTimeout;
 import com.github.paohaijiao.model.JResult;
 import com.github.paohaijiao.support.JQuickCurlBatchRunner;
+import com.github.paohaijiao.test.model.JUser;
 
 import java.util.List;
 
@@ -31,19 +32,21 @@ import java.util.List;
  * @date 2025/6/21
  * @description
  */
-public class JCurlCommandTests {
+public class JCurlBatchCommandTest {
     public static void main(String[] args) throws Exception {
         JQuickCurlBatchRunner batch= new JQuickCurlBatchRunner();
-        List<JResult> list=batch.runCurlCommands(new JCurlCommandTests(),JResult.class);
+        List<JResult> list=batch.runCurlCommands(new JCurlBatchCommandTest(),JResult.class);
         System.out.println(list);
     }
 
     @JTimeout(connect = 2000, read = 5000)
     @JCurlCommand("curl -X GET --location 'http://localhost:8080/api/users/all'")
-    public void testGetUsers() {
+    public List<JUser> testGetUsers() {
+        return  null;
     }
 
     @JCurlCommand("curl -X GET --location 'http://localhost:8080/api/users/all'")
-    public void testCreateUser() {
+    public List<JUser> testCreateUser() {
+        return  null;
     }
 }

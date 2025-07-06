@@ -26,6 +26,9 @@ import com.github.paohaijiao.param.JContext;
 
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.List;
+
 /**
  * packageName com.github.paohaijiao.executor
  *
@@ -47,6 +50,17 @@ public class JCurlInvoker {
         Method method = wrapper.getMethod(methodRef);
         JCurlCommandProcessor process= new JCurlCommandProcessor(context, config);
         T t=process.processMethod(null, method, req,interfaceClass);
+        return t;
+    }
+    public static <T> T invoke(JFunction<? extends JQuickCurlReq , ?> methodRef,
+                               JQuickCurlReq req, JContext context,
+                               JQuickCurlConfig config,
+                               Type type) throws Exception {
+        JMethodReferenceStrategy wrapper = new JMethodReferenceStrategy();
+        Method method = wrapper.getMethod(methodRef);
+        JCurlCommandProcessor process= new JCurlCommandProcessor(context, config);
+        JQuickCurlReq[] par=new JQuickCurlReq[]{req};
+        T t=process.processMethod(null, method, par,type);
         return t;
     }
     public static <T> T invoke(JFunction<? extends JQuickCurlReq , ?> methodRef,Class<T> interfaceClass) throws Exception {

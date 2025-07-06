@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.test.service.impl;
+package com.github.paohaijiao.test.curl;
 
 import com.github.paohaijiao.anno.JTimeout;
 import com.github.paohaijiao.model.JResult;
