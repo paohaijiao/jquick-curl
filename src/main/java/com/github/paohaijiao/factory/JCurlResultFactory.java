@@ -46,6 +46,7 @@ public class JCurlResultFactory<T> {
         converters.put(Map.class, new JMapResponseConverter());
         converters.put(JSONObject.class, new JMapResponseConverter());
         converters.put(Object.class, new JObjectResponseConverter());
+        converters.put(byte[].class, new JByteResponseConverter());
     }
     @SuppressWarnings("unchecked")
     public static <T> T convertResponse(JResult response, Class<T> targetType) throws IOException {
@@ -78,6 +79,12 @@ public class JCurlResultFactory<T> {
         if (type instanceof Class) {
             return convertResponse(response, (Class<T>) type);
         }
+        if (type == byte.class || type == Byte.TYPE) {
+            return convertResponse(response, (Class<T>) type);
+
+        }
+
+
         if (type instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type rawType = parameterizedType.getRawType();

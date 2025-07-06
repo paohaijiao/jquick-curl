@@ -77,11 +77,12 @@ public class JCurlCommandProcessor {
         String curlCommand = resolveCurlCommand(annotation.value(), method, args);
         buildContext(args);
         JQuickCurlExecutor executor = new JQuickCurlExecutor(this.context,this.config);
-        executor.addErrorListener(error -> {System.err.printf("Failed: Line %d:%d - %s%n", error.getLine(), error.getCharPosition(), error.getMessage());System.err.println("规则栈: " + error.getRuleStack());});
+        executor.addErrorListener(error -> {
+            System.err.printf("Failed: Line %d:%d - %s%n", error.getLine(), error.getCharPosition(), error.getMessage());System.err.println("规则栈: " + error.getRuleStack());});
         try {
             JResult rawResult = executor.execute(curlCommand);
             log.info("result:{}",rawResult);
-            if (interfaceClass.equals(Void.TYPE)) {
+            if (interfaceClass.equals(Void.TYPE)||interfaceClass.equals(java.lang.Void.class)) {
                 return null;
             }else{
                 try {

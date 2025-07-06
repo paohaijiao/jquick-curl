@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class JUser {
 
-    private int id;
+    private Integer id;
 
     private String name;
 

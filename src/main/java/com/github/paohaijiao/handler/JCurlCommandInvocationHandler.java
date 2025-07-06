@@ -18,6 +18,7 @@ package com.github.paohaijiao.handler;
 import com.github.paohaijiao.anno.JCurlCommand;
 import com.github.paohaijiao.anno.JTimeout;
 import com.github.paohaijiao.config.JQuickCurlConfig;
+import com.github.paohaijiao.console.JConsole;
 import com.github.paohaijiao.domain.req.JQuickCurlReq;
 import com.github.paohaijiao.factory.JCurlResultFactory;
 import com.github.paohaijiao.generic.JGenericTypeReference;
@@ -68,6 +69,7 @@ public class JCurlCommandInvocationHandler implements InvocationHandler {
             throw new UnsupportedOperationException("Method is not annotated with @JCurlCommand");
         }
         log.info("the current command is {}", curlCommand.value());
+        System.out.println( curlCommand.value());
         for (int i = 0; i < args.length; i++) {
             Object object = args[i];
             if (object instanceof JQuickCurlReq) {
