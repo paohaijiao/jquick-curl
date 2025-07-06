@@ -17,11 +17,9 @@ package com.github.paohaijiao.factory;
 import com.github.paohaijiao.generic.JGenericTypeReference;
 import com.github.paohaijiao.model.JResult;
 import com.github.paohaijiao.model.JSONObject;
-import com.github.paohaijiao.result.impl.JMapResponseConverter;
-import com.github.paohaijiao.result.impl.JPassthroughResponseConverter;
+import com.github.paohaijiao.result.impl.*;
 import com.github.paohaijiao.result.JResponseConverter;
-import com.github.paohaijiao.result.impl.JResultGenericConverter;
-import com.github.paohaijiao.result.impl.JStringResponseConverter;
+import com.github.paohaijiao.serializer.JSONSerializer;
 import okhttp3.Response;
 
 import java.io.IOException;
@@ -47,12 +45,19 @@ public class JCurlResultFactory<T> {
         converters.put(JResult.class, new JPassthroughResponseConverter());
         converters.put(Map.class, new JMapResponseConverter());
         converters.put(JSONObject.class, new JMapResponseConverter());
+        converters.put(Object.class, new JObjectResponseConverter());
     }
     @SuppressWarnings("unchecked")
     public static <T> T convertResponse(JResult response, Class<T> targetType) throws IOException {
         JResponseConverter<T> converter = (JResponseConverter<T>) converters.get(targetType);
         if (converter == null) {
-            throw new IllegalArgumentException("No converter registered for type: " + targetType);
+            if(targetType instanceof Object){
+                JSONSerializer serializer = JSONSerializerFactory.createJQuickSerializer();
+                T t = serializer.deserialize(response.getString(), targetType);
+                return t;
+            }else{
+                throw new IllegalArgumentException("No converter registered for type: " + targetType);
+            }
         }
         return converter.convert(response);
     }
@@ -72,7 +77,6 @@ public class JCurlResultFactory<T> {
         if (type instanceof Class) {
             return convertResponse(response, (Class<T>) type);
         }
-
         if (type instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type rawType = parameterizedType.getRawType();

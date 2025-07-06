@@ -89,6 +89,12 @@ public interface JQuickCurlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitUserOption(JQuickCurlParser.UserOptionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JQuickCurlParser#credentials}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCredentials(JQuickCurlParser.CredentialsContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JQuickCurlParser#locationOption}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

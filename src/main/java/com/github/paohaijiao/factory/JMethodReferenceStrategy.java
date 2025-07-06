@@ -50,7 +50,7 @@ public class JMethodReferenceStrategy  {
         this.config =  JQuickCurlConfig.getInstance();
     }
 
-    public  Method getMethod(JFunction<JQuickCurlReq, JResult> method) {
+    public  Method getMethod(JFunction<?, ?> method) {
         try {
             Method lambdaMethod = Arrays.stream(method.getClass().getDeclaredMethods())
                     .filter(m -> !m.isSynthetic() && m.getName().equals("apply"))
@@ -62,8 +62,8 @@ public class JMethodReferenceStrategy  {
             }
             Annotation[] annotations = originalMethod.getAnnotations();
             System.out.println("Successfully obtained method annotation: " + Arrays.toString(annotations));
-            JQuickCurlReq req = new JQuickCurlReq();
-            method.apply(req);
+//            JQuickCurlReq req = new JQuickCurlReq();
+//            method.apply(req);
             return originalMethod;
         } catch (Exception e) {
             console.error("get Method Failed",e);

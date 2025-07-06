@@ -173,6 +173,18 @@ public class JQuickCurlBaseListener implements JQuickCurlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCredentials(JQuickCurlParser.CredentialsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCredentials(JQuickCurlParser.CredentialsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLocationOption(JQuickCurlParser.LocationOptionContext ctx) { }
 	/**
 	 * {@inheritDoc}

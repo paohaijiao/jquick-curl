@@ -138,6 +138,16 @@ public interface JQuickCurlListener extends ParseTreeListener {
 	 */
 	void exitUserOption(JQuickCurlParser.UserOptionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JQuickCurlParser#credentials}.
+	 * @param ctx the parse tree
+	 */
+	void enterCredentials(JQuickCurlParser.CredentialsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickCurlParser#credentials}.
+	 * @param ctx the parse tree
+	 */
+	void exitCredentials(JQuickCurlParser.CredentialsContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JQuickCurlParser#locationOption}.
 	 * @param ctx the parse tree
 	 */

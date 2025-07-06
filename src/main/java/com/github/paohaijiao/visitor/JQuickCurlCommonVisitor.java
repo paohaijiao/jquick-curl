@@ -63,7 +63,7 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
         for (JQuickCurlParser.UrlContext urlCtx : ctx.url()) {
             this.url = visitUrl(urlCtx);
         }
-        JAssert.notNull(this.method ,"必须显示指定httpMethod");
+        JAssert.notNull(this.method ,"The specified httpMethod must be displayed eg -X POST|GET|DELETE|PUT etc.....");
         this.client = getOkHttpClient();
         Request.Builder builder  = new Request.Builder().url(url);
         RequestBody body=null;
@@ -81,6 +81,9 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
         headerList.forEach(e->{
             builder.addHeader(e.getKey(),e.getValue());
         });
+        if(StringUtils.isNotBlank(this.credential)){
+            builder.addHeader("Authorization",this.credential);
+        }
         Request request=builder.build();
         if(JHttpMethod.HEAD.getCode().equals(this.requestType)){
             builder.head().build();
@@ -100,10 +103,6 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
         }
         if(upLoadFileList.size()>0){
             request=request.newBuilder().post(mutiPartBuilder.build()).build();
-        }
-        if (credentials != null) {
-            String auth = "Basic " + Base64.getEncoder().encodeToString(credentials.getBytes());
-            request=request.newBuilder().header("Authorization", auth).build();
         }
 
         try  {
@@ -272,10 +271,23 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
         return visitChildren(ctx); }
 
     @Override
-    public Object visitUserOption(JQuickCurlParser.UserOptionContext ctx) {
-        credentials = ctx.userValue.getText().replaceAll("^['\"]|['\"]$", "");
+    public String visitUserOption(JQuickCurlParser.UserOptionContext ctx) {
+        JCredentials credentials= visitCredentials(ctx.credentials());
+        JAssert.notNull(credentials,"credential is null");
+        String credentialString=Credentials.basic(credentials.getUsername(), credentials.getPassword());
+        this.credential=credentialString;
+        return credentialString;
+    }
+    @Override
+    public JCredentials visitCredentials(JQuickCurlParser.CredentialsContext ctx) {
+        String userName=visitString(ctx.username);
+        String password=visitString(ctx.password);;
+        JCredentials credentials=new JCredentials();
+        credentials.setUsername(JStringUtils.trim(userName));
+        credentials.setPassword(JStringUtils.trim(password));
         return credentials;
     }
+
 
     @Override
     public Object visitLocationOption(JQuickCurlParser.LocationOptionContext ctx) {
@@ -429,9 +441,13 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
 
         } else if (ctx.variable() != null) {
             return visitVariable(ctx.variable());
+        } else if (ctx.IDENTIFIER() != null) {
+            return JStringUtils.trim(ctx.IDENTIFIER().getText());
+        }else if(ctx.UNQUOTED_CREDENTIALS() != null){
+            return JStringUtils.trim(ctx.UNQUOTED_CREDENTIALS().getText());
+        }else{
+            return ctx.getText();
         }
-        JAssert.notNull(value,"invalid String");
-        return null;
     }
 
 

@@ -26,7 +26,7 @@ import java.util.Arrays;
 
 public class JMethodReferenceResolver {
 
-    public Method resolve(JFunction<JQuickCurlReq, JResult> method) {
+    public Method resolve(JFunction<?, ?> method) {
         try {
             SerializedLambda lambda = getSerializedLambda(method);
             if (lambda == null) {
