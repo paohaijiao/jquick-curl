@@ -22,6 +22,7 @@ import com.github.paohaijiao.factory.JMethodReferenceStrategy;
 import com.github.paohaijiao.model.JResult;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.support.JCurlCommandProcessor;
+import com.github.paohaijiao.test.model.JGithubAuth;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -41,10 +42,13 @@ public class JCurlServiceImpl {
             value = "curl -X GET --location 'http://localhost:8080/api/users/all'", expectedStatus = 200,
             validationScript = "$haha.html"
     )
-    public static JResult userAll(JQuickCurlReq param) {
+    public static JGithubAuth userAll(JQuickCurlReq param) {
         return null;
     }
-
+    @JCurlCommand("curl -u ${user}:${password} https://api.github.com/user\n -X GET")
+    public static JGithubAuth retriveUser(JQuickCurlReq req){
+        return null;
+    }
 
 
 

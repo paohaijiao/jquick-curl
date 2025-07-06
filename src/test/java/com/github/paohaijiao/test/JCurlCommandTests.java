@@ -33,7 +33,8 @@ import java.util.List;
  */
 public class JCurlCommandTests {
     public static void main(String[] args) throws Exception {
-        List<JResult> list= new JQuickCurlBatchRunner().runCurlCommands(new JCurlCommandTests());
+        JQuickCurlBatchRunner batch= new JQuickCurlBatchRunner();
+        List<JResult> list=batch.runCurlCommands(new JCurlCommandTests(),JResult.class);
         System.out.println(list);
     }
 

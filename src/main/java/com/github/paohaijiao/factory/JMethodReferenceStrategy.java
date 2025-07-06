@@ -50,7 +50,7 @@ public class JMethodReferenceStrategy  {
         this.config =  JQuickCurlConfig.getInstance();
     }
 
-    public  Method getMethod(JFunction<?, ?> method) {
+    public  Method getMethod(JFunction<? , ?> method) {
         try {
             Method lambdaMethod = Arrays.stream(method.getClass().getDeclaredMethods())
                     .filter(m -> !m.isSynthetic() && m.getName().equals("apply"))

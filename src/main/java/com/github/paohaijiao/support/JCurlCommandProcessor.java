@@ -19,13 +19,17 @@ import com.github.paohaijiao.anno.JCurlCommand;
 import com.github.paohaijiao.config.JQuickCurlConfig;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
 import com.github.paohaijiao.executor.JQuickCurlExecutor;
+import com.github.paohaijiao.factory.JCurlResultFactory;
+import com.github.paohaijiao.generic.JGenericTypeReference;
 import com.github.paohaijiao.model.JResult;
 import com.github.paohaijiao.param.JContext;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,13 +44,18 @@ import java.util.Map;
  * @date 2025/6/21
  * @description
  */
+@Slf4j
 public class JCurlCommandProcessor {
+
     private JContext context=new JContext();
+
     private JQuickCurlConfig config=JQuickCurlConfig.getInstance();
+
     public JCurlCommandProcessor() {
         this.context =new JContext();
         this.config =JQuickCurlConfig.getInstance();
     }
+
     public JCurlCommandProcessor(JQuickCurlConfig config) {
         this.context =new JContext();
         this.config =config;
@@ -60,7 +69,7 @@ public class JCurlCommandProcessor {
         this.context =context;
         this.config =config;
     }
-    public JResult process(Object object, Method method, Object[] args) throws Exception {
+    public <T> T process(Object object, Method method, Object[] args,Class<T> interfaceClass) throws Exception {
         JCurlCommand annotation = method.getAnnotation(JCurlCommand.class);
         if (annotation == null) {
             throw new IllegalArgumentException("Method must be annotated with @CurlCommand");
@@ -70,9 +79,26 @@ public class JCurlCommandProcessor {
         JQuickCurlExecutor executor = new JQuickCurlExecutor(this.context,this.config);
         executor.addErrorListener(error -> {System.err.printf("Failed: Line %d:%d - %s%n", error.getLine(), error.getCharPosition(), error.getMessage());System.err.println("规则栈: " + error.getRuleStack());});
         try {
-            JResult result = executor.execute(curlCommand);
-            System.out.println("Result: " + result);
-            return result;
+            JResult rawResult = executor.execute(curlCommand);
+            log.info("result:{}",rawResult);
+            if (interfaceClass.equals(Void.TYPE)) {
+                return null;
+            }else{
+                try {
+                    Type genericReturnType = method.getGenericReturnType();
+                    JGenericTypeReference<T> typeReference = new JGenericTypeReference<T>() {
+                        @Override
+                        public Type getType() {
+                            return genericReturnType;
+                        }
+                    };
+                    T obj= JCurlResultFactory.convertResponse(rawResult, typeReference);
+                   return  obj;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return null;
+            }
         } catch (JAntlrExecutionException e) {
             System.err.println("Parse Fail: " + e.getMessage());
             e.getErrors().forEach(err -> System.err.println(" - " + err.getMessage()));
@@ -106,28 +132,12 @@ public class JCurlCommandProcessor {
             ));
         }
     }
-    private Object handleResponse(Object instance, Method method, Response response,
-                                  JCurlCommand annotation) throws Exception {
-        if (method.getReturnType() == Response.class) {
-            return response;
-        }
-
-        if (method.getReturnType() == String.class) {
-            ResponseBody body = response.body();
-            return body != null ? body.string() : null;
-        }
-        injectResponseToParameters(instance, method, response);
-        if (!annotation.validationScript().isEmpty()) {
-            //validateWithScript(annotation.validationScript(), response);
-        }
-
-        return null;
+    private <T> T handleResponse(Object instance, Response response, JCurlCommand annotation,Class<T> interfaceClass) throws Exception {
+      return null;
     }
-    private void injectResponseToParameters(Object instance, Method method,
-                                            Response response) throws Exception {
+    private void injectResponseToParameters(Object instance, Method method, Response response) throws Exception {
         Parameter[] parameters = method.getParameters();
         Object[] args = new Object[parameters.length];
-
         for (int i = 0; i < parameters.length; i++) {
             Class<?> type = parameters[i].getType();
             if (type == Response.class) {
@@ -143,28 +153,28 @@ public class JCurlCommandProcessor {
         }
         method.invoke(instance, args);
     }
-    public List<Object> processClass(Class<?> clazz) throws Exception {
-        List<Object> list= new ArrayList<>();
+     public <T> List<T> processClass(Class<?> clazz, Class<T> interfaceClass) throws Exception {
+        List<T> list= new ArrayList<>();
         JCurlCommandProcessor processor = new JCurlCommandProcessor(this.context,this.config);
         Object instance = clazz.getDeclaredConstructor().newInstance();
         for (Method method : clazz.getMethods()) {
-            list.add(processor.process(instance, method, null));
+            list.add(processor.process(instance, method, null,interfaceClass));
         }
         return list;
     }
-    public JResult processMethod(Object instance,Method method, Object[] args) throws Exception {
+    public <T> T processMethod(Object instance,Method method, Object[] args,Class<T> interfaceClass) throws Exception {
         JCurlCommandProcessor processor = new JCurlCommandProcessor(this.context,this.config);
         if (method.isAnnotationPresent(JCurlCommand.class)) {
-            JResult object= processor.process(instance, method, args);
+            T object= processor.process(instance, method, args,interfaceClass);
             return object;
         }
         return null;
     }
-    public Object processMethod(Object instance,Method method, Object arg) throws Exception {
+    public  <T> T processMethod(Object instance,Method method, Object arg,Class<T> interfaceClass) throws Exception {
         JCurlCommandProcessor processor = new JCurlCommandProcessor(this.context,this.config);
         Object[] args = new Object[]{arg};
         if (method.isAnnotationPresent(JCurlCommand.class)) {
-            Object object= processor.process(instance, method, args);
+            T object= processor.process(instance, method, args,interfaceClass);
             return object;
         }
         return null;

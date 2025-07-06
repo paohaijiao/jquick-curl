@@ -24,6 +24,7 @@ import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickCurlLexer;
 import com.github.paohaijiao.parser.JQuickCurlParser;
 import com.github.paohaijiao.util.JStringUtils;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import okio.ByteString;
 import org.antlr.v4.runtime.CharStreams;
@@ -37,7 +38,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.Arrays;
 import java.util.Base64;
-
+@Slf4j
 public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
     public JQuickCurlCommonVisitor(JContext context){
       this.context = context;
@@ -107,6 +108,7 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
 
         try  {
             Response response = client.newCall(request).execute();
+            log.info("Response:{}",response);
             if (!response.isSuccessful()){
                 System.out.println("Cannot request the resource");
             };

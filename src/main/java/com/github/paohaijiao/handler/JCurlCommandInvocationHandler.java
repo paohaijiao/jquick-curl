@@ -84,26 +84,10 @@ public class JCurlCommandInvocationHandler implements InvocationHandler {
             this.config.setWriteTimeout(timeout.write());
         }
         Class<?> returnType = method.getReturnType();
-        JResult rawResult=  new JCurlCommandProcessor(context,config).processMethod(null,method,args);
-        if (returnType.equals(JResult.class)) {
-            return rawResult;
-        } else if (returnType.equals(Void.TYPE)) {
-            return null;
-        }else{
-            try {
-                Type genericReturnType = method.getGenericReturnType();
-                JGenericTypeReference<?> typeReference = new JGenericTypeReference<Object>() {
-                    @Override
-                    public Type getType() {
-                        return genericReturnType;
-                    }
-                };
-                return JCurlResultFactory.convertResponse(rawResult, typeReference);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            return null;
-        }
+        JCurlCommandProcessor curl=  new JCurlCommandProcessor(context,config);
+        Object result = curl.processMethod(null, method, args, returnType);
+        Object typedResult = returnType.cast(result);
+        return typedResult;
     }
     public static <T> T createProxy(Class<T> interfaceClass) {
         return (T) Proxy.newProxyInstance(

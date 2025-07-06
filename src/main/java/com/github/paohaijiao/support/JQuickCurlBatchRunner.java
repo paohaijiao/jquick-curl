@@ -56,13 +56,14 @@ public class JQuickCurlBatchRunner {
         this.context =context;
         this.config =config;
     }
-    public  List<JResult> runCurlCommands(Object obj) throws Exception {
-        List<JResult> list=new ArrayList<>();
+    public   <T> List<T> runCurlCommands(Object obj,Class<T> interfaceClass) throws Exception {
+        List<T> list=new ArrayList<>();
         for (Method method : obj.getClass().getMethods()) {
             if (method.isAnnotationPresent(JCurlCommand.class)) {
                 Object instance = obj.getClass().newInstance();
                 method.invoke(instance);
-                JResult result=  new JCurlCommandProcessor( this.context,this.config).processMethod(null,method,null);
+                JCurlCommandProcessor curl=  new JCurlCommandProcessor( this.context,this.config);
+                T result=curl.processMethod(null,method,null,interfaceClass);
                 list.add(result);
             }
         }

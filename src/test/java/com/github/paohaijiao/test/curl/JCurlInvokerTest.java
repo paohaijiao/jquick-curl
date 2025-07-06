@@ -35,18 +35,17 @@ public class JCurlInvokerTest {
     public  void retriveUser() throws Exception {
         ApiService api = JCurlInvoker.createProxy(ApiService.class);
         JQuickCurlReq req = new JQuickCurlReq();
-        req.put("user", "haha@qq.com");
-        req.put("password", "ghp_FqXU5SYCDg3wxcy9a2lvCLDOejGbYY079A");
+        req.put("user", "xsasaxsa@qq.com");
+        req.put("password", "xasxsa");
         JGithubAuth result = api.retriveUser(req);
         System.out.println(result);
     }
     @Test
     public  void testMethod() throws Exception {
         JQuickCurlReq req = new JQuickCurlReq();
-        req.put("user", "haha@qq.com");
-        req.put("password", "ghp_FqXU5SYCDg3wxcy9a2lvCLDOejGbYY079A");
-        Object result = JCurlInvoker.invoke(JCurlServiceImpl::userAll, req);
-
+        req.put("user", "xsaxsa@qq.com");
+        req.put("password", "zaZAzaZA");
+        JGithubAuth result = JCurlInvoker.invoke(JCurlServiceImpl::retriveUser, req,JGithubAuth.class);
         System.out.println(result);
     }
 }

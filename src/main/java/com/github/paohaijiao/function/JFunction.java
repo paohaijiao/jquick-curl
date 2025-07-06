@@ -22,6 +22,6 @@ import com.github.paohaijiao.model.JResult;
 import java.io.Serializable;
 import java.util.function.Function;
 
-public interface JFunction <T extends JQuickCurlReq, R extends JResult> extends Function<T, R>, Serializable {
+public interface JFunction <T extends JQuickCurlReq, R extends Object> extends Function<T, R>, Serializable {
 
 }

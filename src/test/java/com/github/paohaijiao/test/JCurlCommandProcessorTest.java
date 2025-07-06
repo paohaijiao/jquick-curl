@@ -57,7 +57,8 @@ public class JCurlCommandProcessorTest {
         Method method=wrapper.getMethod(JCurlCommandProcessorTest::testQueryUser);
         JQuickCurlReq req=new  JQuickCurlReq();
         req.put("hello", "1");
-        Object result=  new JCurlCommandProcessor(context,config).processMethod(null,method,req);
+        JCurlCommandProcessor curl=  new JCurlCommandProcessor(context,config);
+        JResult result=curl.processMethod(null,method,req,JResult.class);
         System.out.println(result);
     }
 
