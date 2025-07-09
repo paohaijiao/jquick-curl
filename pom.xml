@@ -2,14 +2,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.github.paohaijiao</groupId>
-        <artifactId>jquick-parent</artifactId>
-        <version>1.0.0</version>
+        <groupId>io.github.paohaijiao</groupId>
+        <artifactId>javelin</artifactId>
+        <version>1.2.0</version>
     </parent>
-    <groupId>io.github.paohaijiao</groupId>
     <artifactId>jquick-curl</artifactId>
     <name>jquick-curl</name>
     <properties>
+        <javelin.version>1.2.0</javelin.version>
+        <jquick.version>1.2.0</jquick.version>
         <hutool.version>5.4.2</hutool.version>
         <guava.version>31.1-jre</guava.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
@@ -22,7 +23,7 @@
         <druid.version>1.1.4</druid.version>
         <yaml.version>2.4</yaml.version>
         <junit.version>4.11</junit.version>
-        <javelin.version>1.0.0</javelin.version>
+
         <poi.version>5.2.3</poi.version>
         <batik.version>1.12</batik.version>
         <itext.svg.version>7.2.5</itext.svg.version>
@@ -33,21 +34,24 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>io.github.paohaijiao</groupId>
+            <artifactId>jquick-json</artifactId>
+            <version>${jquick.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.paohaijiao</groupId>
+            <artifactId>javelin-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
-            <version>${antlr.version}</version>
         </dependency>
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4</artifactId>
             <scope>provided</scope>
-            <version>${antlr.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.paohaijiao</groupId>
-            <artifactId>javelin-core</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+
 
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
@@ -58,23 +62,16 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
-            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j-api.version}</version>
 
         </dependency>
-        <dependency>
-            <groupId>com.github.paohaijiao</groupId>
-            <artifactId>jquick-json</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
         </dependency>
     </dependencies>
     <description>jquick curl is a self-developed high-performance http client library
