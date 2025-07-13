@@ -24,7 +24,7 @@ This document provides comprehensive examples for using JCurlInvoker, a Java-bas
 
 ## Basic Requests
 
-### 1. return type is list
+### 1. List Query
 **Interface Definition:**
 ```java
 @JCurlCommand("curl -X GET --location 'http://localhost:8080/api/users/all'")
