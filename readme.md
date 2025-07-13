@@ -3,8 +3,8 @@
 ## Table of Contents
 - [Introduction](#introduction)
 - [Basic Requests](#basic-requests)
-    - [List Query](#1-list-query)
-    - [Get Single Item](#2-get-single-item)
+    - [List Query](#1 return type is list)
+    - [Get Single Item](#2-return  type is  Object)
     - [POST Request](#3-post-request)
     - [PUT Request](#4-put-request)
     - [PATCH Request](#5-patch-request)
@@ -24,7 +24,7 @@ This document provides comprehensive examples for using JCurlInvoker, a Java-bas
 
 ## Basic Requests
 
-### 1. List Query
+### 1. return type is list
 **Interface Definition:**
 ```java
 @JCurlCommand("curl -X GET --location 'http://localhost:8080/api/users/all'")
@@ -47,3 +47,5 @@ List<JUser> list = JCurlInvoker.invoke(
         config,typeToken.getType()
 );
 ```
+### 2. return  type is  Object
+**Interface Definition:**
