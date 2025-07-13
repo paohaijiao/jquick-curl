@@ -4,7 +4,7 @@
 - [Introduction](#introduction)
 - [Basic Requests](#basic-requests)
     - [List Query](#1-list-query)
-    - [Get Single Item](#2-return-type-is-Object)
+    - [Get Single Item](#2-get_single_item)
     - [POST Request](#3-post-request)
     - [PUT Request](#4-put-request)
     - [PATCH Request](#5-patch-request)
