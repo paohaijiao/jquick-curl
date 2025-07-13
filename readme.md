@@ -1,5 +1,13 @@
-# JCurlInvoker HTTP Client Test Documentation
-
+# jquickCurl HTTP Client Test Documentation
+jquickcurl is a high-performance, easy-to-use http client framework for java developers. it fully uses java 8's concurrency and okhttp's features
+to simplify network request handling and boost efficiency. this framework aims to offer a curl-like programming interface for elegant and efficient
+http operations like get, post, and put. jquickcurl emphasizes cross-platform compatibility, supporting seamless deployment across os environments.
+this greatly expands its applicability across scenarios, facilitating integration and leveraging efficient features for both server-side and mobile
+app development. jquickcurl simplifies service-to-service network requests with its concise api, reducing http integration complexity for developers
+in both local and microservices environments. jquickcurl shows exceptional capabilities in cloud application development too. it optimizes resource use,
+boosts cloud app speed and stability, lets developers focus on business logic, and significantly enhances efficiency and performance. whether tackling
+microservices' distributed challenges or cloud environments' high concurrency, jquickcurl is a vital tool for developers to ensure fast, reliable
+network communication through its flexibility and efficiency.
 ## Table of Contents
 - [Introduction](#introduction)
 - [Basic Requests](#basic-requests)
