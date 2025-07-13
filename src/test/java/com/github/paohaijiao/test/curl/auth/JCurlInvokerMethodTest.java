@@ -74,8 +74,6 @@ public class JCurlInvokerMethodTest {
     @Test
     public  void testMethod() throws Exception {
         JQuickCurlReq req = new JQuickCurlReq();
-        req.put("user", "xsaxsa@qq.com");
-        req.put("password", "zaZAzaZA");
         JUser result = JCurlInvoker.invoke(UserServiceImpl::getUserById, req,JUser.class);
         System.out.println(result);
     }

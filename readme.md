@@ -25,6 +25,11 @@ network communication through its flexibility and efficiency.
     - [Multiple File Upload](#11-multiple-file-upload)
     - [File Download](#12-file-download)
     - [File Upload with Parameters](#13-file-upload-with-parameters)
+    - [Batch Run](#14-batch-run)
+    - [Lamda Support](#15-lamda-support)
+    - [Basic Auth](#16-basic-auth)
+    - [interceptor](#17-interceptor)
+    - [Gloabl Variable Support](#18-global-variable-support)
 - [Appendix](#appendix)
 
 ## Introduction
@@ -210,4 +215,41 @@ String jResult=api.upload1(req);
 UserService api = JCurlInvoker.createProxy(UserService.class);
 JQuickCurlReq req = new JQuickCurlReq();
 String bytes=api.uploadWithPostParams(req);
+```
+### 14. Batch Run
+```java
+JQuickCurlBatchRunner batch= new JQuickCurlBatchRunner();
+List<JResult> list=batch.runCurlCommands(new JCurlBatchCommandTest(),JResult.class);
+```
+### 15. Lamda Support
+```java
+JQuickCurlReq req = new JQuickCurlReq();
+JUser result = JCurlInvoker.invoke(UserServiceImpl::getUserById, req,JUser.class);
+```
+### 16. basic auth
+```java
+    @JCurlCommand("curl -u ${user}:${password} https://api.github.com/user\n -X GET")
+    JGithubAuth retriveUser(JQuickCurlReq req);
+```
+### 17. interceptor
+if you want process some business logic  before or after lauch a new curl request ,
+you could implements Interceptor interface and pass the Interceptor via JQuickCurlConfig 
+then it will effect 
+### 18. global variable
+if you want change the api host , parameter, method and any else base the different env, you could define the variable 
+in your code  such as ${variableName},then you can pass the different value via JContext reference, finally 
+the curl request will follow your variableName to execute.
+Useage:
+**Interface Definition:**
+```java
+@JCurlCommand("curl -u ${user}:${password} https://api.github.com/user\n -X GET")
+JGithubAuth retriveUser(JQuickCurlReq req);
+```
+**how to use in java code:**
+```java
+ ApiService api = JCurlInvoker.createProxy(ApiService.class);
+        JQuickCurlReq req = new JQuickCurlReq();
+        req.put("user", "xsasaxsa@qq.com");
+        req.put("password", "xasxsa");
+        JGithubAuth result = api.retriveUser(req);
 ```
