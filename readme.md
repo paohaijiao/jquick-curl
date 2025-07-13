@@ -3,7 +3,7 @@
 ## Table of Contents
 - [Introduction](#introduction)
 - [Basic Requests](#basic-requests)
-    - [List Query](#1 return type is list)
+    - [List Query](#1-list-query)
     - [Get Single Item](#2-return  type is  Object)
     - [POST Request](#3-post-request)
     - [PUT Request](#4-put-request)
