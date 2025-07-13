@@ -29,3 +29,19 @@ This document provides comprehensive examples for using JCurlInvoker, a Java-bas
 ```java
 @JCurlCommand("curl -X GET --location 'http://localhost:8080/api/users/all'")
 List<JUser> all(JQuickCurlReq req);
+
+how to invoke 
+List<JUser> all(JQuickCurlReq req);
+JQuickCurlReq req = new JQuickCurlReq();
+req.put("user", "xsaxsa@qq.com");
+req.put("password", "zaZAzaZA");
+JContext context = new JContext();
+JQuickCurlConfig config = JQuickCurlConfig.getInstance();
+Object result = JCurlInvoker.invoke(UserServiceImpl::all, req,JGithubAuth.class);
+TypeToken<List<JUser>> typeToken = new TypeToken<List<JUser>>() {};
+List<JUser> list = JCurlInvoker.invoke(
+        UserServiceImpl::all,
+        req,
+        context,
+        config,typeToken.getType()
+);
