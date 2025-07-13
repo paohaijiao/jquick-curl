@@ -95,8 +95,13 @@ public class JCurlInvokerInvokeTest {
     public  void usersDelete() throws Exception {
         UserService api = JCurlInvoker.createProxy(UserService.class);
         JQuickCurlReq req = new JQuickCurlReq();
-        req.put("user", "xsasaxsa@qq.com");
-        req.put("password", "xasxsa");
+        api.usersDelete(req);
+        System.out.println();
+    }
+    @Test
+    public  void head() throws Exception {
+        UserService api = JCurlInvoker.createProxy(UserService.class);
+        JQuickCurlReq req = new JQuickCurlReq();
         api.usersHead(req);
         System.out.println();
     }
@@ -104,8 +109,6 @@ public class JCurlInvokerInvokeTest {
     public  void usersOptions() throws Exception {
         UserService api = JCurlInvoker.createProxy(UserService.class);
         JQuickCurlReq req = new JQuickCurlReq();
-        req.put("user", "xsasaxsa@qq.com");
-        req.put("password", "xasxsa");
         JResult jResult=api.usersOptions(req);
         System.out.println(jResult);
     }
@@ -113,8 +116,6 @@ public class JCurlInvokerInvokeTest {
     public  void usersTrace() throws Exception {
         UserService api = JCurlInvoker.createProxy(UserService.class);
         JQuickCurlReq req = new JQuickCurlReq();
-        req.put("user", "xsasaxsa@qq.com");
-        req.put("password", "xasxsa");
         String jResult=api.usersTrace(req);
         System.out.println(jResult);
     }
@@ -151,8 +152,6 @@ public class JCurlInvokerInvokeTest {
     public  void uploadWithPostParams() throws Exception {
         UserService api = JCurlInvoker.createProxy(UserService.class);
         JQuickCurlReq req = new JQuickCurlReq();
-        req.put("user", "xsasaxsa@qq.com");
-        req.put("password", "xasxsa");
         String bytes=api.uploadWithPostParams(req);
         System.out.println(bytes);
     }
