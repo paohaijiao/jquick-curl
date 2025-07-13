@@ -29,8 +29,9 @@ This document provides comprehensive examples for using JCurlInvoker, a Java-bas
 ```java
 @JCurlCommand("curl -X GET --location 'http://localhost:8080/api/users/all'")
 List<JUser> all(JQuickCurlReq req);
-
-how to invoke 
+```
+**how to use in java code:**
+```java
 List<JUser> all(JQuickCurlReq req);
 JQuickCurlReq req = new JQuickCurlReq();
 req.put("user", "xsaxsa@qq.com");
@@ -45,3 +46,4 @@ List<JUser> list = JCurlInvoker.invoke(
         context,
         config,typeToken.getType()
 );
+```
