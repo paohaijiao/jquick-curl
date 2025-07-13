@@ -47,5 +47,5 @@ List<JUser> list = JCurlInvoker.invoke(
         config,typeToken.getType()
 );
 ```
-### 2. return  type is  Object
+### 2. Get Single Item
 **Interface Definition:**
