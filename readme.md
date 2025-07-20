@@ -8,6 +8,32 @@ in both local and microservices environments. jquickcurl shows exceptional capab
 boosts cloud app speed and stability, lets developers focus on business logic, and significantly enhances efficiency and performance. whether tackling
 microservices' distributed challenges or cloud environments' high concurrency, jquickcurl is a vital tool for developers to ensure fast, reliable
 network communication through its flexibility and efficiency.
+## Usage Guide
+### Basic Syntax
+```string
+curl [options] [URL...]
+```
+### Basic Options
+```string
+-X, --request <method>  Specify request method (GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS, TRACE)
+-H, --header <header>   Add HTTP header to request
+-d, --data <data>      Send data in POST/PUT request
+--data-ascii <data> Send ASCII data
+--data-binary <data> Send binary data
+--data-raw <data>  Send raw data without processing
+--data-urlencode <data> Send URL-encoded form data
+-u, --user <user:pass> Server user and password
+-L, --location         Follow redirects
+--max-redirs <num> Maximum number of redirects to follow
+-o, --output <file>    Write output to file instead of stdout
+-F, --form <name=content> Specify multipart form data
+-x, --proxy <[protocol://]host[:port]> Use proxy
+--socks5-hostname <host[:port]> SOCKS5 proxy
+--http2            Use HTTP/2
+-k, --insecure         Allow insecure server connections
+-v, --verbose          Make the operation more talkative
+-s, --silent           Silent mode (don't output errors)
+```
 ## Table of Contents
 - [Introduction](#introduction)
 - [Basic Requests](#basic-requests)
