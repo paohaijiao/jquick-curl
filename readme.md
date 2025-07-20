@@ -11,7 +11,7 @@ network communication through its flexibility and efficiency.
 ## Usage Guide
 ### Basic Syntax
 ```string
-curl [options] [URL...]
+curl [options] [URL]
 ```
 ### Basic Options
 ```string
