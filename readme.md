@@ -255,7 +255,7 @@ then it will effect
 
 18. global variable
 if you want change the api host , parameter, method and any else base the different env, you could define the variable 
-in your code  such as ${variableName},then you can pass the different value via JContext reference, finally 
+in your code  such as **${variableName}**,then you can pass the different value via JContext reference, finally 
 the curl request will follow your variableName to execute.
 Useage:
 ```java
