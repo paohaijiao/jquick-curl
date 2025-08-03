@@ -249,14 +249,17 @@ JUser result = JCurlInvoker.invoke(UserServiceImpl::getUserById, req,JUser.class
     JGithubAuth retriveUser(JQuickCurlReq req);
 ```
 17. interceptor
+```string
 if you want process some business logic  before or after lauch a new curl request ,
 you could implements Interceptor interface and pass the Interceptor via JQuickCurlConfig 
 then it will effect 
-
+```
 18. global variable
+```string
 if you want change the api host , parameter, method and any else base the different env, you could define the variable 
 in your code  such as **${variableName}**,then you can pass the different value via JContext reference, finally 
 the curl request will follow your variableName to execute.
+```
 Useage:
 ```java
 @JCurlCommand("curl -u ${user}:${password} https://api.github.com/user\n -X GET")
