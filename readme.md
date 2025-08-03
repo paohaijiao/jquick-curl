@@ -37,27 +37,31 @@ curl [options] [URL]
 -k, --insecure         Allow insecure server connections
 ```
 ## Table of Contents
+- [jquickCurl Documentation](#jquickcurl-documentation)
+- [Usage Guide](#usage-guide)
+  - [Basic Syntax](#basic-syntax)
+  - [Basic Options](#basic-options)
 - [Introduction](#introduction)
 - [Basic Requests](#basic-requests)
-    - [List Query](#1-list-query)
-    - [Get Single Item](#2-get_single_item)
-    - [POST Request](#3-post-request)
-    - [PUT Request](#4-put-request)
-    - [PATCH Request](#5-patch-request)
-    - [DELETE Request](#6-delete-request)
-    - [HEAD Request](#7-head-request)
-    - [OPTIONS Request](#8-options-request)
-    - [TRACE Request](#9-trace-request)
+  - [1. List Query](#1-list-query)
+  - [2. Get Single Item](#2-get-single-item)
+  - [3. POST Request](#3-post-request)
+  - [4. PUT Request](#4-put-request)
+  - [5. PATCH Request](#5-patch-request)
+  - [6. DELETE Request](#6-delete-request)
+  - [7. HEAD Request](#7-head-request)
+  - [8. OPTIONS Request](#8-options-request)
+  - [9. TRACE Request](#9-trace-request)
 - [File Operations](#file-operations)
-    - [Single File Upload](#10-single-file-upload)
-    - [Multiple File Upload](#11-multiple-file-upload)
-    - [File Download](#12-file-download)
-    - [File Upload with Parameters](#13-file-upload-with-parameters)
-    - [Batch Run](#14-batch-run)
-    - [Lamda Support](#15-lamda-support)
-    - [Basic Auth](#16-basic-auth)
-    - [interceptor](#17-interceptor)
-    - [Gloabl Variable Support](#18-global-variable-support)
+  - [10. Single File Upload](#10-single-file-upload)
+  - [11. Multiple File Upload](#11-multiple-file-upload)
+  - [12. File Download](#12-file-download)
+  - [13. File Upload with Parameters](#13-file-upload-with-parameters)
+  - [14. Batch Run](#14-batch-run)
+  - [15. Lambda Support](#15-lamda-support)
+  - [16. Basic Auth](#16-basic-auth)
+  - [17. Interceptor](#17-interceptor)
+  - [18. Global Variable Support](#18-global-variable-support)
 - [Appendix](#appendix)
 
 ## Introduction
@@ -65,13 +69,11 @@ This document provides comprehensive examples for using JCurlInvoker, a Java-bas
 
 ## Basic Requests
 
-### 1. List Query
-**Interface Definition:**
+1. List Query
 ```java
 @JCurlCommand("curl -X GET --location 'http://localhost:8080/api/users/all'")
 List<JUser> all(JQuickCurlReq req);
 ```
-**how to use in java code:**
 ```java
 List<JUser> all(JQuickCurlReq req);
 JQuickCurlReq req = new JQuickCurlReq();
@@ -86,142 +88,129 @@ List<JUser> list = JCurlInvoker.invoke(
         config,typeToken.getType()
 );
 ```
-### 2. Get Single Item
-**Interface Definition:**
+
+2. Get Single Item
 ```java
 @JCurlCommand("curl -X GET http://localhost:8080/api/users/1")
 ```
-**how to use in java code:**
 ```java
   UserService api = JCurlInvoker.createProxy(UserService.class);
   JQuickCurlReq req = new JQuickCurlReq();
   JUser result = api.getUserById(req);
 ```
-### 3. POST Request
-**Interface Definition:**
+
+3. POST Request
 ```java
     @JCurlCommand("curl -X POST http://localhost:8080/api/users \\\n" +
             "-H \"Content-Type: application/json\" \\\n" +
             "-d '{\"name\":\"John Doe\",\"email\":\"john@example.com\"}'")
     JUser users(JQuickCurlReq req);
 ```
-**how to use in java code:**
 ```java
 UserService api = JCurlInvoker.createProxy(UserService.class);
 JQuickCurlReq req = new JQuickCurlReq();
 JUser result = api.users(req);
 ```
-### 4. PUT Request
-**Interface Definition:**
+
+4. PUT Request
 ```java
     @JCurlCommand("curl -X PUT http://localhost:8080/api/users/1 \\\n" +
             "-H \"Content-Type: application/json\" \\\n" +
             "-d '{\"name\":\"John Doe Updated\",\"email\":\"john.updated@example.com\"}'")
     JUser usersPut(JQuickCurlReq req);
 ```
-**how to use in java code:**
 ```java
 UserService api = JCurlInvoker.createProxy(UserService.class);
 JQuickCurlReq req = new JQuickCurlReq();
 JUser result = api.usersPut(req);
 ```
-### 5. PATCH Request
-**Interface Definition:**
+
+5. PATCH Request
 ```java
     @JCurlCommand("curl -X PATCH http://localhost:8080/api/users/1 \\\n" +
         "-H \"Content-Type: application/json\" \\\n" +
         "-d '{\"name\":\"John Doe Patched\"}'")
 JUser usersPatch(JQuickCurlReq req);
 ```
-**how to use in java code:**
+
 ```java
 UserService api = JCurlInvoker.createProxy(UserService.class);
 JQuickCurlReq req = new JQuickCurlReq();
 JUser result = api.usersPatch(req);
 ```
-### 6. DELETE Request
-**Interface Definition:**
+
+6. DELETE Request
 ```java
 @JCurlCommand("curl -X DELETE http://localhost:8080/api/users/1")
 Void usersDelete(JQuickCurlReq req);
 ```
-**how to use in java code:**
 ```java
 UserService api = JCurlInvoker.createProxy(UserService.class);
 JQuickCurlReq req = new JQuickCurlReq();
 api.usersDelete(req);
 ```
-### 7. HEAD Request
-**Interface Definition:**
+7. HEAD Request
 ```java
  @JCurlCommand("curl  -X HEAD -I http://localhost:8080/api/users/1")
     Void usersHead(JQuickCurlReq req);
 ```
-**how to use in java code:**
 ```java
 UserService api = JCurlInvoker.createProxy(UserService.class);
 JQuickCurlReq req = new JQuickCurlReq();
 api.usersHead(req);
 ```
-### 8. OPTIONS Request
-**Interface Definition:**
+
+8. OPTIONS Request
 ```java
  @JCurlCommand("curl -X OPTIONS http://localhost:8080/api/users/1")
     JResult usersOptions(JQuickCurlReq req);
 ```
-**how to use in java code:**
 ```java
 UserService api = JCurlInvoker.createProxy(UserService.class);
 JQuickCurlReq req = new JQuickCurlReq();
 JResult jResult=api.usersOptions(req);
 ```
-### 9. TRACE Request
-**Interface Definition:**
+
+9. TRACE Request
 ```java
  @JCurlCommand("curl -X TRACE http://localhost:8080/api/users/trace \\\n" +
             "-H \"Content-Type: text/plain\" \\\n" +
             "-d \"This is a trace request body\"")
 ```
-**how to use in java code:**
 ```java
 String usersTrace(JQuickCurlReq req);
 UserService api = JCurlInvoker.createProxy(UserService.class);
 JQuickCurlReq req = new JQuickCurlReq();
 String jResult=api.usersTrace(req);
 ```
-### 10. Single File Uploadt
-**Interface Definition:**
+10. Single File Uploadt
 ```java
 @JCurlCommand("curl -X POST http://localhost:8080/api/users/upload \\\n" +
             "-F \"file=@D:\\test\\test.txt\"")
 ```
-**how to use in java code:**
 ```java
  UserService api = JCurlInvoker.createProxy(UserService.class);
         JQuickCurlReq req = new JQuickCurlReq();
         String jResult=api.upload(req);
 ```
-### 11. Multiple File Upload
-**Interface Definition:**
+
+11. Multiple File Upload
 ```java
 @JCurlCommand("curl -X POST http://localhost:8080/api/users/upload-multiple \\\n" +
 "-F \"files=@D:\\test\\test.txt\"-F \"files=@D:\\test\\test1.txt\"")
 String upload1(JQuickCurlReq req);
 ```
-**how to use in java code:**
 ```java
 UserService api = JCurlInvoker.createProxy(UserService.class);
 JQuickCurlReq req = new JQuickCurlReq();
 String jResult=api.upload1(req);
 ```
-### 12. File Download
-**Interface Definition:**
+12. File Download
 ```java
     @JCurlCommand("curl -X GET http://localhost:8080/api/users/download/test.txt \\\n" +
             "--output 'd://test//download.txt'")
     byte[] download(JQuickCurlReq req);
 ```
-**how to use in java code:**
 ```java
  UserService api = JCurlInvoker.createProxy(UserService.class);
         JQuickCurlReq req = new JQuickCurlReq();
@@ -229,8 +218,7 @@ String jResult=api.upload1(req);
         Path path = Paths.get("d://test/xx1.txt");
         Files.write(path, bytes, StandardOpenOption.CREATE);
 ```
-### 13. File Upload with Parameters
-**Interface Definition:**
+13. File Upload with Parameters
 ```java
  @JCurlCommand("curl -X POST http://localhost:8080/api/users/upload-with-params \\\n" +
             "-F \"userId=123\" \\\n" +
@@ -238,42 +226,42 @@ String jResult=api.upload1(req);
             "-F \"file=@D:\\test\\test.txt\"")
     String uploadWithPostParams(JQuickCurlReq req);
 ```
-**how to use in java code:**
 ```java
 UserService api = JCurlInvoker.createProxy(UserService.class);
 JQuickCurlReq req = new JQuickCurlReq();
 String bytes=api.uploadWithPostParams(req);
 ```
-### 14. Batch Run
+
+14. Batch Run
 ```java
 JQuickCurlBatchRunner batch= new JQuickCurlBatchRunner();
 List<JResult> list=batch.runCurlCommands(new JCurlBatchCommandTest(),JResult.class);
 ```
-### 15. Lamda Support
+15. Lamda Support
 ```java
 JQuickCurlReq req = new JQuickCurlReq();
 JUser result = JCurlInvoker.invoke(UserServiceImpl::getUserById, req,JUser.class);
 ```
-### 16. basic auth
+
+16. basic auth
 ```java
     @JCurlCommand("curl -u ${user}:${password} https://api.github.com/user\n -X GET")
     JGithubAuth retriveUser(JQuickCurlReq req);
 ```
-### 17. interceptor
+17. interceptor
 if you want process some business logic  before or after lauch a new curl request ,
 you could implements Interceptor interface and pass the Interceptor via JQuickCurlConfig 
 then it will effect 
-### 18. global variable
+
+18. global variable
 if you want change the api host , parameter, method and any else base the different env, you could define the variable 
 in your code  such as ${variableName},then you can pass the different value via JContext reference, finally 
 the curl request will follow your variableName to execute.
 Useage:
-**Interface Definition:**
 ```java
 @JCurlCommand("curl -u ${user}:${password} https://api.github.com/user\n -X GET")
 JGithubAuth retriveUser(JQuickCurlReq req);
 ```
-**how to use in java code:**
 ```java
  ApiService api = JCurlInvoker.createProxy(ApiService.class);
         JQuickCurlReq req = new JQuickCurlReq();
