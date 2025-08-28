@@ -273,3 +273,43 @@ JGithubAuth retriveUser(JQuickCurlReq req);
         req.put("password", "xasxsa");
         JGithubAuth result = api.retriveUser(req);
 ```
+# **捐献 ☕**
+
+感谢您使用这个开源项目！它完全免费并将持续维护，但开发者确实需要您的支持。
+
+---
+
+## **如何支持我们**
+
+1. **请我喝杯咖啡**  
+   果这个项目为您节省了时间或金钱，请考虑通过小额捐赠支持我。
+
+2. **您的捐赠用途**
+- 维持项目运行的服务器成本.
+- 开发新功能以提供更多价值.
+- 优化文档以提升用户体验.
+
+3. **每一分都很重要**  
+   即使是1分钱的捐赠也能激励我熬夜调试！
+
+
+## **为什么捐赠?**
+✔️ 保持项目永远免费且无广告.  
+✔️ 支持及时响应问题和社区咨询.  
+✔️ 实现计划中的未来功能.
+
+感谢您成为让开源世界更美好的伙伴！
+
+--- 
+
+### **补充说明**
+- 本项目和产品维护.
+- 您的支持确保其可持续性和成长 .
+---
+
+## **🌟 立即支持**
+赞助时欢迎通过 [email](mailto:goudingcheng@gmail.com) 留言。您的名字将被列入项目README文件的 **"特别感谢"** 名单中！
+![Ali Pay](./src/main/resources/pay/alipay.jpg)
+![Wechat Pay](./src/main/resources/pay/wechat.jpg)
+
+---
