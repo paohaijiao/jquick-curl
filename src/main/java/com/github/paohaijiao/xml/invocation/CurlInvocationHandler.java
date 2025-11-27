@@ -16,8 +16,8 @@
 package com.github.paohaijiao.xml.invocation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.paohaijiao.xml.CurlMethod;
-import com.github.paohaijiao.xml.CurlNamespace;
+import com.github.paohaijiao.xml.method.CurlMethod;
+import com.github.paohaijiao.xml.namespace.CurlNamespace;
 import com.github.paohaijiao.xml.param.Param;
 
 import java.io.BufferedReader;

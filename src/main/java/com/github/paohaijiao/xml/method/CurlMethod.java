@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.xml;
+package com.github.paohaijiao.xml.method;
 
 /**
  * packageName com.github.paohaijiao.xml

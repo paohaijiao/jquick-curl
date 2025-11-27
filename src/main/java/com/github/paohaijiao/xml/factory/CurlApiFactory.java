@@ -15,7 +15,7 @@
  */
 package com.github.paohaijiao.xml.factory;
 
-import com.github.paohaijiao.xml.CurlNamespace;
+import com.github.paohaijiao.xml.namespace.CurlNamespace;
 import com.github.paohaijiao.xml.invocation.CurlInvocationHandler;
 import com.github.paohaijiao.xml.parser.CurlXmlParser;
 

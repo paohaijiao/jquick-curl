@@ -15,8 +15,8 @@
  */
 package com.github.paohaijiao.xml.parser;
 
-import com.github.paohaijiao.xml.CurlMethod;
-import com.github.paohaijiao.xml.CurlNamespace;
+import com.github.paohaijiao.xml.method.CurlMethod;
+import com.github.paohaijiao.xml.namespace.CurlNamespace;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
