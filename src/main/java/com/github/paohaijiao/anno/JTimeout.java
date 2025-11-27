@@ -23,8 +23,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface JTimeout {
+
     long connect() default -1;
+
     long read() default -1;
+
     long write() default -1;
 
 }

@@ -17,12 +17,13 @@ package com.github.paohaijiao.test;
 
 import com.github.paohaijiao.anno.JTimeout;
 import com.github.paohaijiao.factory.JCurlResultFactory;
-import com.github.paohaijiao.generic.JGenericTypeReference;
 import com.github.paohaijiao.model.JResult;
 import com.github.paohaijiao.test.model.JProduct;
 import com.github.paohaijiao.test.model.JProductBean;
+import com.github.paohaijiao.type.JTypeReference;
 import okhttp3.MediaType;
 import org.junit.Test;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -58,7 +59,7 @@ public class JResultProviderTest {
         System.out.println(str);
         JProduct<JProductBean> result1 = JCurlResultFactory.convertResponse(
                 result,
-                new JGenericTypeReference<JProduct<JProductBean>>() {}
+                new JTypeReference<JProduct<JProductBean>>() {}
         );
 
         System.out.println(stringResponse);

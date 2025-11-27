@@ -16,16 +16,24 @@
 package com.github.paohaijiao.xml.invocation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.paohaijiao.config.JQuickCurlConfig;
+import com.github.paohaijiao.exception.JAntlrExecutionException;
+import com.github.paohaijiao.exception.JAssert;
+import com.github.paohaijiao.executor.JQuickCurlExecutor;
+import com.github.paohaijiao.factory.JCurlResultFactory;
+import com.github.paohaijiao.model.JResult;
+import com.github.paohaijiao.param.JContext;
+import com.github.paohaijiao.type.JTypeReference;
 import com.github.paohaijiao.xml.method.CurlMethod;
 import com.github.paohaijiao.xml.namespace.CurlNamespace;
 import com.github.paohaijiao.xml.param.Param;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +44,7 @@ import java.util.Map;
  * @version 1.0.0
  * @since 2025/11/27
  */
+@Slf4j
 public class CurlInvocationHandler implements InvocationHandler {
 
     private final CurlNamespace namespace;
@@ -46,13 +55,16 @@ public class CurlInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        if (method.getDeclaringClass() == Object.class) {
+            return method.invoke(this, args);
+        }
         String methodName = method.getName();
         CurlMethod curlMethod = namespace.getMethods().get(methodName);
-        if (curlMethod == null) {
-            throw new RuntimeException("No curl configuration found for method: " + methodName);
-        }
-        Map<String, Object> paramMap = buildParamMap(method, args);// 构建参数映射
-        return executeCurl(curlMethod, paramMap, method.getReturnType()); // 执行 curl 命令
+        JAssert.notNull(curlMethod,"No curl configuration found for method: " + methodName);
+        Map<String, Object> paramMap = buildParamMap(method, args);
+        JContext context = new JContext();
+        context.putAll(paramMap);
+        return executeCurl(curlMethod, context, method);
     }
 
     private Map<String, Object> buildParamMap(Method method, Object[] args) {
@@ -70,7 +82,7 @@ public class CurlInvocationHandler implements InvocationHandler {
                     break;
                 }
             }
-            if (!hasParamAnnotation) {// 如果没有 @Param 注解，使用参数名
+            if (!hasParamAnnotation) {
                 paramMap.put(parameters[i].getName(), argValue);
             }
         }
@@ -78,80 +90,85 @@ public class CurlInvocationHandler implements InvocationHandler {
         return paramMap;
     }
 
-    private Object executeCurl(CurlMethod curlMethod, Map<String, Object> paramMap, Class<?> returnType) {
-        String finalCurlCommand = replacePlaceholders(curlMethod.getCurlCommand(), paramMap);
-        String response = executeCurlCommand(finalCurlCommand);
-        return parseResponse(response, returnType);
-    }
-
-    private String replacePlaceholders(String curlCommand, Map<String, Object> paramMap) {
-        String result = curlCommand;
-        for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
-            String placeholder = "{" + entry.getKey() + "}";
-            if (result.contains(placeholder)) {
-                result = result.replace(placeholder, escapeForShell(String.valueOf(entry.getValue())));
-            }
-        }
-        for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
-            String placeholder = "${" + entry.getKey() + "}";
-            if (result.contains(placeholder)) {
-                result = result.replace(placeholder, escapeForShell(String.valueOf(entry.getValue())));
-            }
-        }
-
-        return result;
-    }
-
-    private String escapeForShell(String value) {
-        return value.replace("'", "'\\''")
-                .replace("\"", "\\\"")
-                .replace("`", "\\`")
-                .replace("$", "\\$")
-                .replace("&", "\\&")
-                .replace("|", "\\|")
-                .replace(";", "\\;")
-                .replace("<", "\\<")
-                .replace(">", "\\>")
-                .replace("(", "\\(")
-                .replace(")", "\\)")
-                .replace(" ", "\\ ");
-    }
-
-    private String executeCurlCommand(String curlCommand) {
+    private Object executeCurl(CurlMethod curlMethod, JContext context,  Method method) {
+        String finalCurlCommand = curlMethod.getCurlCommand();
+        JQuickCurlConfig config=JQuickCurlConfig.getInstance();
+        JQuickCurlExecutor executor = new JQuickCurlExecutor(context,config);
+        executor.addErrorListener(error -> {
+            System.err.printf("Failed: Line %d:%d - %s%n",
+                    error.getLine(), error.getCharPosition(), error.getMessage());
+            System.err.println("规则栈: " + error.getRuleStack());
+        });
         try {
-            Process process = Runtime.getRuntime().exec(new String[]{"sh", "-c", curlCommand});
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
+            JResult rawResult = executor.execute(finalCurlCommand);
+            log.info("result:{}",rawResult);
+            Class<?> returnType = method.getReturnType();
+            Type genericReturnType = method.getGenericReturnType();
+            if (returnType.equals(Void.TYPE) || returnType.equals(java.lang.Void.class)) {
+                return null;
             }
-            int exitCode = process.waitFor();
-            if (exitCode != 0) {
-                throw new RuntimeException("Curl command failed with exit code: " + exitCode);
-            }
-            return response.toString();
+            return convertResult(rawResult, genericReturnType, returnType);
+        } catch (JAntlrExecutionException e) {
+            System.err.println("Parse Fail: " + e.getMessage());
+            e.getErrors().forEach(err -> System.err.println(" - " + err.getMessage()));
+        }
+        return null;
+    }
+    /**
+     * 使用 JCurlResultFactory 转换结果，支持泛型
+     */
+    private Object convertResult(JResult rawResult, Type genericReturnType, Class<?> returnType) {
+        try {
+            JTypeReference<?> typeReference = createTypeReference(genericReturnType);
+            return JCurlResultFactory.convertResponse(rawResult, typeReference);
+
         } catch (Exception e) {
-            throw new RuntimeException("Failed to execute curl command: " + curlCommand, e);
+            log.warn("Failed to convert result using JCurlResultFactory, fallback to basic conversion", e);
+            return fallbackConvertResult(rawResult, returnType);
         }
     }
-
-    private Object parseResponse(String response, Class<?> returnType) {
+    private JTypeReference<?> createTypeReference(Type genericType) {
+        return new JTypeReference<Object>() {
+            @Override
+            public Type getType() {
+                return genericType;
+            }
+        };
+    }
+    private Object fallbackConvertResult(JResult rawResult, Class<?> returnType) {
+        String responseContent = extractResponseContent(rawResult);
         if (returnType == String.class) {
-            return response;
+            return responseContent;
         } else if (returnType == Boolean.class || returnType == boolean.class) {
-            return Boolean.parseBoolean(response.trim());
+            return Boolean.parseBoolean(responseContent.trim());
         } else if (returnType == Integer.class || returnType == int.class) {
-            return Integer.parseInt(response.trim());
+            return Integer.parseInt(responseContent.trim());
         } else if (returnType == Long.class || returnType == long.class) {
-            return Long.parseLong(response.trim());
+            return Long.parseLong(responseContent.trim());
+        } else if (returnType == Double.class || returnType == double.class) {
+            return Double.parseDouble(responseContent.trim());
+        } else if (returnType == Float.class || returnType == float.class) {
+            return Float.parseFloat(responseContent.trim());
         } else {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                return mapper.readValue(response, returnType);
+                return mapper.readValue(responseContent, returnType);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to parse response to type: " + returnType, e);
             }
         }
+    }
+    private String extractResponseContent(JResult rawResult) {
+        if (rawResult == null) {
+            return "";
+        }
+        try {
+            Method getContentMethod = rawResult.getClass().getMethod("getContent");
+            Object content = getContentMethod.invoke(rawResult);
+            return content != null ? content.toString() : "";
+        } catch (Exception e) {
+            log.debug("JResult doesn't have getContent method, trying toString");
+        }
+        return rawResult.toString();
     }
 }

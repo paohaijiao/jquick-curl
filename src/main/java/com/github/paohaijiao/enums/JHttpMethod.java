@@ -20,14 +20,23 @@ import lombok.Getter;
 
 @Getter
 public enum JHttpMethod {
+
     GET("GET","GET"),
+
     POST("POST","POST"),
+
     PUT("PUT","PUT"),
+
     DELETE("DELETE","DELETE"),
+
     PATCH("PATCH","PATCH"),
+
     HEAD("HEAD","HEAD"),
+
     OPTIONS("OPTIONS","OPTIONS"),
+
     TRACE ("TRACE","TRACE"),
+
     CONNECT("CONNECT","CONNECT");
 
     private String code;

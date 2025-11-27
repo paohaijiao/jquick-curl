@@ -20,13 +20,14 @@ import com.github.paohaijiao.config.JQuickCurlConfig;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
 import com.github.paohaijiao.executor.JQuickCurlExecutor;
 import com.github.paohaijiao.factory.JCurlResultFactory;
-import com.github.paohaijiao.generic.JGenericTypeReference;
 import com.github.paohaijiao.model.JResult;
 import com.github.paohaijiao.param.JContext;
+import com.github.paohaijiao.type.JTypeReference;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
@@ -77,8 +78,7 @@ public class JCurlCommandProcessor {
         String curlCommand = resolveCurlCommand(annotation.value(), method, args);
         buildContext(args);
         JQuickCurlExecutor executor = new JQuickCurlExecutor(this.context,this.config);
-        executor.addErrorListener(error -> {
-            System.err.printf("Failed: Line %d:%d - %s%n", error.getLine(), error.getCharPosition(), error.getMessage());System.err.println("规则栈: " + error.getRuleStack());});
+        executor.addErrorListener(error -> {System.err.printf("Failed: Line %d:%d - %s%n", error.getLine(), error.getCharPosition(), error.getMessage());System.err.println("规则栈: " + error.getRuleStack());});
         try {
             JResult rawResult = executor.execute(curlCommand);
             log.info("result:{}",rawResult);
@@ -87,7 +87,7 @@ public class JCurlCommandProcessor {
             }else{
                 try {
                     Type genericReturnType = method.getGenericReturnType();
-                    JGenericTypeReference<T> typeReference = new JGenericTypeReference<T>() {
+                    JTypeReference<T> typeReference = new JTypeReference<T>() {
                         @Override
                         public Type getType() {
                             return genericReturnType;
@@ -123,7 +123,7 @@ public class JCurlCommandProcessor {
             }else{
                 try {
                     Type genericReturnType = method.getGenericReturnType();
-                    JGenericTypeReference<T> typeReference = new JGenericTypeReference<T>() {
+                    JTypeReference<T> typeReference = new JTypeReference<T>() {
                         @Override
                         public Type getType() {
                             return genericReturnType;

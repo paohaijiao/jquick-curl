@@ -20,10 +20,13 @@ import lombok.Getter;
 
 @Getter
 public enum JProxryType {
+
     HTTP("HTTP","HTTP"),
+
     SOCKET("SOCKET","SOCKET");
 
     private String code;
+
     private String name;
 
     JProxryType(String code, String name){

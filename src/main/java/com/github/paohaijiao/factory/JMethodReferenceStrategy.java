@@ -62,8 +62,6 @@ public class JMethodReferenceStrategy  {
             }
             Annotation[] annotations = originalMethod.getAnnotations();
             System.out.println("Successfully obtained method annotation: " + Arrays.toString(annotations));
-//            JQuickCurlReq req = new JQuickCurlReq();
-//            method.apply(req);
             return originalMethod;
         } catch (Exception e) {
             console.error("get Method Failed",e);

@@ -18,11 +18,7 @@ package com.github.paohaijiao.handler;
 import com.github.paohaijiao.anno.JCurlCommand;
 import com.github.paohaijiao.anno.JTimeout;
 import com.github.paohaijiao.config.JQuickCurlConfig;
-import com.github.paohaijiao.console.JConsole;
 import com.github.paohaijiao.domain.req.JQuickCurlReq;
-import com.github.paohaijiao.factory.JCurlResultFactory;
-import com.github.paohaijiao.generic.JGenericTypeReference;
-import com.github.paohaijiao.model.JResult;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.support.JCurlCommandProcessor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.lang.reflect.Type;
 
 /**
  * packageName com.github.paohaijiao.handler
@@ -43,8 +38,11 @@ import java.lang.reflect.Type;
  */
 @Slf4j
 public class JCurlCommandInvocationHandler implements InvocationHandler {
+
     private JContext context=new JContext();
+
     private JQuickCurlConfig config=JQuickCurlConfig.getInstance();
+
     public JCurlCommandInvocationHandler() {
         this.context =new JContext();
         this.config =JQuickCurlConfig.getInstance();
@@ -92,10 +90,6 @@ public class JCurlCommandInvocationHandler implements InvocationHandler {
         return typedResult;
     }
     public static <T> T createProxy(Class<T> interfaceClass) {
-        return (T) Proxy.newProxyInstance(
-                interfaceClass.getClassLoader(),
-                new Class<?>[]{interfaceClass},
-                new JCurlCommandInvocationHandler()
-        );
+        return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class<?>[]{interfaceClass}, new JCurlCommandInvocationHandler());
     }
 }

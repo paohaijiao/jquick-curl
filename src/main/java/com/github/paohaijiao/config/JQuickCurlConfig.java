@@ -14,10 +14,9 @@
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 package com.github.paohaijiao.config;
+
 import lombok.Data;
-import okhttp3.ConnectionPool;
 import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,8 +35,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Data
 public class JQuickCurlConfig {
-
-
 
     private long connectTimeout = 1000000000;
 

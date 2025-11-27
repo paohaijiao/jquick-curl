@@ -37,8 +37,11 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class JLoggingInterceptor implements Interceptor {
+
     private static final Charset UTF8 = StandardCharsets.UTF_8;
+
     private final JCurlLevelLog level;
+
     public JLoggingInterceptor() {
         this(JCurlLevelLog.ALL);
     }
@@ -75,7 +78,6 @@ public class JLoggingInterceptor implements Interceptor {
             for (int i = 0, count = headers.size(); i < count; i++) {
                 log.info("{}: {}", headers.name(i), headers.value(i));
             }
-
             if (level == JCurlLevelLog.ALL && request.body() != null) {
                 RequestBody requestBody = request.body();
                 if (isPlaintext(requestBody.contentType())) {
@@ -101,10 +103,7 @@ public class JLoggingInterceptor implements Interceptor {
                 if (isPlaintext(responseBody.contentType())) {
                     String bodyString = responseBody.string();
                     log.info("\n{}", bodyString);
-                    response = response.newBuilder().body(ResponseBody.create(bodyString, responseBody.contentType()))
-                            .build();
-//                    ResponseBody clonedBody = responseBody.peekBody(Long.MAX_VALUE);
-//                    log.info("\n{}", clonedBody.string());
+                    response = response.newBuilder().body(ResponseBody.create(bodyString, responseBody.contentType())).build();
                 } else {
                     log.info("<-- [binary body omitted, content-type: {}]", responseBody.contentType());
                 }
@@ -116,10 +115,6 @@ public class JLoggingInterceptor implements Interceptor {
         if (mediaType == null) return false;
         String type = mediaType.type();
         String subtype = mediaType.subtype();
-        return ("text".equals(type) ||
-                "json".equals(subtype) ||
-                "xml".equals(subtype) ||
-                "html".equals(subtype) ||
-                "x-www-form-urlencoded".equals(subtype));
+        return ("text".equals(type) || "json".equals(subtype) || "xml".equals(subtype) || "html".equals(subtype) || "x-www-form-urlencoded".equals(subtype));
     }
 }

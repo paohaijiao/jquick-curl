@@ -29,8 +29,11 @@ import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.TokenStream;
 
 public class JQuickCurlExecutor extends JAbstractAntlrExecutor<String, JResult> {
+
     private JContext context=new JContext();
+
     private JQuickCurlConfig config=JQuickCurlConfig.getInstance();
+
     public JQuickCurlExecutor(JContext context){
         this.context = context;
         this.config =  JQuickCurlConfig.getInstance();

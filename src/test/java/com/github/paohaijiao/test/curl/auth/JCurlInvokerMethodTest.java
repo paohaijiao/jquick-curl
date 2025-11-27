@@ -23,9 +23,7 @@ import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.test.model.JGithubAuth;
 import com.github.paohaijiao.test.model.JUser;
 import com.github.paohaijiao.test.service.ApiService;
-import com.github.paohaijiao.test.service.UserService;
 import com.github.paohaijiao.test.service.UserServiceImpl;
-import com.github.paohaijiao.test.service.impl.JCurlServiceImpl;
 import com.google.gson.reflect.TypeToken;
 import org.junit.Test;
 
@@ -63,12 +61,7 @@ public class JCurlInvokerMethodTest {
         JQuickCurlConfig config = JQuickCurlConfig.getInstance();
         Object result = JCurlInvoker.invoke(UserServiceImpl::all, req,JGithubAuth.class);
         TypeToken<List<JUser>> typeToken = new TypeToken<List<JUser>>() {};
-        List<JUser> list = JCurlInvoker.invoke(
-                UserServiceImpl::all,
-                req,
-                context,
-                config,typeToken.getType()
-        );
+        List<JUser> list = JCurlInvoker.invoke(UserServiceImpl::all, req, context, config,typeToken.getType());
         System.out.println(list);
     }
     @Test

@@ -51,7 +51,6 @@ public class CurlXmlParser {
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse curl XML: " + xmlPath, e);
         }
-
         return namespaceMap;
     }
 
@@ -59,7 +58,6 @@ public class CurlXmlParser {
         CurlNamespace namespace = new CurlNamespace();
         String namespaceName = curlsElement.getAttribute("namespace");
         namespace.setNamespace(namespaceName);
-
         NodeList curlNodes = curlsElement.getElementsByTagName("curl");
         for (int i = 0; i < curlNodes.getLength(); i++) {
             Element curlElement = (Element) curlNodes.item(i);

@@ -15,8 +15,9 @@
  */
 package com.github.paohaijiao.xml.factory;
 
-import com.github.paohaijiao.xml.namespace.CurlNamespace;
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.xml.invocation.CurlInvocationHandler;
+import com.github.paohaijiao.xml.namespace.CurlNamespace;
 import com.github.paohaijiao.xml.parser.CurlXmlParser;
 
 import java.lang.reflect.Proxy;
@@ -42,15 +43,7 @@ public class CurlApiFactory {
     public <T> T createApi(Class<T> apiInterface) {
         String interfaceName = apiInterface.getName();
         CurlNamespace namespace = namespaceMap.get(interfaceName);
-
-        if (namespace == null) {
-            throw new RuntimeException("No curl configuration found for interface: " + interfaceName);
-        }
-
-        return (T) Proxy.newProxyInstance(
-                apiInterface.getClassLoader(),
-                new Class[]{apiInterface},
-                new CurlInvocationHandler(namespace)
-        );
+        JAssert.notNull(namespace, "no curl configuration found for interface: " + interfaceName);
+        return (T) Proxy.newProxyInstance(apiInterface.getClassLoader(), new Class[]{apiInterface}, new CurlInvocationHandler(namespace));
     }
 }

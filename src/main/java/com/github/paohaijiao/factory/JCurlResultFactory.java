@@ -14,13 +14,13 @@
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 package com.github.paohaijiao.factory;
-import com.github.paohaijiao.generic.JGenericTypeReference;
+
 import com.github.paohaijiao.model.JResult;
 import com.github.paohaijiao.model.JSONObject;
-import com.github.paohaijiao.result.impl.*;
 import com.github.paohaijiao.result.JResponseConverter;
+import com.github.paohaijiao.result.impl.*;
 import com.github.paohaijiao.serializer.JSONSerializer;
-import okhttp3.Response;
+import com.github.paohaijiao.type.JTypeReference;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
@@ -68,7 +68,7 @@ public class JCurlResultFactory<T> {
      * Convert response to generic type
      */
     @SuppressWarnings("unchecked")
-    public static <T> T convertResponse(JResult response, JGenericTypeReference<T> typeReference) throws IOException {
+    public static <T> T convertResponse(JResult response, JTypeReference<T> typeReference) throws IOException {
         if (response == null) {
             throw new IllegalArgumentException("response cannot be null");
         }
