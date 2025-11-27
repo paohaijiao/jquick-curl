@@ -1,0 +1,20 @@
+<!-- apis.xml -->
+<curls namespace="com.github.paohaijiao.test.xml.UserApi">
+    <curl name="getUserById" returnClass="com.example.model.User">
+        curl -X GET https://api.example.com/users/{id} \
+        -H "Authorization: Bearer ${token}" \
+        -H "Content-Type: application/json"
+    </curl>
+
+    <curl name="createUser" returnClass="com.example.model.CreateResult">
+        curl -X POST https://api.example.com/users \
+        -H "Authorization: Bearer ${token}" \
+        -H "Content-Type: application/json" \
+        -d '${userJson}'
+    </curl>
+
+    <curl name="deleteUser" returnClass="java.lang.Boolean">
+        curl -X DELETE https://api.example.com/users/{id} \
+        -H "Authorization: Bearer ${token}"
+    </curl>
+</curls>
