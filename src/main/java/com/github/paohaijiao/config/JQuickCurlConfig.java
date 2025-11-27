@@ -40,18 +40,28 @@ public class JQuickCurlConfig {
 
 
     private long connectTimeout = 1000000000;
-    private long readTimeout = 1000000000;
-    private long writeTimeout = 1000000000;
-    private long callTimeout = 1000000000;
-    private int maxIdleConnections = 1000000000;
-    private long keepAliveDuration = 1000000000;
-    private TimeUnit timeUnit = TimeUnit.MILLISECONDS;
-    private final List<Interceptor> interceptors = new ArrayList<>();
-    private final List<Interceptor> networkInterceptors = new ArrayList<>();
-    private Boolean retryOnConnectionFailure = true;
-    private Boolean followRedirects = true;
-    private Boolean followSslRedirects = true;
 
+    private long readTimeout = 1000000000;
+
+    private long writeTimeout = 1000000000;
+
+    private long callTimeout = 1000000000;
+
+    private int maxIdleConnections = 1000000000;
+
+    private long keepAliveDuration = 1000000000;
+
+    private TimeUnit timeUnit = TimeUnit.MILLISECONDS;
+
+    private final List<Interceptor> interceptors = new ArrayList<>();
+
+    private final List<Interceptor> networkInterceptors = new ArrayList<>();
+
+    private Boolean retryOnConnectionFailure = true;
+
+    private Boolean followRedirects = true;
+
+    private Boolean followSslRedirects = true;
 
     private static final JQuickCurlConfig INSTANCE = new JQuickCurlConfig();
 
@@ -116,16 +126,11 @@ public class JQuickCurlConfig {
 
 
     public JQuickCurlConfig loadFromProperties(Properties props) {
-        this.connectTimeout = Long.parseLong(props.getProperty("quick.curl.connect.timeout",
-                String.valueOf(connectTimeout)));
-        this.readTimeout = Long.parseLong(props.getProperty("quick.curl.read.timeout",
-                String.valueOf(readTimeout)));
-        this.writeTimeout = Long.parseLong(props.getProperty("quick.curl.write.timeout",
-                String.valueOf(writeTimeout)));
-        this.maxIdleConnections = Integer.parseInt(props.getProperty("quick.curl.pool.max.idle",
-                String.valueOf(maxIdleConnections)));
-        this.keepAliveDuration = Long.parseLong(props.getProperty("quick.curl.pool.keep.alive",
-                String.valueOf(keepAliveDuration)));
+        this.connectTimeout = Long.parseLong(props.getProperty("quick.curl.connect.timeout", String.valueOf(connectTimeout)));
+        this.readTimeout = Long.parseLong(props.getProperty("quick.curl.read.timeout", String.valueOf(readTimeout)));
+        this.writeTimeout = Long.parseLong(props.getProperty("quick.curl.write.timeout", String.valueOf(writeTimeout)));
+        this.maxIdleConnections = Integer.parseInt(props.getProperty("quick.curl.pool.max.idle", String.valueOf(maxIdleConnections)));
+        this.keepAliveDuration = Long.parseLong(props.getProperty("quick.curl.pool.keep.alive", String.valueOf(keepAliveDuration)));
         return this;
     }
     public JQuickCurlConfig loadFromClasspathResource(String resourceName) throws IOException {
