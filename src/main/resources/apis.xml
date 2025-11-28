@@ -1,9 +1,7 @@
 <!-- apis.xml -->
 <curls namespace="com.github.paohaijiao.test.xml.UserApi">
     <curl name="getUserById" returnClass="com.example.model.User">
-        curl -X GET https://api.example.com/users/{id} \
-        -H "Authorization: Bearer ${token}" \
-        -H "Content-Type: application/json"
+        curl -X GET http://localhost:8080/api/users/1
     </curl>
 
     <curl name="createUser" returnClass="com.example.model.CreateResult">

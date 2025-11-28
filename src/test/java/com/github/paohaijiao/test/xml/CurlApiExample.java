@@ -14,6 +14,7 @@
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 package com.github.paohaijiao.test.xml;
+import com.github.paohaijiao.test.xml.model.User;
 import com.github.paohaijiao.xml.factory.CurlApiFactory;
 
 /**
@@ -28,6 +29,7 @@ public class CurlApiExample {
     public static void main(String[] args) {
         CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
-        userApi.deleteUser("1","bear token");
+        User user= userApi.getUserById("1","bear token");
+        System.out.println(user);
     }
 }
