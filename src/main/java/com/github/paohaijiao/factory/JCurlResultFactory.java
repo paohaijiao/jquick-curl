@@ -81,17 +81,14 @@ public class JCurlResultFactory<T> {
         }
         if (type == byte.class || type == Byte.TYPE) {
             return convertResponse(response, (Class<T>) type);
-
         }
-
-
         if (type instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type rawType = parameterizedType.getRawType();
             JResultGenericConverter<T> converter = new JResultGenericConverter<>(rawType);
             return converter.convert(response);
         }
-        throw new IllegalArgumentException("Unsupported type: " + type);
+        throw new IllegalArgumentException("unsupported type: " + type);
     }
     /**
      * Register custom converter

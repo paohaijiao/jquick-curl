@@ -121,7 +121,6 @@ public class CurlInvocationHandler implements InvocationHandler {
         try {
             JTypeReference<?> typeReference = createTypeReference(genericReturnType);
             return JCurlResultFactory.convertResponse(rawResult, typeReference);
-
         } catch (Exception e) {
             log.warn("Failed to convert result using JCurlResultFactory, fallback to basic conversion", e);
             return fallbackConvertResult(rawResult, returnType);
