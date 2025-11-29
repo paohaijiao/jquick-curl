@@ -1,18 +1,69 @@
 <!-- apis.xml -->
 <curls namespace="com.github.paohaijiao.test.xml.UserApi">
-    <curl name="getUserById" returnClass="com.example.model.User">
+    <curl name="all" returnClass="java.util.List">
+        curl -X GET --location 'http://localhost:8080/api/users/all'
+    </curl>
+
+    <curl name="getUserById" returnClass="com.github.paohaijiao.test.model.JUser">
         curl -X GET http://localhost:8080/api/users/1
     </curl>
 
-    <curl name="createUser" returnClass="com.example.model.CreateResult">
-        curl -X POST https://api.example.com/users \
-        -H "Authorization: Bearer ${token}" \
+    <curl name="users" returnClass="com.github.paohaijiao.test.model.JUser">
+        curl -X POST http://localhost:8080/api/users \
         -H "Content-Type: application/json" \
-        -d '${userJson}'
+        -d '{"name":"John Doe","email":"john@example.com"}'
     </curl>
 
-    <curl name="deleteUser" returnClass="java.lang.Boolean">
-        curl -X DELETE https://api.example.com/users/{id} \
-        -H "Authorization: Bearer ${token}"
+    <curl name="usersPut" returnClass="com.github.paohaijiao.test.model.JUser">
+        curl -X PUT http://localhost:8080/api/users/1 \
+        -H "Content-Type: application/json" \
+        -d '{"name":"John Doe Updated","email":"john.updated@example.com"}'
+    </curl>
+
+    <curl name="usersPatch" returnClass="com.github.paohaijiao.test.model.JUser">
+        curl -X PATCH http://localhost:8080/api/users/1 \
+        -H "Content-Type: application/json" \
+        -d '{"name":"John Doe Patched"}'
+    </curl>
+
+    <curl name="usersDelete" returnClass="java.lang.Void">
+        curl -X DELETE http://localhost:8080/api/users/1
+    </curl>
+
+    <curl name="usersHead" returnClass="java.lang.Void">
+        curl -X HEAD -I http://localhost:8080/api/users/1
+    </curl>
+
+    <curl name="usersOptions" returnClass="com.github.paohaijiao.model.JResult">
+        curl -X OPTIONS http://localhost:8080/api/users/1
+    </curl>
+
+    <curl name="usersTrace" returnClass="java.lang.String">
+        curl -X TRACE http://localhost:8080/api/users/trace \
+        -H "Content-Type: text/plain" \
+        -d "This is a trace request body"
+    </curl>
+
+    <curl name="upload" returnClass="java.lang.String">
+        curl -X POST http://localhost:8080/api/users/upload \
+        -F "file=@D:\test\test.txt"
+    </curl>
+
+    <curl name="upload1" returnClass="java.lang.String">
+        curl -X POST http://localhost:8080/api/users/upload-multiple \
+        -F "files=@D:\test\test.txt" \
+        -F "files=@D:\test\test1.txt"
+    </curl>
+
+    <curl name="download" returnClass="byte[]">
+        curl -X GET http://localhost:8080/api/users/download/test.txt \
+        --output 'd://test//download.txt'
+    </curl>
+
+    <curl name="uploadWithPostParams" returnClass="java.lang.String">
+        curl -X POST http://localhost:8080/api/users/upload-with-params \
+        -F "userId=123" \
+        -F "username=john" \
+        -F "file=@D:\test\test.txt"
     </curl>
 </curls>

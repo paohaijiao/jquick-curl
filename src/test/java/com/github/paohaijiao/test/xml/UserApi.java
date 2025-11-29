@@ -1,14 +1,41 @@
 package com.github.paohaijiao.test.xml;
 
+import com.github.paohaijiao.anno.JCurlCommand;
+import com.github.paohaijiao.domain.req.JQuickCurlReq;
+import com.github.paohaijiao.model.JResult;
+import com.github.paohaijiao.test.model.JUser;
 import com.github.paohaijiao.test.xml.model.CreateResult;
 import com.github.paohaijiao.test.xml.model.User;
 import com.github.paohaijiao.xml.param.Param;
 
+import java.util.List;
+
 public interface UserApi {
 
-    User getUserById(@Param("id") String id, @Param("token") String token);
+    List<JUser> all(JQuickCurlReq req);
 
-    CreateResult createUser(@Param("userJson") String userJson, @Param("token") String token);
+    JUser getUserById(JQuickCurlReq req);
 
-    Boolean deleteUser(@Param("id") String id, @Param("token") String token);
+    JUser users(JQuickCurlReq req);
+
+
+    JUser usersPut(JQuickCurlReq req);
+
+    JUser usersPatch(JQuickCurlReq req);
+
+    Void usersDelete(JQuickCurlReq req);
+
+    Void usersHead(JQuickCurlReq req);
+
+    JResult usersOptions(JQuickCurlReq req);
+
+    String usersTrace(JQuickCurlReq req);
+
+    String upload(JQuickCurlReq req);
+
+    String upload1(JQuickCurlReq req);
+
+    byte[] download(JQuickCurlReq req);
+
+    String uploadWithPostParams(JQuickCurlReq req);
 }
