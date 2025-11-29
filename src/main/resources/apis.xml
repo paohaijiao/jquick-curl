@@ -7,6 +7,9 @@
     <curl name="getUserById" returnClass="com.github.paohaijiao.test.model.JUser">
         curl -X GET http://localhost:8080/api/users/1
     </curl>
+    <curl name="getUserByIdVariable" returnClass="com.github.paohaijiao.test.model.JUser">
+        curl -X GET ${host}
+    </curl>
 
     <curl name="users" returnClass="com.github.paohaijiao.test.model.JUser">
         curl -X POST http://localhost:8080/api/users \

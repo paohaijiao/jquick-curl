@@ -16,6 +16,8 @@ public interface UserApi {
 
     JUser getUserById(JQuickCurlReq req);
 
+    JUser getUserByIdVariable(@Param("host")String host);
+
     JUser users(JQuickCurlReq req);
 
 

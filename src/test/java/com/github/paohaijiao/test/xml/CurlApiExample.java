@@ -64,6 +64,17 @@ public class CurlApiExample {
         System.out.println(list);
     }
     @Test
+    public  void getUserByIdVariable() throws Exception {
+        JQuickCurlReq req = new JQuickCurlReq();
+        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        UserApi userApi = factory.createApi(UserApi.class);
+        JUser list =userApi.getUserByIdVariable("http://localhost:8080/api/users/1");
+        System.out.println(list);
+    }
+
+
+
+    @Test
     public  void users() throws Exception {
         JQuickCurlReq req = new JQuickCurlReq();
         req.put("user", "xsaxsa@qq.com");
