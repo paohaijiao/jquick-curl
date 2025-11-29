@@ -17,6 +17,8 @@ package com.github.paohaijiao.xml.invocation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.paohaijiao.config.JQuickCurlConfig;
+import com.github.paohaijiao.console.JConsole;
+import com.github.paohaijiao.enums.JLogLevel;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.executor.JQuickCurlExecutor;
@@ -46,6 +48,8 @@ import java.util.Map;
  */
 @Slf4j
 public class CurlInvocationHandler implements InvocationHandler {
+
+    private static JConsole console=new JConsole();
 
     private final CurlNamespace namespace;
 
@@ -95,9 +99,8 @@ public class CurlInvocationHandler implements InvocationHandler {
         JQuickCurlConfig config=JQuickCurlConfig.getInstance();
         JQuickCurlExecutor executor = new JQuickCurlExecutor(context,config);
         executor.addErrorListener(error -> {
-            System.err.printf("Failed: Line %d:%d - %s%n",
-                    error.getLine(), error.getCharPosition(), error.getMessage());
-            System.err.println("规则栈: " + error.getRuleStack());
+            String message=String.format("Failed: Line %d:%d - %s%n",  error.getLine(), error.getCharPosition(), error.getMessage());
+            console.log(JLogLevel.ERROR,message);
         });
         try {
             JResult rawResult = executor.execute(finalCurlCommand);
@@ -109,8 +112,10 @@ public class CurlInvocationHandler implements InvocationHandler {
             }
             return convertResult(rawResult, genericReturnType, returnType);
         } catch (JAntlrExecutionException e) {
-            System.err.println("Parse Fail: " + e.getMessage());
-            e.getErrors().forEach(err -> System.err.println(" - " + err.getMessage()));
+            console.error("Curl execution error", e);
+            e.getErrors().forEach(err ->{
+                console.info(" - " + err.getMessage());
+            });
         }
         return null;
     }
