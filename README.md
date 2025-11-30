@@ -1,5 +1,5 @@
 # jquickCurl 文档
-简体中文 | [英文](./readme-en.md)
+简体中文 | [英文](./README-EN)
 ```string
     jquickcurl 是一个面向Java开发者的高性能、易用HTTP客户端框架。它充分利用Java 8的并发特性和OkHttp的功能，
 简化网络请求处理并提升效率。该框架旨在提供类似cURL的编程接口，以优雅高效地实现GET、POST、PUT等HTTP操作。  
