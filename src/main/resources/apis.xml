@@ -1,4 +1,6 @@
-<!-- apis.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE curls PUBLIC "-//PAOHAIJIAO//DTD API CURL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-curl.dtd">
 <curls namespace="com.github.paohaijiao.test.xml.UserApi">
     <curl name="all" returnClass="java.util.List">
         curl -X GET --location 'http://localhost:8080/api/users/all'

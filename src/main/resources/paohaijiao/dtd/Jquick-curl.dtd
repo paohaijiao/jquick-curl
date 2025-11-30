@@ -1,0 +1,8 @@
+<!ELEMENT curls (curl*)>
+<!ATTLIST curls namespace CDATA #REQUIRED>
+
+<!ELEMENT curl (#PCDATA)>
+<!ATTLIST curl 
+    name CDATA #REQUIRED
+    returnClass CDATA #REQUIRED
+>
