@@ -283,6 +283,41 @@ JGithubAuth retriveUser(JQuickCurlReq req);
         req.put("password", "xasxsa");
         JGithubAuth result = api.retriveUser(req);
 ```
+## xml 配置
+### 定义xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE curls PUBLIC "-//PAOHAIJIAO//DTD API CURL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-curl.dtd">
+<curls namespace="com.github.paohaijiao.test.xml.UserApi">
+    <curl name="all" returnClass="java.util.List">
+        curl -X GET --location 'http://localhost:8080/api/users/all'
+    </curl>
+
+    <curl name="getUserById" returnClass="com.github.paohaijiao.test.model.JUser">
+        curl -X GET http://localhost:8080/api/users/1
+    </curl>
+</curls>
+```
+### 定义java 接口
+```java
+public interface UserApi {
+    List<JUser> all(JQuickCurlReq req);
+}
+```
+### 定义业务逻辑
+```java
+    @Test
+    public  void all1() throws Exception {
+        JQuickCurlReq req = new JQuickCurlReq();
+        req.put("user", "xsaxsa@qq.com");
+        req.put("password", "zaZAzaZA");
+        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        UserApi userApi = factory.createApi(UserApi.class);
+        List<JUser> list =userApi.all(req);
+        System.out.println(list);
+    }
+```
 # **捐献 ☕**
 
 感谢您使用这个开源项目！它完全免费并将持续维护，但开发者确实需要您的支持。
