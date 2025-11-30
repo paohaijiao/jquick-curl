@@ -11,7 +11,7 @@ jquickcurl 强调跨平台兼容性，支持在多种操作系统环境中无缝
 
 ## 项目状态
 
-[![License](https://img.shields.io/badge/License-MIT-5470c6.svg)](https://github.com/paohaijiao/jquick-curl/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-5470c6.svg)](https://github.com/paohaijiao/jquick-curl/blob/master/LICENSE)
 [![Latest Version](https://img.shields.io/badge/Version-1.2.0-91cc75.svg)](https://github.com/paohaijiao/jquick-curl/releases)
 [![Monthly Downloads](https://img.shields.io/badge/Downloads-15K%2Fmonth-fac858.svg)](https://github.com/paohaijiao/jquick-curl)
 [![Contributors](https://img.shields.io/badge/Contributors-24-3ba272.svg)](https://github.com/paohaijiao/jquick-curl/graphs/contributors)
