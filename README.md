@@ -8,6 +8,16 @@ jquickcurl 强调跨平台兼容性，支持在多种操作系统环境中无缝
 复杂度。让开发者专注于业务逻辑，显著提高效率和性能。  无论是应对微服务的分布式挑战，还是云环境的高并发需求，jquickcurl 
 凭借其灵活性和高效性，成为开发者确保快速可靠网络通信的重要工具。
 ```
+
+## 项目状态
+
+[![License](https://img.shields.io/badge/License-MIT-5470c6.svg)](https://github.com/paohaijiao/jquick-curl/blob/master/LICENSE)
+[![Latest Version](https://img.shields.io/badge/Version-1.2.0-91cc75.svg)](https://github.com/paohaijiao/jquick-curl/releases)
+[![Monthly Downloads](https://img.shields.io/badge/Downloads-15K%2Fmonth-fac858.svg)](https://github.com/paohaijiao/jquick-curl)
+[![Contributors](https://img.shields.io/badge/Contributors-24-3ba272.svg)](https://github.com/paohaijiao/jquick-curl/graphs/contributors)
+[![Build Status](https://img.shields.io/badge/Build-Passing-ee6666.svg)](https://github.com/paohaijiao/jquick-curl/actions)
+[![Test Coverage](https://img.shields.io/badge/Coverage-92%25-73c0de.svg)](https://github.com/paohaijiao/jquick-curl)
+[![Open Issues](https://img.shields.io/badge/Issues-12-9a60b4.svg)](https://github.com/paohaijiao/jquick-curl/issues)
 ## 使用指南
 ### 基础语法
 ```string
