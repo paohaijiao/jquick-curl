@@ -301,6 +301,10 @@ JGithubAuth retriveUser(JQuickCurlReq req);
 ```
 ### 定义java 接口
 ```java
+package com.github.paohaijiao.test.xml;
+import com.github.paohaijiao.test.model.JUser;
+import com.github.paohaijiao.xml.param.Param;
+import java.util.List;
 public interface UserApi {
     List<JUser> all(JQuickCurlReq req);
 }
