@@ -15,6 +15,7 @@
  */
 package com.github.paohaijiao.xml.parser;
 
+import com.github.paohaijiao.resolver.ClasspathEntityResolver;
 import com.github.paohaijiao.xml.method.CurlMethod;
 import com.github.paohaijiao.xml.namespace.CurlNamespace;
 import org.w3c.dom.Document;
@@ -24,6 +25,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,8 +42,15 @@ public class CurlXmlParser {
         Map<String, CurlNamespace> namespaceMap = new HashMap<>();
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setValidating(true);
+            factory.setNamespaceAware(true);
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new File(xmlPath));
+            builder.setEntityResolver(new ClasspathEntityResolver());
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(xmlPath);
+            if (inputStream == null) {
+                throw new IllegalArgumentException("Resource not found in classpath: " + xmlPath);
+            }
+            Document document = builder.parse(inputStream);
             NodeList curlsNodes = document.getElementsByTagName("curls");
             for (int i = 0; i < curlsNodes.getLength(); i++) {
                 Element curlsElement = (Element) curlsNodes.item(i);

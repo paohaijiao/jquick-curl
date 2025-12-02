@@ -50,7 +50,7 @@ public class CurlApiExample {
         JQuickCurlReq req = new JQuickCurlReq();
         req.put("user", "xsaxsa@qq.com");
         req.put("password", "zaZAzaZA");
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         List<JUser> list =userApi.all(req);
         System.out.println(list);
@@ -58,7 +58,7 @@ public class CurlApiExample {
     @Test
     public  void testMethod() throws Exception {
         JQuickCurlReq req = new JQuickCurlReq();
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         JUser list =userApi.getUserById(req);
         System.out.println(list);
@@ -66,7 +66,7 @@ public class CurlApiExample {
     @Test
     public  void getUserByIdVariable() throws Exception {
         JQuickCurlReq req = new JQuickCurlReq();
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         JUser list =userApi.getUserByIdVariable("http://localhost:8080/api/users/1");
         System.out.println(list);
@@ -79,7 +79,7 @@ public class CurlApiExample {
         JQuickCurlReq req = new JQuickCurlReq();
         req.put("user", "xsaxsa@qq.com");
         req.put("password", "zaZAzaZA");
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         System.out.println(userApi.users(req));
     }
@@ -88,7 +88,7 @@ public class CurlApiExample {
         JQuickCurlReq req = new JQuickCurlReq();
         req.put("user", "xsaxsa@qq.com");
         req.put("password", "zaZAzaZA");
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         System.out.println(userApi.usersPut(req));
     }
@@ -97,7 +97,7 @@ public class CurlApiExample {
         JQuickCurlReq req = new JQuickCurlReq();
         req.put("user", "xsaxsa@qq.com");
         req.put("password", "zaZAzaZA");
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         System.out.println(userApi.usersPatch(req));
     }
@@ -106,16 +106,14 @@ public class CurlApiExample {
         JQuickCurlReq req = new JQuickCurlReq();
         req.put("user", "xsaxsa@qq.com");
         req.put("password", "zaZAzaZA");
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         System.out.println(userApi.usersDelete(req));
     }
     @Test
     public  void usersHead() throws Exception {
         JQuickCurlReq req = new JQuickCurlReq();
-        req.put("user", "xsaxsa@qq.com");
-        req.put("password", "zaZAzaZA");
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         System.out.println(userApi.usersHead(req));
     }
@@ -124,14 +122,14 @@ public class CurlApiExample {
         JQuickCurlReq req = new JQuickCurlReq();
         req.put("user", "xsaxsa@qq.com");
         req.put("password", "zaZAzaZA");
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         System.out.println(userApi.usersOptions(req));
     }
     @Test
     public  void upload() throws Exception {
         JQuickCurlReq req = new JQuickCurlReq();
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         System.out.println(userApi.upload(req));
     }
@@ -140,7 +138,7 @@ public class CurlApiExample {
         JQuickCurlReq req = new JQuickCurlReq();
         req.put("user", "xsaxsa@qq.com");
         req.put("password", "zaZAzaZA");
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         System.out.println(userApi.upload1(req));
     }
@@ -149,7 +147,7 @@ public class CurlApiExample {
         JQuickCurlReq req = new JQuickCurlReq();
         req.put("user", "xsaxsa@qq.com");
         req.put("password", "zaZAzaZA");
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         byte[] r=userApi.download(req);
         Path path = Paths.get("d://test/xx1.txt");
@@ -161,7 +159,7 @@ public class CurlApiExample {
         req.put("user", "xsaxsa@qq.com");
         req.put("password", "zaZAzaZA");
         String r=JCurlInvoker.invoke(UserServiceImpl::uploadWithPostParams, req, String.class);
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         String r1=userApi.uploadWithPostParams(req);
         System.out.println(r1);
