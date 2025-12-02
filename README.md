@@ -316,7 +316,7 @@ public interface UserApi {
         JQuickCurlReq req = new JQuickCurlReq();
         req.put("user", "xsaxsa@qq.com");
         req.put("password", "zaZAzaZA");
-        CurlApiFactory factory = new CurlApiFactory("src/main/resources/apis.xml");
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         List<JUser> list =userApi.all(req);
         System.out.println(list);
