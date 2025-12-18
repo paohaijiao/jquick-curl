@@ -14,20 +14,12 @@
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 package com.github.paohaijiao.test.xml;
-import com.github.paohaijiao.config.JQuickCurlConfig;
 import com.github.paohaijiao.domain.req.JQuickCurlReq;
 import com.github.paohaijiao.executor.JCurlInvoker;
-import com.github.paohaijiao.model.JResult;
-import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.test.model.JGithubAuth;
 import com.github.paohaijiao.test.model.JUser;
-import com.github.paohaijiao.test.service.ApiService;
 import com.github.paohaijiao.test.service.UserServiceImpl;
-import com.github.paohaijiao.test.xml.model.User;
 import com.github.paohaijiao.xml.factory.CurlApiFactory;
-import com.google.gson.reflect.TypeToken;
 import org.junit.Test;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
