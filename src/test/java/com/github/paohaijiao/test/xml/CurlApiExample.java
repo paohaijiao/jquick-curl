@@ -127,6 +127,16 @@ public class CurlApiExample {
         System.out.println(userApi.usersOptions(req));
     }
     @Test
+    public  void usersByVariable() throws Exception {
+        CurlApiFactory factory = new CurlApiFactory("apis.xml");
+        UserApi userApi = factory.createApi(UserApi.class);
+        System.out.println(userApi.usersByVariable("\"张三\"","\"aa@qq.com\""));
+    }
+
+
+
+
+    @Test
     public  void upload() throws Exception {
         JQuickCurlReq req = new JQuickCurlReq();
         CurlApiFactory factory = new CurlApiFactory("apis.xml");

@@ -38,6 +38,8 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * packageName com.github.paohaijiao.xml.invocation
@@ -95,15 +97,16 @@ public class CurlInvocationHandler implements InvocationHandler {
     }
 
     private Object executeCurl(CurlMethod curlMethod, JContext context,  Method method) {
-        String finalCurlCommand = curlMethod.getCurlCommand();
+        String curlCommand = curlMethod.getCurlCommand();
         JQuickCurlConfig config=JQuickCurlConfig.getInstance();
         JQuickCurlExecutor executor = new JQuickCurlExecutor(context,config);
-        executor.addErrorListener(error -> {
-            String message=String.format("Failed: Line %d:%d - %s%n",  error.getLine(), error.getCharPosition(), error.getMessage());
+        executor.addErrorListener(error -> {String message=String.format("Failed: Line %d:%d - %s%n",  error.getLine(), error.getCharPosition(), error.getMessage());
             console.log(JLogLevel.ERROR,message);
         });
         try {
-            JResult rawResult = executor.execute(finalCurlCommand);
+            String curlString=replaceVariables(curlCommand,context);
+            console.log(JLogLevel.INFO,"Merged curl command:"+ curlString);
+            JResult rawResult = executor.execute(curlString);
             log.info("result:{}",rawResult);
             Class<?> returnType = method.getReturnType();
             Type genericReturnType = method.getGenericReturnType();
@@ -174,5 +177,26 @@ public class CurlInvocationHandler implements InvocationHandler {
             log.debug("JResult doesn't have getContent method, trying toString");
         }
         return rawResult.toString();
+    }
+    private String replaceVariables(String command, JContext context) {
+        if (command == null || command.isEmpty()) {
+            return command;
+        }
+        Pattern pattern = Pattern.compile("#\\{([^}]+)\\}");
+        Matcher matcher = pattern.matcher(command);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            String variableName = matcher.group(1);
+            Object value = context.get(variableName);
+            if (value != null) {
+                String replacement = Matcher.quoteReplacement(value.toString());// 转义特殊字符，防止注入问题
+                matcher.appendReplacement(sb,replacement);
+            } else {
+                log.warn("Variable #{} not found in context, keeping placeholder", variableName);
+                matcher.appendReplacement(sb, matcher.group(0)); // 保持原样
+            }
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
     }
 }

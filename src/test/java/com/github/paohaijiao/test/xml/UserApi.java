@@ -20,6 +20,8 @@ public interface UserApi {
 
     JUser users(JQuickCurlReq req);
 
+    JUser usersByVariable(@Param("name")String name,@Param("email")String email);
+
 
     JUser usersPut(JQuickCurlReq req);
 

@@ -14,9 +14,14 @@
     </curl>
 
     <curl name="users" returnClass="com.github.paohaijiao.test.model.JUser">
-        curl -X POST http://localhost:8080/api/users \
+        curl -X POST http://localhost:8080/api/users/createUser \
         -H "Content-Type: application/json" \
         -d '{"name":"John Doe","email":"john@example.com"}'
+    </curl>
+    <curl name="usersByVariable" returnClass="com.github.paohaijiao.test.model.JUser">
+        curl -X POST http://localhost:8080/api/users/createUser \
+        -H "Content-Type: application/json" \
+        -d '{"name":#{name},"email":#{email}}'
     </curl>
 
     <curl name="usersPut" returnClass="com.github.paohaijiao.test.model.JUser">
