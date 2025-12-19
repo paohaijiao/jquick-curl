@@ -119,7 +119,15 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
                 return null;
             }
             JResult result=new JResult();
-            result.setMediaType(contentType);
+            result.setMediaType(MediaType.parse(ContentType));
+            if (ContentType != null){
+                com.github.paohaijiao.enums.MediaType mediaType=com.github.paohaijiao.enums.MediaType.codeOf(ContentType);
+                if (mediaType != null&& mediaType.isBinary()){
+                    byte[] bytes= responseData.bytes();
+                    result.setBytes(bytes);
+                    return result;
+                }
+            }
             if (downLoadFileName != null) {
                 byte[] bytes= downLoadFile(responseData);
                 result.setBytes(bytes);
