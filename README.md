@@ -5,12 +5,13 @@
         JQuickCurl 是一个面向Java开发者的高性能、易用HTTP客户端框架。它充分利用Java 8的并发特性和OkHttp的功能，简化网络请求处理并提升效率。该框架旨在提供类似cURL的编程接口，以优雅高效地实现GET、POST、PUT等HTTP操作。
 
 📊 项目状态
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-5470c6.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Version](https://img.shields.io/badge/Version-1.2.0-91cc75.svg)](https://github.com/xxx/jquickcurl/releases)
 [![Downloads](https://img.shields.io/badge/Downloads-15K/month-fac858.svg)](https://maven-badges.herokuapp.com/maven-central/com.xxx/jquickcurl)
 [![Contributors](https://img.shields.io/badge/Contributors-24-3ba272.svg)](https://github.com/xxx/jquickcurl/graphs/contributors)
 [![Build](https://img.shields.io/badge/Build-Passing-ee6666.svg)](https://github.com/xxx/jquickcurl/actions)
-[![Coverage](https://img.shields.io/badge/Coverage-92%-73c0de.svg)](https://codecov.io/gh/xxx/jquickcurl)
+[![Test Coverage](https://img.shields.io/badge/Coverage-92%25-73c0de.svg)](https://github.com/paohaijiao/jquick-curl)
 [![Issues](https://img.shields.io/badge/Issues-12-9a60b4.svg)](https://github.com/xxx/jquickcurl/issues)
 
 🚀 核心特性
