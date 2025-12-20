@@ -2,7 +2,7 @@
 简体中文 | [English](./README-EN)
 
 📖 项目简介
-        JQuickCurl 是一个面向Java开发者的高性能、易用HTTP客户端框架。它充分利用Java 8的并发特性和OkHttp的功能，简化网络请求处理并提升效率。该框架旨在提供类似cURL的编程接口，以优雅高效地实现GET、POST、PUT等HTTP操作。
+        JQuickCurl 是一个面向Java开发者的高性能、易用HTTP客户端框架。它充分利用Java 8的并发特性，简化网络请求处理并提升效率。该框架旨在提供类似cURL的编程接口，以优雅高效地实现GET、POST、PUT等HTTP操作。
 
 📊 项目状态
 
