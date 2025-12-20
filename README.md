@@ -1,5 +1,5 @@
 # JQuickCurl - 基于cURL的Java HTTP客户端框架
-## 简体中文 | [English](./README-EN)
+## 简体中文 | [English](./README-EN.md)
 ## 📖 项目简介
 JQuickCurl 是面向 Java 开发者的高性能、易用 HTTP 客户端框架。它深度适配 Java 8 并发特性，核心优势在于直接将 cURL 命令转化为可执行的 HTTP 请求逻辑—— 无需手动编写 RestTemplate、OkHttp 等底层 HTTP 客户端代码，无需关注请求构建、参数封装、响应解析等繁琐细节。
 只需传入熟悉的 cURL 命令，框架即可自动完成请求转换与执行，让开发者以最直观的方式快速实现 GET、POST、PUT、DELETE 等各类 HTTP 操作，大幅降低网络请求开发成本，同时保证请求效率与稳定性。
