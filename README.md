@@ -244,68 +244,280 @@ String uploadWithPostParams(JQuickCurlReq req);
 @JCurlCommand("curl -u ${user}:${password} https://api.github.com/user -X GET")
 JGithubAuth retriveUser(JQuickCurlReq req);
 ```
-
-17. 拦截器
-```string
-如果你想在发起新的curl请求之前或之后处理一些业务逻辑，您可以实现拦截器接口 Interceptor 就像JLoggingInterceptor接口一样，并通过JQuickCurlConfig传递拦截器
-```
-18. 全局变量
-```string
-如果你想更改api主机、参数、方法和基于不同环境的任何其他内容，你可以定义变量
-在代码中，如**${variableName}**，然后可以通过JContext引用传递不同的值，最后
-curl请求将跟随您的variableName执行。
-```
-使用方式:
-```java
-@JCurlCommand("curl -u ${user}:${password} https://api.github.com/user\n -X GET")
-JGithubAuth retriveUser(JQuickCurlReq req);
-```
-```java
- ApiService api = JCurlInvoker.createProxy(ApiService.class);
-        JQuickCurlReq req = new JQuickCurlReq();
-        req.put("user", "xsasaxsa@qq.com");
-        req.put("password", "xasxsa");
-        JGithubAuth result = api.retriveUser(req);
-```
-## xml 配置
-### 定义xml
+## 📝 XML配置方式
+### 1. 定义XML配置文件 (apis.xml)
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE curls PUBLIC "-//PAOHAIJIAO//DTD API CURL 1.0//EN"
         "classpath:paohaijiao/dtd/Jquick-curl.dtd">
+<!-- 
+  XML配置说明：
+  - namespace：绑定对应的Java接口全类名
+  - curl节点：每个节点对应一个接口方法
+    - name：方法名（需与Java接口方法名一致）
+    - returnClass：方法返回值类型（全类名）
+ -->
 <curls namespace="com.github.paohaijiao.test.xml.UserApi">
+    <!-- 获取所有用户列表 -->
     <curl name="all" returnClass="java.util.List">
         curl -X GET --location 'http://localhost:8080/api/users/all'
     </curl>
-
+    
+    <!-- 根据ID获取单个用户 -->
     <curl name="getUserById" returnClass="com.github.paohaijiao.test.model.JUser">
         curl -X GET http://localhost:8080/api/users/1
     </curl>
+    
+    <!-- 带变量替换的用户查询（动态主机地址） -->
+    <curl name="getUserByIdVariable" returnClass="com.github.paohaijiao.test.model.JUser">
+        curl -X GET ${host}
+    </curl>
 </curls>
 ```
-### 定义java 接口
+### 2.  定义 Java 接口（与 XML 配置绑定）
 ```java
-package com.github.paohaijiao.test.xml;
-import com.github.paohaijiao.test.model.JUser;
-import com.github.paohaijiao.xml.param.Param;
-import java.util.List;
+/**
+ * UserApi接口
+ * 方法名、参数、返回值需与XML配置中的curl节点一一对应
+ */
 public interface UserApi {
+    // 获取所有用户（无动态参数）
     List<JUser> all(JQuickCurlReq req);
+    
+    // 根据ID获取用户（固定URL）
+    JUser getUserById(JQuickCurlReq req);
+    
+    // 动态主机地址的用户查询（@Param注解绑定XML中的${host}变量）
+    JUser getUserByIdVariable(@Param("host")String host);
 }
 ```
-### 定义业务逻辑
+### 3.使用工厂创建实例并调用
 ```java
-    @Test
-    public  void all1() throws Exception {
-        JQuickCurlReq req = new JQuickCurlReq();
-        req.put("user", "xsaxsa@qq.com");
-        req.put("password", "zaZAzaZA");
-        CurlApiFactory factory = new CurlApiFactory("apis.xml");
-        UserApi userApi = factory.createApi(UserApi.class);
-        List<JUser> list =userApi.all(req);
-        System.out.println(list);
-    }
+// 1. 创建CurlApiFactory，加载XML配置文件
+CurlApiFactory factory = new CurlApiFactory("apis.xml");
+
+// 2. 生成UserApi接口的代理实例
+UserApi userApi = factory.createApi(UserApi.class);
+
+// 3. 调用接口方法
+// 3.1 调用无参方法
+List<JUser> users = userApi.all(req);
+
+// 3.2 调用带动态变量的方法（替换XML中的${host}）
+JUser user = userApi.getUserByIdVariable("http://localhost:8080/api/users/1");
 ```
+## 🛠 高级功能
+### 1. 批量执行
+```java
+/**
+ * 批量执行curl命令
+ * JQuickCurlBatchRunner：批量执行器，支持一次性执行多个curl命令
+ * runCurlCommands：执行指定的批量命令类，统一返回JResult类型的结果列表
+ */
+JQuickCurlBatchRunner batch = new JQuickCurlBatchRunner();
+List<JResult> results = batch.runCurlCommands(new JCurlBatchCommandTest(), JResult.class);
+```
+### 2. 全局变量支持
+```java
+/**
+* 命令中使用${变量名}占位符，运行时从JQuickCurlReq中取值替换
+* 适用场景：通用配置（如认证信息、基础域名），避免硬编码
+  */
+  @JCurlCommand("curl -u ${user}:${password} https://api.github.com/user -X GET")
+  JGithubAuth retriveUser(JQuickCurlReq req);
+// 调用示例（${字段名} 字段级别）
+ApiService api = JCurlInvoker.createProxy(ApiService.class);
+JQuickCurlReq req = new JQuickCurlReq();
+// 给占位符${user}/${password}赋值
+req.put("user", "xsasaxsa@qq.com");
+req.put("password", "xasxsa");
+// 执行请求，框架自动替换变量
+JGithubAuth result = api.retriveUser(req);
+```
+### 3. 参数化接口方法
+```java
+/**
+* 接口方法参数绑定（#{参数名}占位符 + @Param注解）
+* 适用场景：动态拼接请求体/URL，直接使用方法入参，无需通过JQuickCurlReq传递
+* 注意：占位符格式为#{参数名}，需与@Param注解的value一致
+  */
+  @JCurlCommand("curl -X POST http://localhost:8080/api/users/createUser \\\n" +
+  "-H \"Content-Type: application/json\" \\\n" +
+  "-d '{\"name\":#{name},\"email\":#{email}}'")
+  JUser usersByVariable(@Param("name")String name, @Param("email")String email);
+
+// 调用示例（直接传参（#{字段名}），更符合Java接口调用习惯）
+// UserService api = JCurlInvoker.createProxy(UserService.class);
+// JUser user = api.usersByVariable("John Doe", "john@example.com");
+```
+### 4. 拦截器
+### 4. 请求/响应拦截器
+```java
+/**
+ * 自定义拦截器：实现Interceptor接口，可拦截请求前/响应后的处理流程
+ * 适用场景：统一日志记录、请求头添加、响应结果校验、异常统一处理等
+ */
+public class CustomInterceptor implements Interceptor {
+    /**
+     * 请求前置处理（发送请求前执行）
+     * @param req 当前请求的参数载体，可修改请求头、参数等
+     */
+    @Override
+    public void before(JQuickCurlReq req) {
+        // 示例：统一添加Token请求头
+        // req.addHeader("Authorization", "Bearer " + getToken());
+        // 示例：记录请求日志
+        // log.info("Request URL: {}", req.getUrl());
+    }
+    
+    /**
+     * 响应后置处理（收到响应后执行）
+     * @param result 响应结果对象，可解析响应体、状态码等
+     */
+    @Override
+    public void after(JResult result) {
+        // 示例：统一处理响应状态码
+        // if (result.getStatusCode() != 200) {
+        //     throw new BusinessException("请求失败：" + result.getMessage());
+        // }
+        // 示例：记录响应日志
+        // log.info("Response Status: {}", result.getStatusCode());
+    }
+}
+
+// 全局配置拦截器（生效于所有请求）
+JQuickCurlConfig config = JQuickCurlConfig.getInstance();
+// 添加自定义拦截器（支持添加多个，按添加顺序执行）
+config.addInterceptor(new CustomInterceptor());
+```
+## 📋 测试用例示例
+### 1. 单元测试（基础功能验证）
+```java
+import org.junit.Test;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+
+/**
+ * JCurlInvoker 核心功能单元测试
+ * 验证代理调用、参数传递、文件下载等基础功能
+ */
+public class JCurlInvokerInvokeTest {
+    
+    /**
+     * 测试基础认证接口调用（全局变量替换）
+     * 验证${user}/${password}占位符替换和接口返回值解析
+     */
+    @Test
+    public void retriveUser() throws Exception {
+        // 创建API代理实例
+        ApiService api = JCurlInvoker.createProxy(ApiService.class);
+        
+        // 准备请求参数（绑定全局变量）
+        JQuickCurlReq req = new JQuickCurlReq();
+        req.put("user", "xsasaxsa@qq.com");
+        req.put("password", "xasxsa");
+        
+        // 执行请求并获取结果
+        JGithubAuth result = api.retriveUser(req);
+        System.out.println(result); // 打印结果用于调试
+    }
+    
+    /**
+     * 测试文件下载功能
+     * 验证字节数组返回值处理及本地文件写入
+     */
+    @Test
+    public void downloadByte() throws Exception {
+        // 创建API代理实例
+        UserService api = JCurlInvoker.createProxy(UserService.class);
+        
+        // 准备请求参数
+        JQuickCurlReq req = new JQuickCurlReq();
+        req.put("user", "xsasaxsa@qq.com");
+        req.put("password", "xasxsa");
+        
+        // 执行下载请求，获取字节数组
+        byte[] bytes = api.download(req);
+        
+        // 将下载的字节写入本地文件
+        Path path = Paths.get("d://test/xx1.txt");
+        Files.write(path, bytes, StandardOpenOption.CREATE);
+    }
+}
+```
+### 2. XML 配置测试（配置化接口验证）
+```java
+import org.junit.Test;
+import java.util.List;
+
+/**
+* XML配置方式的接口调用测试
+* 验证XML配置加载、接口代理生成、配置化接口调用
+  */
+  public class CurlApiExample {
+
+  /**
+    * 测试XML配置的接口调用
+    * 验证apis.xml配置加载及all方法的执行结果
+      */
+      @Test
+      public void all1() throws Exception {
+      // 准备请求参数
+      JQuickCurlReq req = new JQuickCurlReq();
+      req.put("user", "xsaxsa@qq.com");
+      req.put("password", "zaZAzaZA");
+
+      // 加载XML配置文件，创建工厂实例
+      CurlApiFactory factory = new CurlApiFactory("apis.xml");
+
+      // 生成XML绑定的接口代理
+      UserApi userApi = factory.createApi(UserApi.class);
+
+      // 执行接口方法，获取结果并打印
+      List<JUser> list = userApi.all(req);
+      System.out.println(list);
+      }
+      }
+```
+## 📚 API参考
+### 核心类
+| 类名 | 功能说明 |
+|------|----------|
+| `JCurlInvoker` | 核心调用器，支持代理创建和Lambda方式调用 |
+| `JQuickCurlReq` | 请求参数容器，用于存储请求头、参数、变量等 |
+| `JQuickCurlConfig` | 全局配置类，管理拦截器、全局参数等配置 |
+| `JContext` | 执行上下文，存储请求/响应的上下文信息 |
+| `JResult` | 通用响应结果，封装响应状态、数据、异常等 |
+| `CurlApiFactory` | XML配置工厂，用于加载XML配置并生成接口代理 |
+
+### 核心注解
+| 注解名 | 功能说明 |
+|--------|----------|
+| `@JCurlCommand` | 标注在接口方法上，定义对应的cURL命令 |
+| `@Param` | 方法参数映射注解，绑定cURL命令中的#{参数名}占位符 |
+
+## 🤝 贡献指南
+我们非常欢迎社区贡献，您可以通过以下方式参与：
+- 提交 Issue：反馈bug、提出新功能建议、优化文档
+- 提交 Pull Request：修复bug、新增功能、完善测试用例
+- 参与讨论：在Issue中交流技术方案、使用经验
+
+### 贡献规范
+1. Fork 本项目到个人仓库
+2. 创建特性分支（`feature/xxx` 或 `fix/xxx`）
+3. 提交代码并保持代码风格统一
+4. 编写/更新测试用例，保证功能可用
+5. 提交PR，描述清楚变更内容和解决的问题
+
+## 📄 许可证
+本项目采用 **Apache License 2.0** 开源许可证，详情请查看 [LICENSE](LICENSE) 文件。
+## 💖 支持项目
+如果这个项目对您有帮助，欢迎通过以下方式支持我们：
+- ⭐ **Star** 项目：点击GitHub仓库右上角的Star按钮
+- 🐛 **反馈问题**：提交Issue反馈使用中遇到的问题或建议
+- 🔀 **贡献代码**：提交Pull Request完善功能或修复bug
 # **捐献 ☕**
 
 感谢您使用这个开源项目！它完全免费并将持续维护，但开发者确实需要您的支持。
