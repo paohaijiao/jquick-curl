@@ -15,7 +15,7 @@ public interface UserService {
     @JCurlCommand("curl -X GET http://localhost:8080/api/users/1")
     JUser getUserById(JQuickCurlReq req);
 
-    @JCurlCommand("curl -X POST http://localhost:8080/api/users \\\n" +
+    @JCurlCommand("curl -X POST http://localhost:8080/api/users/createUser \\\n" +
             "-H \"Content-Type: application/json\" \\\n" +
             "-d '{\"name\":\"John Doe\",\"email\":\"john@example.com\"}'")
     JUser users(JQuickCurlReq req);
