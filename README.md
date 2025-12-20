@@ -25,49 +25,44 @@
 - Lambda支持: 提供Lambda表达式的调用方式
 - 拦截器: 支持请求/响应拦截器
 - 批量执行: 支持批量执行cURL命令
-# jquickCurl 文档
-简体中文 | [英文](./README-EN)
-```string
-    jquickcurl 是一个面向Java开发者的高性能、易用HTTP客户端框架。它充分利用Java 8的并发特性和OkHttp的功能，
-简化网络请求处理并提升效率。该框架旨在提供类似cURL的编程接口，以优雅高效地实现GET、POST、PUT等HTTP操作。  
-jquickcurl 强调跨平台兼容性，支持在多种操作系统环境中无缝部署，极大扩展了其适用场景，便于在服务端和移动应用开发中
-集成并发挥高效特性。  通过简洁的API，jquickcurl 简化了服务间网络请求，降低了开发者在本地和微服务环境中HTTP集成的
-复杂度。让开发者专注于业务逻辑，显著提高效率和性能。  无论是应对微服务的分布式挑战，还是云环境的高并发需求，jquickcurl 
-凭借其灵活性和高效性，成为开发者确保快速可靠网络通信的重要工具。
-```
 
-## 项目状态
-
-[![License](https://img.shields.io/badge/License-Apache%202.0-5470c6.svg)](https://github.com/paohaijiao/jquick-curl/blob/master/LICENSE)
-[![Latest Version](https://img.shields.io/badge/Version-1.2.0-91cc75.svg)](https://github.com/paohaijiao/jquick-curl/releases)
-[![Monthly Downloads](https://img.shields.io/badge/Downloads-15K%2Fmonth-fac858.svg)](https://github.com/paohaijiao/jquick-curl)
-[![Contributors](https://img.shields.io/badge/Contributors-24-3ba272.svg)](https://github.com/paohaijiao/jquick-curl/graphs/contributors)
-[![Build Status](https://img.shields.io/badge/Build-Passing-ee6666.svg)](https://github.com/paohaijiao/jquick-curl/actions)
-[![Test Coverage](https://img.shields.io/badge/Coverage-92%25-73c0de.svg)](https://github.com/paohaijiao/jquick-curl)
-[![Open Issues](https://img.shields.io/badge/Issues-12-9a60b4.svg)](https://github.com/paohaijiao/jquick-curl/issues)
 ## 使用指南
 ### 基础语法
-```string
+```bash
+# 通用格式
 curl [options] [URL]
-```
+
+# 示例：GET请求
+curl https://api.example.com/user
+# 示例：带请求头的POST请求
+curl -X POST -H "Content-Type: application/json" -d '{"name":"test"}' https://api.example.com/user
 ### 基础选项
 ```string
--X, --request <方法>  指定请求方法（GET、POST、PUT、DELETE、PATCH、HEAD、OPTIONS、TRACE）
--H, --header <请求头>  添加HTTP请求头
--d, --data <数据>     在POST/PUT请求中发送数据
---data-ascii <数据>   发送ASCII格式数据
---data-binary <数据>  发送二进制数据
---data-raw <数据>     发送未经处理的原始数据
---data-urlencode <数据> 发送URL编码的表单数据
--u, --user <用户:密码> 服务器用户名和密码
--L, --location        跟随重定向
---max-redirs <次数>   最大重定向次数
--o, --output <文件>   将输出写入文件而非标准输出
--F, --form <名称=内容> 指定多部分表单数据
--x, --proxy <[协议://]主机[:端口]> 使用代理
---socks5-hostname <主机[:端口]> SOCKS5代理
---http2               使用HTTP/2协议
--k, --insecure        允许不安全的服务器连接
+# 请求方法
+-X, --request <方法>        # 指定请求方法（GET/POST/PUT/DELETE/PATCH/HEAD/OPTIONS/TRACE）
+# 请求头
+-H, --header <请求头>       # 添加HTTP请求头
+# 数据发送（POST/PUT专用）
+-d, --data <数据>           # 发送普通数据
+--data-ascii <数据>         # 发送ASCII格式数据
+--data-binary <数据>        # 发送二进制数据
+--data-raw <数据>           # 发送未经处理的原始数据
+--data-urlencode <数据>     # 发送URL编码的表单数据
+# 认证相关
+-u, --user <用户:密码>      # 服务器用户名和密码
+# 重定向
+-L, --location              # 跟随重定向
+--max-redirs <次数>         # 最大重定向次数
+# 输出控制
+-o, --output <文件>         # 将输出写入文件而非标准输出
+# 文件/表单上传
+-F, --form <名称=内容>      # 指定多部分表单数据
+# 代理相关
+-x, --proxy <[协议://]主机[:端口]>  # 使用HTTP/HTTPS代理
+--socks5-hostname <主机[:端口]>     # SOCKS5代理
+# 协议/安全
+--http2                     # 使用HTTP/2协议
+-k, --insecure              # 允许不安全的服务器连接
 ```
 # 目录
 
