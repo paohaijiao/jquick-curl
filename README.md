@@ -143,8 +143,107 @@ JUser user = JCurlInvoker.invoke(
         JUser.class
 );
 ```
+## 🔧 详细功能示例
+### 一、基础HTTP方法
+```java
+    ApiService api = JCurlInvoker.createProxy(ApiService.class);
+    JQuickCurlReq req = new JQuickCurlReq();
+    req.put("user", "xsasaxsa@qq.com");
+    req.put("password", "xasxsa");
+    JGithubAuth result = api.retriveUser(req);
+```
+#### 1. GET请求（查询资源）
+```java
+/**
+ * 根据用户ID查询单个用户信息
+ * GET请求：无请求体，直接通过URL获取资源
+ */
+@JCurlCommand("curl -X GET http://localhost:8080/api/users/1")
+JUser getUserById(JQuickCurlReq req);
+/**
+ * 创建新用户
+ * POST请求：携带JSON格式请求体，指定Content-Type为application/json
+ */
+@JCurlCommand("curl -X POST http://localhost:8080/api/users/createUser \\\n" +
+        "-H \"Content-Type: application/json\" \\\n" +
+        "-d '{\"name\":\"John Doe\",\"email\":\"john@example.com\"}'")
+JUser users(JQuickCurlReq req);
+/**
+ * 全量更新用户信息
+ * PUT请求：替换指定ID的完整用户信息，需传递全部字段
+ */
+@JCurlCommand("curl -X PUT http://localhost:8080/api/users/1 \\\n" +
+        "-H \"Content-Type: application/json\" \\\n" +
+        "-d '{\"name\":\"John Doe Updated\",\"email\":\"john.updated@example.com\"}'")
+JUser usersPut(JQuickCurlReq req);
+/**
+ * 删除指定ID的用户
+ * DELETE请求：无返回值（Void），仅执行删除操作
+ */
+@JCurlCommand("curl -X DELETE http://localhost:8080/api/users/1")
+Void usersDelete(JQuickCurlReq req);
+/**
+ * PATCH请求：局部更新用户信息（仅修改需要变更的字段）
+ */
+@JCurlCommand("curl -X PATCH http://localhost:8080/api/users/1")
+JUser usersPatch(JQuickCurlReq req);
 
+/**
+ * HEAD请求：仅获取响应头信息（-I参数），无响应体
+ */
+@JCurlCommand("curl -X HEAD -I http://localhost:8080/api/users/1")
+Void usersHead(JQuickCurlReq req);
 
+/**
+ * OPTIONS请求：获取服务器支持的HTTP方法列表
+ */
+@JCurlCommand("curl -X OPTIONS http://localhost:8080/api/users/1")
+JResult usersOptions(JQuickCurlReq req);
+
+/**
+ * TRACE请求：回显服务器收到的请求，用于调试
+ */
+@JCurlCommand("curl -X TRACE http://localhost:8080/api/users/trace")
+String usersTrace(JQuickCurlReq req);
+/**
+ * 上传单个文件
+ * -F参数：指定multipart/form-data格式，@符号后为本地文件路径
+ */
+@JCurlCommand("curl -X POST http://localhost:8080/api/users/upload \\\n" +
+        "-F \"file=@D:\\test\\test.txt\"")
+String upload(JQuickCurlReq req);
+/**
+ * 批量上传多个文件
+ * 多个-F参数：同名参数（files）传递多个文件，服务端接收文件列表
+ */
+@JCurlCommand("curl -X POST http://localhost:8080/api/users/upload-multiple \\\n" +
+        "-F \"files=@D:\\test\\test.txt\" \\\n" +
+        "-F \"files=@D:\\test\\test1.txt\"")
+String upload1(JQuickCurlReq req);
+/**
+ * 下载文件到指定路径
+ * --output参数：将响应内容写入本地文件，返回字节数组（byte[]）便于处理
+ */
+@JCurlCommand("curl -X GET http://localhost:8080/api/users/download/test.txt \\\n" +
+        "--output 'd://test//download.txt'")
+byte[] download(JQuickCurlReq req);
+/**
+ * 上传文件并携带额外表单参数
+ * 混合-F参数：既有普通表单字段（userId/username），也有文件字段（file）
+ */
+@JCurlCommand("curl -X POST http://localhost:8080/api/users/upload-with-params \\\n" +
+        "-F \"userId=123\" \\\n" +
+        "-F \"username=john\" \\\n" +
+        "-F \"file=@D:\\test\\test.txt\"")
+String uploadWithPostParams(JQuickCurlReq req);
+/**
+ * HTTP基础认证
+ * -u参数：传递用户名和密码（使用${变量}占位符，运行时从req中替换）
+ * 格式：-u ${user}:${password} 对应 req.put("user", "xxx") / req.put("password", "xxx")
+ */
+@JCurlCommand("curl -u ${user}:${password} https://api.github.com/user -X GET")
+JGithubAuth retriveUser(JQuickCurlReq req);
+```
 
 17. 拦截器
 ```string
