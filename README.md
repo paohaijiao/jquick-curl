@@ -64,225 +64,88 @@ curl -X POST -H "Content-Type: application/json" -d '{"name":"test"}' https://ap
 --http2                     # 使用HTTP/2协议
 -k, --insecure              # 允许不安全的服务器连接
 ```
-# 目录
 
-## 基础功能
-- [1. 列表查询](#1-列表查询)
-- [2. 获取单条数据](#2-获取单条数据)
-- [3. POST请求](#3-post请求)
-- [4. PUT请求](#4-put请求)
-- [5. PATCH请求](#5-patch请求)
-- [6. DELETE请求](#6-delete请求)
-- [7. HEAD请求](#7-head请求)
-- [8. OPTIONS请求](#8-options请求)
-- [9. TRACE请求](#9-trace请求)
-
-## 文件操作
-- [10. 单文件上传](#10-单文件上传)
-- [11. 多文件上传](#11-多文件上传)
-- [12. 文件下载](#12-文件下载)
-- [13. 带参数的文件上传](#13-带参数的文件上传)
-
-## 高级功能
-- [14. 批量执行](#14-批量执行)
-- [15. Lambda支持](#15-lambda支持)
-- [16. 基础认证](#16-基础认证)
-- [17. 拦截器](#17-拦截器)
-- [18. 全局变量支持](#18-全局变量支持)
-
-## 附录
-- [使用指南](#使用指南)
-  - [基础语法](#基础语法)
-  - [基础选项](#基础选项)
-- [简介](#简介)
-
-## 简介
-本文档提供JCurlInvoker的全面使用示例。这是一个基于Java的HTTP客户端，通过cURL风格的注解简化API测试与集成。
-
-## 基础请求
-
-1. 列表查询
-```java
-@JCurlCommand("curl -X GET --location 'http://localhost:8080/api/users/all'")
-List<JUser> all(JQuickCurlReq req);
+## 📦 快速开始
+### 1. 添加依赖
+```xml
+<dependency>
+    <groupId>com.github.paohaijiao</groupId>
+    <artifactId>jquick-curl</artifactId>
+    <version>1.2.0</version>
+</dependency>
 ```
+## 2. 基础使用
+### 2.1 定义 Service 接口
+```java
+import java.util.List;
+// 示例UserService接口定义
+public interface UserService {
 
-```java
-List<JUser> all(JQuickCurlReq req);
-JQuickCurlReq req = new JQuickCurlReq();
-JContext context = new JContext();
-JQuickCurlConfig config = JQuickCurlConfig.getInstance();
-Object result = JCurlInvoker.invoke(UserServiceImpl::all, req,JGithubAuth.class);
-TypeToken<List<JUser>> typeToken = new TypeToken<List<JUser>>() {};
-List<JUser> list = JCurlInvoker.invoke(
-        UserServiceImpl::all,
-        req,
-        context,
-        config,typeToken.getType()
-);
-```
+    /**
+     * 获取所有用户
+     * @param req 请求参数载体
+     * @return 所有用户列表
+     */
+    @JCurlCommand("curl -X GET --location 'http://localhost:8080/api/users/all'")
+    List<JUser> all(JQuickCurlReq req);
 
-2. 获取单条数据
-```java
-@JCurlCommand("curl -X GET http://localhost:8080/api/users/1")
-JUser getUserById(JQuickCurlReq req);
-```
-```java
-  UserService api = JCurlInvoker.createProxy(UserService.class);
-  JQuickCurlReq req = new JQuickCurlReq();
-  JUser result = api.getUserById(req);
-```
+    /**
+     * 根据ID获取单个用户
+     * @param req 请求参数载体
+     * @return 单个用户信息
+     */
+    @JCurlCommand("curl -X GET http://localhost:8080/api/users/1")
+    JUser getUserById(JQuickCurlReq req);
 
-3. POST请求
-```java
-    @JCurlCommand("curl -X POST http://localhost:8080/api/users \\\n" +
+    /**
+     * 创建新用户（POST请求）
+     * @param req 请求参数载体
+     * @return 创建后的用户信息
+     */
+    @JCurlCommand("curl -X POST http://localhost:8080/api/users/createUser \\\n" +
             "-H \"Content-Type: application/json\" \\\n" +
             "-d '{\"name\":\"John Doe\",\"email\":\"john@example.com\"}'")
     JUser users(JQuickCurlReq req);
+}
 ```
+### 2.2 使用代理模式调用
 ```java
+// 1. 创建UserService代理实例
 UserService api = JCurlInvoker.createProxy(UserService.class);
+
+// 2. 准备请求参数
 JQuickCurlReq req = new JQuickCurlReq();
-JUser result = api.users(req);
+req.put("user", "xsasaxsa@qq.com");
+req.put("password", "xasxsa");
+
+// 3. 执行HTTP请求并获取结果
+List<JUser> users = api.all(req);       // 获取所有用户
+JUser user = api.getUserById(req);      // 根据ID获取用户
+```
+### 2.3 使用 Lambda 方式调用
+> 运行示例：
+```java
+// 1. 准备请求参数
+JQuickCurlReq req = new JQuickCurlReq();
+req.put("user", "xsaxsa@qq.com");
+req.put("password", "zaZAzaZA");
+
+// 2. Lambda风格调用接口方法
+List<JUser> list = JCurlInvoker.invoke(
+        UserServiceImpl::all,    // 目标方法引用
+        req,                     // 请求参数
+        List.class               // 返回值类型
+);
+
+JUser user = JCurlInvoker.invoke(
+        UserServiceImpl::getUserById,
+        req,
+        JUser.class
+);
 ```
 
-4. PUT请求
-```java
-    @JCurlCommand("curl -X PUT http://localhost:8080/api/users/1 \\\n" +
-            "-H \"Content-Type: application/json\" \\\n" +
-            "-d '{\"name\":\"John Doe Updated\",\"email\":\"john.updated@example.com\"}'")
-    JUser usersPut(JQuickCurlReq req);
-```
-```java
-UserService api = JCurlInvoker.createProxy(UserService.class);
-JQuickCurlReq req = new JQuickCurlReq();
-JUser result = api.usersPut(req);
-```
 
-5. PATCH请求
-```java
-    @JCurlCommand("curl -X PATCH http://localhost:8080/api/users/1 \\\n" +
-        "-H \"Content-Type: application/json\" \\\n" +
-        "-d '{\"name\":\"John Doe Patched\"}'")
-JUser usersPatch(JQuickCurlReq req);
-```
 
-```java
-UserService api = JCurlInvoker.createProxy(UserService.class);
-JQuickCurlReq req = new JQuickCurlReq();
-JUser result = api.usersPatch(req);
-```
-
-6. DELETE请求
-```java
-@JCurlCommand("curl -X DELETE http://localhost:8080/api/users/1")
-Void usersDelete(JQuickCurlReq req);
-```
-```java
-UserService api = JCurlInvoker.createProxy(UserService.class);
-JQuickCurlReq req = new JQuickCurlReq();
-api.usersDelete(req);
-```
-7. HEAD请求
-```java
- @JCurlCommand("curl  -X HEAD -I http://localhost:8080/api/users/1")
-    Void usersHead(JQuickCurlReq req);
-```
-```java
-UserService api = JCurlInvoker.createProxy(UserService.class);
-JQuickCurlReq req = new JQuickCurlReq();
-api.usersHead(req);
-```
-
-8. OPTIONS请求
-```java
- @JCurlCommand("curl -X OPTIONS http://localhost:8080/api/users/1")
-    JResult usersOptions(JQuickCurlReq req);
-```
-```java
-UserService api = JCurlInvoker.createProxy(UserService.class);
-JQuickCurlReq req = new JQuickCurlReq();
-JResult jResult=api.usersOptions(req);
-```
-
-9. TRACE请求
-```java
- @JCurlCommand("curl -X TRACE http://localhost:8080/api/users/trace \\\n" +
-            "-H \"Content-Type: text/plain\" \\\n" +
-            "-d \"This is a trace request body\"")
-```
-```java
-String usersTrace(JQuickCurlReq req);
-UserService api = JCurlInvoker.createProxy(UserService.class);
-JQuickCurlReq req = new JQuickCurlReq();
-String jResult=api.usersTrace(req);
-```
-10. 单文件上传
-```java
-@JCurlCommand("curl -X POST http://localhost:8080/api/users/upload \\\n" +
-            "-F \"file=@D:\\test\\test.txt\"")
-```
-```java
- UserService api = JCurlInvoker.createProxy(UserService.class);
-        JQuickCurlReq req = new JQuickCurlReq();
-        String jResult=api.upload(req);
-```
-
-11. 多文件上传
-```java
-@JCurlCommand("curl -X POST http://localhost:8080/api/users/upload-multiple \\\n" +
-"-F \"files=@D:\\test\\test.txt\"-F \"files=@D:\\test\\test1.txt\"")
-String upload1(JQuickCurlReq req);
-```
-```java
-UserService api = JCurlInvoker.createProxy(UserService.class);
-JQuickCurlReq req = new JQuickCurlReq();
-String jResult=api.upload1(req);
-```
-12. 文件下载
-```java
-    @JCurlCommand("curl -X GET http://localhost:8080/api/users/download/test.txt \\\n" +
-            "--output 'd://test//download.txt'")
-    byte[] download(JQuickCurlReq req);
-```
-```java
- UserService api = JCurlInvoker.createProxy(UserService.class);
-        JQuickCurlReq req = new JQuickCurlReq();
-        byte[] bytes=api.download(req);
-        Path path = Paths.get("d://test/xx1.txt");
-        Files.write(path, bytes, StandardOpenOption.CREATE);
-```
-13. 带参数的文件上传
-```java
- @JCurlCommand("curl -X POST http://localhost:8080/api/users/upload-with-params \\\n" +
-            "-F \"userId=123\" \\\n" +
-            "-F \"username=john\" \\\n" +
-            "-F \"file=@D:\\test\\test.txt\"")
-    String uploadWithPostParams(JQuickCurlReq req);
-```
-```java
-UserService api = JCurlInvoker.createProxy(UserService.class);
-JQuickCurlReq req = new JQuickCurlReq();
-String bytes=api.uploadWithPostParams(req);
-```
-
-14. 批量执行
-```java
-JQuickCurlBatchRunner batch= new JQuickCurlBatchRunner();
-List<JResult> list=batch.runCurlCommands(new JCurlBatchCommandTest(),JResult.class);
-```
-
-15. Lambda支持
-```java
-JQuickCurlReq req = new JQuickCurlReq();
-JUser result = JCurlInvoker.invoke(UserServiceImpl::getUserById, req,JUser.class);
-```
-
-16. 基础认证
-```java
-    @JCurlCommand("curl -u ${user}:${password} https://api.github.com/user\n -X GET")
-    JGithubAuth retriveUser(JQuickCurlReq req);
-```
 17. 拦截器
 ```string
 如果你想在发起新的curl请求之前或之后处理一些业务逻辑，您可以实现拦截器接口 Interceptor 就像JLoggingInterceptor接口一样，并通过JQuickCurlConfig传递拦截器
