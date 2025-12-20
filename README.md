@@ -1,3 +1,29 @@
+# JQuickCurl - 基于cURL的Java HTTP客户端框架
+简体中文 | [English](./README-EN)
+
+📖 项目简介
+        JQuickCurl 是一个面向Java开发者的高性能、易用HTTP客户端框架。它充分利用Java 8的并发特性和OkHttp的功能，简化网络请求处理并提升效率。该框架旨在提供类似cURL的编程接口，以优雅高效地实现GET、POST、PUT等HTTP操作。
+
+📊 项目状态
+[![License](https://img.shields.io/badge/License-Apache%202.0-5470c6.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Version](https://img.shields.io/badge/Version-1.2.0-91cc75.svg)](https://github.com/xxx/jquickcurl/releases)
+[![Downloads](https://img.shields.io/badge/Downloads-15K/month-fac858.svg)](https://maven-badges.herokuapp.com/maven-central/com.xxx/jquickcurl)
+[![Contributors](https://img.shields.io/badge/Contributors-24-3ba272.svg)](https://github.com/xxx/jquickcurl/graphs/contributors)
+[![Build](https://img.shields.io/badge/Build-Passing-ee6666.svg)](https://github.com/xxx/jquickcurl/actions)
+[![Coverage](https://img.shields.io/badge/Coverage-92%-73c0de.svg)](https://codecov.io/gh/xxx/jquickcurl)
+[![Issues](https://img.shields.io/badge/Issues-12-9a60b4.svg)](https://github.com/xxx/jquickcurl/issues)
+
+🚀 核心特性
+- cURL风格API: 使用cURL命令语法定义HTTP请求
+- 多协议支持: GET、POST、PUT、DELETE、PATCH、HEAD、OPTIONS、TRACE
+- 文件上传下载: 支持单文件、多文件上传和文件下载
+- 注解驱动: 使用@JCurlCommand注解简化API定义
+- 代理模式: 支持动态代理生成API客户端
+- XML配置: 支持XML方式配置API接口
+- 变量替换: 支持全局变量和参数替换
+- Lambda支持: 提供Lambda表达式的调用方式
+- 拦截器: 支持请求/响应拦截器
+- 批量执行: 支持批量执行cURL命令
 # jquickCurl 文档
 简体中文 | [英文](./README-EN)
 ```string
