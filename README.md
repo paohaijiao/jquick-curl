@@ -354,38 +354,47 @@ JGithubAuth result = api.retriveUser(req);
 ### 4. 拦截器
 ### 4. 请求/响应拦截器
 ```java
-/**
- * 自定义拦截器：实现Interceptor接口，可拦截请求前/响应后的处理流程
- * 适用场景：统一日志记录、请求头添加、响应结果校验、异常统一处理等
- */
-public class CustomInterceptor implements Interceptor {
-    /**
-     * 请求前置处理（发送请求前执行）
-     * @param req 当前请求的参数载体，可修改请求头、参数等
-     */
-    @Override
-    public void before(JQuickCurlReq req) {
-        // 示例：统一添加Token请求头
-        // req.addHeader("Authorization", "Bearer " + getToken());
-        // 示例：记录请求日志
-        // log.info("Request URL: {}", req.getUrl());
-    }
-    
-    /**
-     * 响应后置处理（收到响应后执行）
-     * @param result 响应结果对象，可解析响应体、状态码等
-     */
-    @Override
-    public void after(JResult result) {
-        // 示例：统一处理响应状态码
-        // if (result.getStatusCode() != 200) {
-        //     throw new BusinessException("请求失败：" + result.getMessage());
-        // }
-        // 示例：记录响应日志
-        // log.info("Response Status: {}", result.getStatusCode());
-    }
-}
+package com.github.paohaijiao.interceptor;
 
+import com.github.paohaijiao.enums.JCurlLevelLog;
+import lombok.extern.slf4j.Slf4j;
+import okhttp3.*;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+@Slf4j
+public class CustomInterceptor implements Interceptor {
+
+   private static final Charset UTF8 = StandardCharsets.UTF_8;
+
+   private final JCurlLevelLog level;
+
+   public JLoggingInterceptor() {
+      this(JCurlLevelLog.ALL);
+   }
+
+   public JLoggingInterceptor(JCurlLevelLog level) {
+      this.level = level;
+   }
+
+   @Override
+   public Response intercept(Chain chain) throws IOException {
+      Request request = chain.request();
+      // 示例：统一添加Token请求头
+      // request.addHeader("Authorization", "Bearer " + getToken());
+      Response response;
+      try {
+         response = chain.proceed(request);
+      } catch (Exception e) {
+         log.error("<-- HTTP FAILED: " + e);
+         throw e;
+      }
+
+      // 示例：统一添加响应
+      return response;
+   }
 // 全局配置拦截器（生效于所有请求）
 JQuickCurlConfig config = JQuickCurlConfig.getInstance();
 // 添加自定义拦截器（支持添加多个，按添加顺序执行）
