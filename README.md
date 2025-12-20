@@ -13,8 +13,9 @@ JQuickCurl 是面向 Java 开发者的高性能、易用 HTTP 客户端框架。
 [![Build](https://img.shields.io/badge/Build-Passing-ee6666.svg)](https://github.com/xxx/jquickcurl/actions)
 [![Test Coverage](https://img.shields.io/badge/Coverage-92%25-73c0de.svg)](https://github.com/paohaijiao/jquick-curl)
 [![Issues](https://img.shields.io/badge/Issues-12-9a60b4.svg)](https://github.com/xxx/jquickcurl/issues)
+## 🌟 核心标签
 ⚡ 高性能 | 🎯 易用 | 🔧 灵活 | 📦 轻量
-📖 目录
+## 📖 目录
 - [✨ 特性介绍](#特性介绍)
 - [🚀 快速开始](#快速开始)
 - [🔧 核心功能](#核心功能)
@@ -30,7 +31,7 @@ JQuickCurl 是面向 Java 开发者的高性能、易用 HTTP 客户端框架。
 - [🤝 贡献指南](#贡献指南)
 - [📄 许可证](#许可证)
 - [💝 支持我们](#支持我们)
-🚀 核心特性
+## 🚀 核心特性
 - cURL风格API: 使用cURL命令语法定义HTTP请求
 - 多协议支持: GET、POST、PUT、DELETE、PATCH、HEAD、OPTIONS、TRACE
 - 文件上传下载: 支持单文件、多文件上传和文件下载
