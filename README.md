@@ -86,7 +86,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"name":"test"}' https://ap
 ### 1. 添加依赖
 ```xml
 <dependency>
-    <groupId>com.github.paohaijiao</groupId>
+    <groupId>io.github.paohaijiao</groupId>
     <artifactId>jquick-curl</artifactId>
     <version>1.2.0</version>
 </dependency>
