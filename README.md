@@ -88,7 +88,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"name":"test"}' https://ap
 <dependency>
     <groupId>io.github.paohaijiao</groupId>
     <artifactId>jquick-curl</artifactId>
-    <version>1.2.0</version>
+    <version>${最新版本}</version>
 </dependency>
 ```
 ## 2. 基础使用
