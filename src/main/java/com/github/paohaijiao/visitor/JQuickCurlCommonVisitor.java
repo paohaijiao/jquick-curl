@@ -41,15 +41,15 @@ import java.util.Base64;
 @Slf4j
 public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
     public JQuickCurlCommonVisitor(JContext context){
-      this.context = context;
+      this.context = null==context?new JContext():context;
       this.config =  JQuickCurlConfig.getInstance();
     }
     public JQuickCurlCommonVisitor(JQuickCurlConfig config){
-        this.context = context;
+        this.context = null==context?new JContext():context;
         this.config =  config;
     }
     public JQuickCurlCommonVisitor(JContext context,JQuickCurlConfig config){
-        this.context = context;
+        this.context = null==context?new JContext():context;
         this.config =  config;
     }
     public JQuickCurlCommonVisitor( ){
