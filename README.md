@@ -195,7 +195,7 @@ JUser users(JQuickCurlReq req);
 JUser usersPut(JQuickCurlReq req);
 /**
  * 删除指定ID的用户
- * DELETE请求：无返回值（Void），仅执行删除操作
+ * DELETE请求：无返回值（Void
  */
 @JCurlCommand("curl -X DELETE http://localhost:8080/api/users/1")
 Void usersDelete(JQuickCurlReq req);
