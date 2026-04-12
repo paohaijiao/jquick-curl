@@ -76,6 +76,6 @@
         curl -X POST http://localhost:8080/api/users/upload-with-params \
         -F "userId=123" \
         -F "username=john" \
-        -F "file=@D:\test\pie3.xlsx"
+        -F "file=@D:\test\pie.xlsx"
     </curl>
 </curls>

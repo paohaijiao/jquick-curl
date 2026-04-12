@@ -180,7 +180,6 @@ public class CurlApiExample {
         JQuickCurlReq req = new JQuickCurlReq();
         req.put("user", "xsaxsa@qq.com");
         req.put("password", "zaZAzaZA");
-        String r=JCurlInvoker.invoke(UserServiceImpl::uploadWithPostParams, req, String.class);
         JQuickParseHandler parser = new JQuickCurlXmlParseFactory();
         JQuickFactory factory = new JQuickXmlFactory(parser,"apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
