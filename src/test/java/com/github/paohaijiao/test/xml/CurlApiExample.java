@@ -172,7 +172,7 @@ public class CurlApiExample {
         JQuickFactory factory = new JQuickXmlFactory(parser,"apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
         byte[] r=userApi.download(req);
-        Path path = Paths.get("d://test/xx1.txt");
+        Path path = Paths.get("d://test/pief.xlsx");
         Files.write(path, r, StandardOpenOption.CREATE);
     }
     @Test

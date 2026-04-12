@@ -20,6 +20,8 @@ import com.github.paohaijiao.console.JConsole;
 import com.github.paohaijiao.enums.JHttpMethod;
 import com.github.paohaijiao.enums.JProxryType;
 import com.github.paohaijiao.exception.JAssert;
+import com.github.paohaijiao.media.JDataType;
+import com.github.paohaijiao.media.MediaTypeInfo;
 import com.github.paohaijiao.model.*;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickCurlLexer;
@@ -122,8 +124,8 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
             JResult result=new JResult();
             result.setMediaType(MediaType.parse(ContentType));
             if (ContentType != null){
-                com.github.paohaijiao.enums.MediaType mediaType=com.github.paohaijiao.enums.MediaType.codeOf(ContentType);
-                if (mediaType != null&& mediaType.isBinary()){
+                MediaTypeInfo mediaTypeInfo=mediaTypeManager.getByCode(ContentType);
+                if (mediaTypeInfo != null&& JDataType.BYTES.name().equalsIgnoreCase(mediaTypeInfo.getDataType().name())){
                     byte[] bytes= responseData.bytes();
                     result.setBytes(bytes);
                     return result;

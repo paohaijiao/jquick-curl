@@ -68,7 +68,8 @@
 
     <curl name="download" returnClass="byte[]">
         curl -X GET http://localhost:8080/api/users/download/pie.xlsx \
-        --output 'd://test//pie3.xlsx'
+        -H "Content-Type: application/octet-stream" \
+        --output 'd://test//pie.xlsx'
     </curl>
 
     <curl name="uploadWithPostParams" returnClass="java.lang.String">
