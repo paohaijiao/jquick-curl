@@ -1,8 +1,30 @@
-<!ELEMENT curls (curl*)>
-<!ATTLIST curls namespace CDATA #REQUIRED>
+<?xml version="1.0" encoding="UTF-8"?>
+        <!ELEMENT curls (curl*)>
+        <!ATTLIST curls namespace CDATA #REQUIRED>
+        <!ELEMENT curl (#PCDATA | if | foreach | choose)*>
+        <!ATTLIST curl
+                name CDATA #REQUIRED
+                returnClass CDATA #REQUIRED
+                >
+        <!ELEMENT if (#PCDATA | if | foreach | choose)*>
+        <!ATTLIST if
+                test CDATA #REQUIRED
+                >
+        <!ELEMENT foreach (#PCDATA | if | foreach | choose)*>
+        <!ATTLIST foreach
+                collection CDATA #REQUIRED
+                item CDATA #REQUIRED
+                open CDATA #IMPLIED
+                close CDATA #IMPLIED
+                separator CDATA #IMPLIED
+                >
 
-<!ELEMENT curl (#PCDATA)>
-<!ATTLIST curl 
-    name CDATA #REQUIRED
-    returnClass CDATA #REQUIRED
->
+        <!ELEMENT choose (when*, otherwise?)>
+        <!ATTLIST choose
+                xmlns CDATA #IMPLIED
+                >
+        <!ELEMENT when (#PCDATA | if | foreach | choose)*>
+        <!ATTLIST when
+                test CDATA #REQUIRED
+                >
+        <!ELEMENT otherwise (#PCDATA | if | foreach | choose)*>

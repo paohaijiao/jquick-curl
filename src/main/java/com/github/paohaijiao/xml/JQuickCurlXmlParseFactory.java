@@ -13,44 +13,27 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.xml.method;
+package com.github.paohaijiao.xml;
+
+import com.github.paohaijiao.xml.element.JQuickXmlElement;
+import com.github.paohaijiao.xml.handler.JQuickParseHandler;
+import com.github.paohaijiao.xml.invocation.JQuickXmlInvocationHandler;
 
 /**
  * packageName com.github.paohaijiao.xml
  *
  * @author Martin
  * @version 1.0.0
- * @since 2025/11/27
+ * @since 2026/4/11
  */
-public class CurlMethod {
-
-    private String name;
-
-    private String returnClass;
-
-    private String curlCommand;
-
-    public String getName() {
-        return name;
+public class JQuickCurlXmlParseFactory implements JQuickParseHandler {
+    @Override
+    public JQuickXmlElement createJQuickXmlElement() {
+        return new JQuickCurlXmlElement();
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getReturnClass() {
-        return returnClass;
-    }
-
-    public void setReturnClass(String returnClass) {
-        this.returnClass = returnClass;
-    }
-
-    public String getCurlCommand() {
-        return curlCommand;
-    }
-
-    public void setCurlCommand(String curlCommand) {
-        this.curlCommand = curlCommand;
+    @Override
+    public JQuickXmlInvocationHandler createlInvocationHandler() {
+        return new JQuickCurlXmlInvocationHandler();
     }
 }

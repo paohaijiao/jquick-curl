@@ -10,7 +10,8 @@
         curl -X GET http://localhost:8080/api/users/1
     </curl>
     <curl name="getUserByIdVariable" returnClass="com.github.paohaijiao.test.model.JUser">
-        curl -X GET ${host}
+        curl -X GET #{host} \
+        <if test="a==1"> -H "Content-Type: application/json" </if>
     </curl>
 
     <curl name="users" returnClass="com.github.paohaijiao.test.model.JUser">
@@ -56,24 +57,24 @@
 
     <curl name="upload" returnClass="java.lang.String">
         curl -X POST http://localhost:8080/api/users/upload \
-        -F "file=@D:\test\test.txt"
+        -F "file=@D:\test\pie.xlsx"
     </curl>
 
     <curl name="upload1" returnClass="java.lang.String">
         curl -X POST http://localhost:8080/api/users/upload-multiple \
-        -F "files=@D:\test\test.txt" \
-        -F "files=@D:\test\test1.txt"
+        -F "files=@D:\test\pie.xlsx" \
+        -F "files=@D:\test\pie2.xlsx"
     </curl>
 
     <curl name="download" returnClass="byte[]">
-        curl -X GET http://localhost:8080/api/users/download/test.txt \
-        --output 'd://test//download.txt'
+        curl -X GET http://localhost:8080/api/users/download/pie.xlsx \
+        --output 'd://test//pie3.xlsx'
     </curl>
 
     <curl name="uploadWithPostParams" returnClass="java.lang.String">
         curl -X POST http://localhost:8080/api/users/upload-with-params \
         -F "userId=123" \
         -F "username=john" \
-        -F "file=@D:\test\test.txt"
+        -F "file=@D:\test\pie3.xlsx"
     </curl>
 </curls>

@@ -16,6 +16,7 @@
 package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.config.JQuickCurlConfig;
+import com.github.paohaijiao.console.JConsole;
 import com.github.paohaijiao.enums.JHttpMethod;
 import com.github.paohaijiao.enums.JProxryType;
 import com.github.paohaijiao.exception.JAssert;
@@ -38,8 +39,8 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.Arrays;
 import java.util.Base64;
-@Slf4j
 public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
+
     public JQuickCurlCommonVisitor(JContext context){
       this.context = null==context?new JContext():context;
       this.config =  JQuickCurlConfig.getInstance();
@@ -108,7 +109,7 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
 
         try  {
             Response response = client.newCall(request).execute();
-            log.info("Response:{}",response);
+            console.info("Response:"+response);
             if (!response.isSuccessful()){
                 System.out.println("Cannot request the resource");
             };

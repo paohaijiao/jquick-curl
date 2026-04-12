@@ -15,7 +15,9 @@
  */
 package com.github.paohaijiao.interceptor;
 
+import com.github.paohaijiao.console.JConsole;
 import com.github.paohaijiao.enums.JCurlLevelLog;
+import com.github.paohaijiao.enums.JLogLevel;
 import com.github.paohaijiao.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -35,11 +37,10 @@ import java.util.concurrent.TimeUnit;
  * @date 2025/6/21
  * @description
  */
-@Slf4j
 public class JLoggingInterceptor implements Interceptor {
 
     private static final Charset UTF8 = StandardCharsets.UTF_8;
-
+    private JConsole console=new JConsole();
     private final JCurlLevelLog level;
 
     public JLoggingInterceptor() {
@@ -62,54 +63,55 @@ public class JLoggingInterceptor implements Interceptor {
         try {
             response = chain.proceed(request);
         } catch (Exception e) {
-            log.error("<-- HTTP FAILED: " + e);
+            console.error("<-- HTTP FAILED: " , e);
             throw e;
         }
         long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-        log.info("chain response: {} ms", tookMs);
-        log.info("chain response: " + response);
-        System.out.println("chain response: " + response);
+        console.log(JLogLevel.INFO,"\"chain response: "+tookMs+" ms\",");
+        console.log(JLogLevel.INFO,"\"chain response: "+response+" \",");
         return response;
     }
     private void logRequest(Request request) throws IOException {
-        log.info("--> {} {}", request.method(), request.url());
+        console.log(JLogLevel.INFO,"当前的Method 是:"+request.method());
+        console.log(JLogLevel.INFO,"当前的url 是:"+request.url());
         if (level == JCurlLevelLog.HEADERS || level == JCurlLevelLog.ALL) {
             Headers headers = request.headers();
             for (int i = 0, count = headers.size(); i < count; i++) {
-                log.info("{}: {}", headers.name(i), headers.value(i));
+                console.log(JLogLevel.INFO,"当前的header是-->"+headers.name(i)+":"+headers.value(i));
             }
             if (level == JCurlLevelLog.ALL && request.body() != null) {
                 RequestBody requestBody = request.body();
                 if (isPlaintext(requestBody.contentType())) {
                     Buffer buffer = new Buffer();
                     requestBody.writeTo(buffer);
-                    log.info("\n{}", buffer.readString(UTF8));
+                    console.log(JLogLevel.INFO,"当前的requestBody是-->"+buffer.readString(UTF8));
                 } else {
-                    log.info("--> [binary body omitted, content-type: {}]", requestBody.contentType());
+                    console.log(JLogLevel.INFO," [binary body omitted, content-type: {"+requestBody.contentType()+"}]");
                 }
             }
         }
-        log.info("--> END {}", request.method());
+        console.log(JLogLevel.INFO," --> END"+request.method()+"");
+
     }
     private void logResponse(Response response, long tookMs) throws IOException {
-        log.info("<-- {} {} ({}ms)", response.code(), response.message(), tookMs);
+        console.error("<-- code:" +response.code()+" message:"+response.message()+" tookMs:"+tookMs  +"-->");
         if (level == JCurlLevelLog.HEADERS || level == JCurlLevelLog.ALL) {
             Headers headers = response.headers();
             for (int i = 0, count = headers.size(); i < count; i++) {
-                log.info("{}: {}", headers.name(i), headers.value(i));
+                console.log(JLogLevel.INFO,"当前的header是-->"+headers.name(i)+":"+headers.value(i));
             }
             if (level == JCurlLevelLog.ALL && response.body() != null) {
                 ResponseBody responseBody = response.body();
                 if (isPlaintext(responseBody.contentType())) {
                     String bodyString = responseBody.string();
-                    log.info("\n{}", bodyString);
+                    console.log(JLogLevel.INFO,"当前的requestBody是-->"+bodyString);
                     response = response.newBuilder().body(ResponseBody.create(bodyString, responseBody.contentType())).build();
                 } else {
-                    log.info("<-- [binary body omitted, content-type: {}]", responseBody.contentType());
+                    console.log(JLogLevel.INFO," [binary body omitted, content-type: {"+responseBody.contentType()+"}]");
                 }
             }
         }
-        log.info("<-- END HTTP");
+        console.log(JLogLevel.INFO,"<-- END HTTP");
     }
     private static boolean isPlaintext(MediaType mediaType) {
         if (mediaType == null) return false;
