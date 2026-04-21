@@ -1,4 +1,4 @@
-# JQuickCurl - Java HTTP Client Framework Based on cURL
+# JQuickCurl - Java HTTP Client Framework Based on Curl
 ## [简体中文](./README) | English
 ## 📖 Project Introduction
 JQuickCurl is a high-performance, easy-to-use HTTP client framework designed for Java developers.

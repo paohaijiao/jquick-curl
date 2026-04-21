@@ -94,7 +94,7 @@
         while maintaining simplicity in development,
         it provides a java implementation that rivals curl's native performance.
     </description>
-    <url>https://github.com/paohaijiao/jquick-xml</url>
+    <url>https://github.com/paohaijiao/jquick-curl</url>
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
@@ -110,7 +110,7 @@
         </developer>
     </developers>
     <scm>
-        <url>https://github.com/paohaijiao/jquick-json</url>
+        <url>https://github.com/paohaijiao/jquick-curl</url>
     </scm>
     <build>
         <plugins>
