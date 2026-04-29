@@ -17,16 +17,24 @@ package com.github.paohaijiao.xml;
 
 import com.github.paohaijiao.config.JQuickCurlConfig;
 import com.github.paohaijiao.console.JConsole;
+import com.github.paohaijiao.convert.JQuickCurlResponseConvert;
 import com.github.paohaijiao.enums.JLogLevel;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
 import com.github.paohaijiao.executor.JQuickCurlExecutor;
 import com.github.paohaijiao.factory.JCurlResultFactory;
 import com.github.paohaijiao.model.JResult;
 import com.github.paohaijiao.param.JContext;
+import com.github.paohaijiao.responseBody.JQuickCurlResponseBody;
+import com.github.paohaijiao.transformer.JQuickValueTransformer;
+import com.github.paohaijiao.transformer.type.JQuickJavaTypeReference;
 import com.github.paohaijiao.type.JTypeReference;
 import com.github.paohaijiao.xml.invocation.JQuickXmlInvocationHandler;
-import lombok.extern.slf4j.Slf4j;
+import com.google.protobuf.ByteString;
+import okhttp3.ResponseBody;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.Reader;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
@@ -38,7 +46,9 @@ import java.lang.reflect.Type;
  * @since 2026/4/11
  */
 public class JQuickCurlXmlInvocationHandler extends JQuickXmlInvocationHandler {
+
     private JConsole console=new JConsole();
+
     @Override
     protected Object loadResult(String curlCommand, JContext context, Method method, Object[] args) {
         JQuickCurlConfig config=JQuickCurlConfig.getInstance();
@@ -49,14 +59,10 @@ public class JQuickCurlXmlInvocationHandler extends JQuickXmlInvocationHandler {
         try {
             String curlString=replaceVariables(curlCommand,context);
             console.log(JLogLevel.INFO,"Merged curl command:"+ curlString);
-            JResult rawResult = executor.execute(curlString);
-            console.info("result:"+rawResult);
-            Class<?> returnType = method.getReturnType();
-            Type genericReturnType = method.getGenericReturnType();
-            if (returnType.equals(Void.TYPE) || returnType.equals(java.lang.Void.class)) {
-                return null;
-            }
-            return convertResult(rawResult, genericReturnType, returnType);
+            JQuickCurlResponseBody raw = executor.execute(curlString);
+            console.info("result:"+raw);
+            JQuickCurlResponseConvert convert=new JQuickCurlResponseConvert();
+            return convert.convertResponse(raw,method);
         } catch (JAntlrExecutionException e) {
             console.error("Curl execution error", e);
             e.getErrors().forEach(err ->{

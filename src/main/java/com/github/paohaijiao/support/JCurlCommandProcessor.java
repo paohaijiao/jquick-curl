@@ -19,10 +19,9 @@ import com.github.paohaijiao.anno.JCurlCommand;
 import com.github.paohaijiao.config.JQuickCurlConfig;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
 import com.github.paohaijiao.executor.JQuickCurlExecutor;
-import com.github.paohaijiao.factory.JCurlResultFactory;
-import com.github.paohaijiao.model.JResult;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.type.JTypeReference;
+import com.github.paohaijiao.responseBody.JQuickCurlResponseBody;
+import com.github.paohaijiao.convert.JQuickCurlResponseConvert;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -80,26 +79,10 @@ public class JCurlCommandProcessor {
         JQuickCurlExecutor executor = new JQuickCurlExecutor(this.context,this.config);
         executor.addErrorListener(error -> {System.err.printf("Failed: Line %d:%d - %s%n", error.getLine(), error.getCharPosition(), error.getMessage());System.err.println("规则栈: " + error.getRuleStack());});
         try {
-            JResult rawResult = executor.execute(curlCommand);
+            JQuickCurlResponseBody rawResult = executor.execute(curlCommand);
             log.info("result:{}",rawResult);
-            if (interfaceClass.equals(Void.TYPE)||interfaceClass.equals(java.lang.Void.class)) {
-                return null;
-            }else{
-                try {
-                    Type genericReturnType = method.getGenericReturnType();
-                    JTypeReference<T> typeReference = new JTypeReference<T>() {
-                        @Override
-                        public Type getType() {
-                            return genericReturnType;
-                        }
-                    };
-                    T obj= JCurlResultFactory.convertResponse(rawResult, typeReference);
-                   return  obj;
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                return null;
-            }
+            JQuickCurlResponseConvert convert=new JQuickCurlResponseConvert();
+            return (T) convert.convertResponse(rawResult,method);
         } catch (JAntlrExecutionException e) {
             System.err.println("Parse Fail: " + e.getMessage());
             e.getErrors().forEach(err -> System.err.println(" - " + err.getMessage()));
@@ -116,26 +99,10 @@ public class JCurlCommandProcessor {
         JQuickCurlExecutor executor = new JQuickCurlExecutor(this.context,this.config);
         executor.addErrorListener(error -> {System.err.printf("Failed: Line %d:%d - %s%n", error.getLine(), error.getCharPosition(), error.getMessage());System.err.println("规则栈: " + error.getRuleStack());});
         try {
-            JResult rawResult = executor.execute(curlCommand);
+            JQuickCurlResponseBody rawResult = executor.execute(curlCommand);
             log.info("result:{}",rawResult);
-            if (type.equals(Void.TYPE)) {
-                return null;
-            }else{
-                try {
-                    Type genericReturnType = method.getGenericReturnType();
-                    JTypeReference<T> typeReference = new JTypeReference<T>() {
-                        @Override
-                        public Type getType() {
-                            return genericReturnType;
-                        }
-                    };
-                    T obj= JCurlResultFactory.convertResponse(rawResult, typeReference);
-                    return  obj;
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                return null;
-            }
+            JQuickCurlResponseConvert convert=new JQuickCurlResponseConvert();
+            return (T) convert.convertResponse(rawResult,method);
         } catch (JAntlrExecutionException e) {
             System.err.println("Parse Fail: " + e.getMessage());
             e.getErrors().forEach(err -> System.err.println(" - " + err.getMessage()));

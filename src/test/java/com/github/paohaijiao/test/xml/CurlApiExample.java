@@ -132,7 +132,8 @@ public class CurlApiExample {
         JQuickParseHandler parser = new JQuickCurlXmlParseFactory();
         JQuickFactory factory = new JQuickXmlFactory(parser,"apis.xml");
         UserApi userApi = factory.createApi(UserApi.class);
-        System.out.println(userApi.usersOptions(req));
+        userApi.usersOptions(req);
+        System.out.println();
     }
     @Test
     public  void usersByVariable() throws Exception {

@@ -17,22 +17,31 @@ package com.github.paohaijiao.executor;
 
 import com.github.paohaijiao.antlr.impl.JAbstractAntlrExecutor;
 import com.github.paohaijiao.config.JQuickCurlConfig;
+import com.github.paohaijiao.console.JConsole;
 import com.github.paohaijiao.exception.JAntlrExecutionException;
 import com.github.paohaijiao.model.JResult;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickCurlLexer;
 import com.github.paohaijiao.parser.JQuickCurlParser;
+import com.github.paohaijiao.responseBody.JQuickCurlResponseBody;
 import com.github.paohaijiao.visitor.JQuickCurlCommonVisitor;
+import okhttp3.ResponseBody;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.TokenStream;
 
-public class JQuickCurlExecutor extends JAbstractAntlrExecutor<String, JResult> {
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+public class JQuickCurlExecutor extends JAbstractAntlrExecutor<String, JQuickCurlResponseBody> {
 
     private JContext context=new JContext();
 
     private JQuickCurlConfig config=JQuickCurlConfig.getInstance();
+
+    private JConsole console=new JConsole();
 
     public JQuickCurlExecutor(JContext context){
         this.context = context;
@@ -60,10 +69,28 @@ public class JQuickCurlExecutor extends JAbstractAntlrExecutor<String, JResult> 
     }
 
     @Override
-    protected JResult parse(Parser parser) throws JAntlrExecutionException {
+    protected JQuickCurlResponseBody parse(Parser parser) throws JAntlrExecutionException {
         JQuickCurlParser calcParser = (JQuickCurlParser) parser;
         JQuickCurlParser.CurlCommandContext tree = calcParser.curlCommand();
         JQuickCurlCommonVisitor visitor = new JQuickCurlCommonVisitor(this.context,this.config);
-        return visitor.visitCurlCommand(tree);
+        JQuickCurlResponseBody responseBody= visitor.visitCurlCommand(tree);
+        if (responseBody!=null&&null!=visitor.getDownLoadFileName()){
+            String fileName=visitor.getDownLoadFileName();
+            downLoad(responseBody,fileName);
+        }
+        return responseBody;
+    }
+    protected void downLoad(JQuickCurlResponseBody responseBody,String downLoadFileName) {
+        byte[] bytes  = responseBody.getCachedBytes();
+        if (bytes == null || bytes.length == 0) {// 没有数据，直接返回
+            console.error("Curl execution error: no any bytes");
+            return;
+        }
+        try (FileOutputStream outputStream = new FileOutputStream(downLoadFileName)) {
+            outputStream.write(bytes );
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

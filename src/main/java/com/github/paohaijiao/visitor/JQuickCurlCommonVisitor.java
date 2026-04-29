@@ -26,6 +26,8 @@ import com.github.paohaijiao.model.*;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickCurlLexer;
 import com.github.paohaijiao.parser.JQuickCurlParser;
+import com.github.paohaijiao.responseBody.JQuickCurlResponseBody;
+import com.github.paohaijiao.responseBody.JQuickCurlResponseBodyFactory;
 import com.github.paohaijiao.util.JStringUtils;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -60,7 +62,7 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
     }
 
     @Override
-    public JResult visitCurlCommand(JQuickCurlParser.CurlCommandContext ctx) {
+    public JQuickCurlResponseBody visitCurlCommand(JQuickCurlParser.CurlCommandContext ctx) {
         for (JQuickCurlParser.OptionContext option : ctx.option()) {
             visitOption(option);
         }
@@ -100,7 +102,6 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
                 RequestBody fileBody = RequestBody.create(file, MediaType.parse("application/octet-stream"));
                 mutiPartBuilder.addFormDataPart(formParam.getKey(), file.getName(), fileBody);
             }else{
-                System.out.println(formParam.getValue());
                 RequestBody fileBody = RequestBody.create( formParam.getValue(), MediaType.parse("application/json"));
                 mutiPartBuilder.addFormDataPart(formParam.getKey(),null ,fileBody).build();
             }
@@ -108,7 +109,6 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
         if(upLoadFileList.size()>0){
             request=request.newBuilder().post(mutiPartBuilder.build()).build();
         }
-
         try  {
             Response response = client.newCall(request).execute();
             console.info("Response:"+response);
@@ -117,60 +117,8 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
             };
             Headers responseHeaders = response.headers();
             ResponseBody responseData = response.body();
-            MediaType contentType = body.contentType();
-            if(contentType != null && contentType.type().equals("text/plain")) {
-                return null;
-            }
-            JResult result=new JResult();
-            result.setMediaType(MediaType.parse(ContentType));
-            if (getAcceptValue() != null){
-                MediaTypeInfo mediaTypeInfo=mediaTypeManager.getByCode(getAcceptValue());
-                if (mediaTypeInfo != null&& JDataType.BYTES.name().equalsIgnoreCase(mediaTypeInfo.getDataType().name())){
-                    byte[] bytes= responseData.bytes();
-                    result.setBytes(bytes);
-                    return result;
-                }
-            }
-            if (downLoadFileName != null) {
-                byte[] bytes= downLoadFile(responseData);
-                result.setBytes(bytes);
-            }
-            String string=responseData.string();
-            if(JHttpMethod.HEAD.getCode().equals(this.requestType)){
-                result.setString(responseHeaders.toString());
-            } else if(JHttpMethod.OPTIONS.getCode().equals(this.method)){
-                JOptionModel model=new JOptionModel();
-                model.setHttpStatus(response.code());
-                model.setHeaders(responseHeaders);
-                String allow= response.headers("Allow").toString();
-                model.setAllow(allow);
-                result.setString(model.toString());
-            }else if(null!=string){//only support get once
-                result.setString(string);
-            }else{
-                byte[] bytes= responseData.bytes();
-                if(bytes!=null){
-                    result.setBytes(bytes);
-                }else{
-                    InputStream byteStream = responseData.byteStream();
-                    if(null!=byteStream){
-                        result.setByteStream(byteStream);
-                    }else {
-                        Reader charStream= responseData.charStream();
-                        if(null!=charStream){
-                            result.setCharStream(charStream);
-                        }else{
-                            ByteString byteString=responseData.byteString();
-                            if(null!=byteString){
-                                result.setByteString(byteString);
-                            }
-                        }
-                    }
-                }
-            }
-            result.setContentLength(responseData.contentLength());
-            result.setSource(responseData.source());
-            return result;
+            JQuickCurlResponseBody jquickRessponseBody = new JQuickCurlResponseBody(responseData,responseHeaders);
+            return jquickRessponseBody;
         }catch (IOException e){
             e.printStackTrace();
         }

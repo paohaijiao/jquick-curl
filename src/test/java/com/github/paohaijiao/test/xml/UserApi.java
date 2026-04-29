@@ -31,7 +31,7 @@ public interface UserApi {
 
     Void usersHead(JQuickCurlReq req);
 
-    JResult usersOptions(JQuickCurlReq req);
+    void usersOptions(JQuickCurlReq req);
 
     String usersTrace(JQuickCurlReq req);
 
