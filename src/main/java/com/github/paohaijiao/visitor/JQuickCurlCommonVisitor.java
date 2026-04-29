@@ -123,8 +123,8 @@ public class JQuickCurlCommonVisitor extends JQuickCurlCoreVisitor {
             }
             JResult result=new JResult();
             result.setMediaType(MediaType.parse(ContentType));
-            if (ContentType != null){
-                MediaTypeInfo mediaTypeInfo=mediaTypeManager.getByCode(ContentType);
+            if (getAcceptValue() != null){
+                MediaTypeInfo mediaTypeInfo=mediaTypeManager.getByCode(getAcceptValue());
                 if (mediaTypeInfo != null&& JDataType.BYTES.name().equalsIgnoreCase(mediaTypeInfo.getDataType().name())){
                     byte[] bytes= responseData.bytes();
                     result.setBytes(bytes);
