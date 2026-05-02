@@ -54,7 +54,6 @@ curl https://api.example.com/user
 # 示例：带请求头的POST请求
 curl -X POST -H "Content-Type: application/json" -d '{"name":"test"}' https://api.example.com/user
 ### 基础选项
-```string
 # 请求方法
 -X, --request <方法>        # 指定请求方法（GET/POST/PUT/DELETE/PATCH/HEAD/OPTIONS/TRACE）
 # 请求头
@@ -92,84 +91,68 @@ curl -X POST -H "Content-Type: application/json" -d '{"name":"test"}' https://ap
 </dependency>
 ```
 ## 2. 基础使用
-### 2.1 定义 Service 接口
+### 2.1 注解方式使用 Service 接口
 ```java
+
 import java.util.List;
-// 示例UserService接口定义
 public interface UserService {
-
-    /**
-     * 获取所有用户
-     * @param req 请求参数载体
-     * @return 所有用户列表
-     */
-    @JCurlCommand("curl -X GET --location 'http://localhost:8080/api/users/all'")
-    List<JUser> all(JQuickCurlReq req);
-
-    /**
-     * 根据ID获取单个用户
-     * @param req 请求参数载体
-     * @return 单个用户信息
-     */
-    @JCurlCommand("curl -X GET http://localhost:8080/api/users/1")
-    JUser getUserById(JQuickCurlReq req);
-
-    /**
-     * 创建新用户（POST请求）
-     * @param req 请求参数载体
-     * @return 创建后的用户信息
-     */
-    @JCurlCommand("curl -X POST http://localhost:8080/api/users/createUser \\\n" +
-            "-H \"Content-Type: application/json\" \\\n" +
-            "-d '{\"name\":\"John Doe\",\"email\":\"john@example.com\"}'")
-    JUser users(JQuickCurlReq req);
+    
+    @JCurlCommand("curl -u ${user}:${password} https://api.github.com/user\n -X GET")
+    JGithubAuth retriveUser(JQuickCurlReq req);
+    
 }
 ```
-### 2.2 使用代理模式调用
+
 ```java
-// 1. 创建UserService代理实例
-UserService api = JCurlInvoker.createProxy(UserService.class);
-
-// 2. 准备请求参数
-JQuickCurlReq req = new JQuickCurlReq();
-req.put("user", "xsasaxsa@qq.com");
-req.put("password", "xasxsa");
-
-// 3. 执行HTTP请求并获取结果
-List<JUser> users = api.all(req);       // 获取所有用户
-JUser user = api.getUserById(req);      // 根据ID获取用户
+    @Test
+        public  void retriveUser() throws Exception {
+            ApiService api = JCurlInvoker.createProxy(ApiService.class);
+            JQuickCurlReq req = new JQuickCurlReq();
+            req.put("user", "1234567@qq.com");
+            req.put("password", "123456");
+            JGithubAuth result = api.retriveUser(req);
+            System.out.println(result);
+        }
 ```
-### 2.3 使用 Lambda 方式调用
+### 2.2 使用 xml 方式调用
 > 运行示例：
-```java
-// 1. 准备请求参数
-JQuickCurlReq req = new JQuickCurlReq();
-req.put("user", "xsaxsa@qq.com");
-req.put("password", "zaZAzaZA");
-
-// 2. Lambda风格调用接口方法
-List<JUser> list = JCurlInvoker.invoke(
-        UserServiceImpl::all,    // 目标方法引用
-        req,                     // 请求参数
-        List.class               // 返回值类型
-);
-
-JUser user = JCurlInvoker.invoke(
-        UserServiceImpl::getUserById,
-        req,
-        JUser.class
-);
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE curls PUBLIC "-//PAOHAIJIAO//DTD API CURL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-curl.dtd">
+<curls namespace="com.github.paohaijiao.test.xml.UserApi">
+    <curl name="users" returnClass="com.github.paohaijiao.test.model.JUser">
+        curl -X POST http://localhost:8080/api/users/createUser \
+        -H "Content-Type: application/json" \
+        -d '{"name":"John Doe","email":"john@example.com"}'
+    </curl>
+</curls>
 ```
+
+```java
+public interface UserApi {
+    
+    JUser users(JQuickCurlReq req);
+    
+}
+```
+
+```java
+    @Test
+    public  void users() throws Exception {
+        JQuickCurlReq req = new JQuickCurlReq();
+        req.put("user", "123456@qq.com");
+        req.put("password", "123456");
+        JQuickParseHandler parser = new JQuickCurlXmlParseFactory();
+        JQuickFactory factory = new JQuickXmlFactory(parser,"apis.xml");
+        UserApi userApi = factory.createApi(UserApi.class);
+        JUser user=userApi.users(req);
+        System.out.println(user);
+    }
+```
+
 ## 🔧 详细功能示例
-### 一、基础HTTP方法
-```java
-    ApiService api = JCurlInvoker.createProxy(ApiService.class);
-    JQuickCurlReq req = new JQuickCurlReq();
-    req.put("user", "xsasaxsa@qq.com");
-    req.put("password", "xasxsa");
-    JGithubAuth result = api.retriveUser(req);
-```
-#### 1. GET请求（查询资源）
+### 1. GET请求（查询资源）
 ```java
 /**
  * 根据用户ID查询单个用户信息
