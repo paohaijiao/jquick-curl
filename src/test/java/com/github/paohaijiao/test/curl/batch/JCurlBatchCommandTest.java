@@ -18,6 +18,7 @@ package com.github.paohaijiao.test.curl.batch;
 import com.github.paohaijiao.anno.JCurlCommand;
 import com.github.paohaijiao.anno.JTimeout;
 import com.github.paohaijiao.model.JResult;
+import com.github.paohaijiao.responseBody.JQuickCurlResponseBody;
 import com.github.paohaijiao.support.JQuickCurlBatchRunner;
 import com.github.paohaijiao.test.model.JUser;
 
@@ -35,7 +36,7 @@ import java.util.List;
 public class JCurlBatchCommandTest {
     public static void main(String[] args) throws Exception {
         JQuickCurlBatchRunner batch= new JQuickCurlBatchRunner();
-        List<JResult> list=batch.runCurlCommands(new JCurlBatchCommandTest(),JResult.class);
+        List<JQuickCurlResponseBody> list=batch.runCurlCommands(new JCurlBatchCommandTest(),JQuickCurlResponseBody.class);
         System.out.println(list);
     }
 
