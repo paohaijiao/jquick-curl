@@ -103,8 +103,8 @@ curl -X POST -H "Content-Type: application/json" -d '{"name":"test"}' https://ap
     }
 ```
 > 发起调用
-> 1.使用 JCurlInvoker.createProxy() **创建代理对象**，通过 JQuickCurlReq 传递参数。
-> 2. 也可使用JCurlInvoker.invoke的**Lamda（::）** 方式进行rest接口的调用
+> 使用 JCurlInvoker.createProxy() **创建代理对象**，通过 JQuickCurlReq 传递参数。
+> 也可使用JCurlInvoker.invoke的**Lamda（::）** 方式进行rest接口的调用
 
 ```java
     @Test
