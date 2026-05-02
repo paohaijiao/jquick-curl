@@ -103,8 +103,8 @@ curl -X POST -H "Content-Type: application/json" -d '{"name":"test"}' https://ap
     }
 ```
 > 发起调用
-- 1.使用 JCurlInvoker.createProxy() **创建代理对象**，通过 JQuickCurlReq 传递参数。
-- 2. 也可使用JCurlInvoker.invoke的**Lamda（::）** 方式进行rest接口的调用
+> 1.使用 JCurlInvoker.createProxy() **创建代理对象**，通过 JQuickCurlReq 传递参数。
+> 2. 也可使用JCurlInvoker.invoke的**Lamda（::）** 方式进行rest接口的调用
 
 ```java
     @Test
@@ -127,8 +127,8 @@ curl -X POST -H "Content-Type: application/json" -d '{"name":"test"}' https://ap
 ### 2.2 方式二:xml 配置方式
 > 特点：将 curl 命令集中定义在 XML 文件中，接口只声明方法签名，实现配置与代码分离。
 > 适合统一管理多个 API，配置与代码分离，便于维护
-- 第一步：编写 XML 配置文件（apis.xml）
-- 在 resources 目录下创建 XML 文件，使用 **<curl> 标签定义每个 API**。
+> 第一步：编写 XML 配置文件（apis.xml）
+> 在 resources 目录下创建 XML 文件，使用 **<curl> 标签定义每个 API**。
 ```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE curls PUBLIC "-//PAOHAIJIAO//DTD API CURL 1.0//EN"
@@ -149,15 +149,15 @@ curl -X POST -H "Content-Type: application/json" -d '{"name":"test"}' https://ap
     </curls>
 ```
 > 定义一个接口
-- 接口中的方法名必须与 XML 中 **<curl> 标签的 name 属性** 一一对应。
-- 配合 @Param 注解**传递动态参数**
+> 接口中的方法名必须与 XML 中 **<curl> 标签的 name 属性** 一一对应。
+> 配合 @Param 注解**传递动态参数**
 ```java
     public interface UserApi {
         JUser users(@Param("参数1") String 参数1, @Param("参数2") String 参数2);
     }
 ```
 > 发起调用
-- 通过工厂模式加载 XML 配置，**创建 API 代理对象**。
+> 通过工厂模式加载 XML 配置，**创建 API 代理对象**。
 ```java
     @Test
     public  void users() throws Exception {
