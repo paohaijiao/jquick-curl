@@ -7,12 +7,13 @@ JQuickCurl 是面向 Java 开发者的高性能、易用 HTTP 客户端框架。
 ## 📊 项目状态
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-5470c6.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Version](https://img.shields.io/badge/Version-1.2.0-91cc75.svg)](https://github.com/paohaijiao/jquick-curl/releases)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.paohaijiao/jquick-curl)](https://mvnrepository.com/artifact/io.github.paohaijiao/jquick-curl)
 [![Downloads](https://img.shields.io/badge/Downloads-15K/month-fac858.svg)](https://maven-badges.herokuapp.com/maven-central/io.paohaijiao/jquick-curl)
-[![Contributors](https://img.shields.io/badge/Contributors-24-3ba272.svg)](https://github.com/paohaijiao/jquick-curl/graphs/contributors)
+[![Contributors](https://img.shields.io/github/contributors/paohaijiao/jquick-curl?color=3ba272)](https://github.com/paohaijiao/jquick-curl/graphs/contributors)
 [![Build](https://img.shields.io/badge/Build-Passing-ee6666.svg)](https://github.com/paohaijiao/jquick-curl/actions)
 [![Test Coverage](https://img.shields.io/badge/Coverage-92%25-73c0de.svg)](https://github.com/paohaijiao/jquick-curl)
-[![Issues](https://img.shields.io/badge/Issues-12-9a60b4.svg)](https://github.com/paohaijiao/jquick-curl/issues)
+[![Issues](https://img.shields.io/github/issues/paohaijiao/jquick-curl)](https://github.com/paohaijiao/jquick-curl/issues)
+
 ## 🌟 核心标签
 ⚡ 高性能 | 🎯 易用 | 🔧 灵活 | 📦 轻量
 ## 📖 目录
