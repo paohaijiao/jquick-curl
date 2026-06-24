@@ -19,6 +19,7 @@ efficiency and stability.
 [![Build](https://img.shields.io/badge/Build-Passing-ee6666.svg)](https://github.com/paohaijiao/jquick-curl/actions)
 [![Test Coverage](https://img.shields.io/badge/Coverage-92%25-73c0de.svg)](https://github.com/paohaijiao/jquick-curl)
 [![Issues](https://img.shields.io/badge/Issues-12-9a60b4.svg)](https://github.com/paohaijiao/jquick-curl/issues)
+[![Awesome](https://awesome.re/badge.svg)](https://awesome-java)
 ## 🌟 Core Label
 ⚡ High Performance | 🎯 User Friendly | 🔧 Flexible | 📦 LightWeight
 ## 📖 目录
