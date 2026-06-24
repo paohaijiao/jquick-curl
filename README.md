@@ -13,6 +13,7 @@ JQuickCurl 是面向 Java 开发者的高性能、易用 HTTP 客户端框架。
 [![Build](https://img.shields.io/badge/Build-Passing-ee6666.svg)](https://github.com/paohaijiao/jquick-curl/actions)
 [![Test Coverage](https://img.shields.io/badge/Coverage-92%25-73c0de.svg)](https://github.com/paohaijiao/jquick-curl)
 [![Issues](https://img.shields.io/badge/Issues-12-9a60b4.svg)](https://github.com/paohaijiao/jquick-curl/issues)
+[![Awesome](https://awesome.re/badge.svg)](https://awesome-java)
 ## 🌟 核心标签
 ⚡ 高性能 | 🎯 易用 | 🔧 灵活 | 📦 轻量
 ## 📖 使用案例专区
