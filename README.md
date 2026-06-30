@@ -1,5 +1,7 @@
 # JQuickCurl - 基于Curl的Java HTTP客户端框架
 ## 简体中文 | [English](./README-EN.md)
+[![Awesome Java](https://img.shields.io/badge/Awesome-Java-ff69b4.svg)](https://github.com/akullpp/awesome-java)
+> 已被收录至 [Awesome Java](https://github.com/akullpp/awesome-java) 的 **HTTP Clients** 精选章节
 ## 📖 项目简介
 JQuickCurl 是面向 Java 开发者的高性能、易用 HTTP 客户端框架。它深度适配 Java 8 并发特性，核心优势在于直接将 cURL 命令转化为可执行的 HTTP 请求逻辑—— 无需手动编写 RestTemplate、OkHttp 等底层 HTTP 客户端代码，无需关注请求构建、参数封装、响应解析等繁琐细节。
 只需传入熟悉的 Curl 命令，框架即可自动完成请求转换与执行，让开发者以最直观的方式快速实现 GET、POST、PUT、DELETE 等各类 HTTP 操作，大幅降低网络请求开发成本，同时保证请求效率与稳定性。
@@ -13,6 +15,7 @@ JQuickCurl 是面向 Java 开发者的高性能、易用 HTTP 客户端框架。
 [![Build](https://img.shields.io/badge/Build-Passing-ee6666.svg)](https://github.com/paohaijiao/jquick-curl/actions)
 [![Test Coverage](https://img.shields.io/badge/Coverage-92%25-73c0de.svg)](https://github.com/paohaijiao/jquick-curl)
 [![Issues](https://img.shields.io/badge/Issues-12-9a60b4.svg)](https://github.com/paohaijiao/jquick-curl/issues)
+[![Awesome](https://awesome.re/badge.svg)](https://awesome-java)
 ## 🌟 核心标签
 ⚡ 高性能 | 🎯 易用 | 🔧 灵活 | 📦 轻量
 ## 📖 使用案例专区

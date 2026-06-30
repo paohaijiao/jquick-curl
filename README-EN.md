@@ -1,5 +1,7 @@
 # JQuickCurl - Java HTTP Client Framework Based on Curl
 ## [简体中文](./README) | English
+[![Awesome Java](https://img.shields.io/badge/Awesome-Java-ff69b4.svg)](https://github.com/akullpp/awesome-java)
+> Featured in the [Awesome Java](https://github.com/akullpp/awesome-java) curated list — **HTTP Clients** section
 ## 📖 Project Introduction
 JQuickCurl is a high-performance, easy-to-use HTTP client framework designed for Java developers.
 It is deeply adapted to the concurrency features of Java 8, and its core advantage lies in directly 
@@ -19,6 +21,7 @@ efficiency and stability.
 [![Build](https://img.shields.io/badge/Build-Passing-ee6666.svg)](https://github.com/paohaijiao/jquick-curl/actions)
 [![Test Coverage](https://img.shields.io/badge/Coverage-92%25-73c0de.svg)](https://github.com/paohaijiao/jquick-curl)
 [![Issues](https://img.shields.io/badge/Issues-12-9a60b4.svg)](https://github.com/paohaijiao/jquick-curl/issues)
+[![Awesome](https://awesome.re/badge.svg)](https://awesome-java)
 ## 🌟 Core Label
 ⚡ High Performance | 🎯 User Friendly | 🔧 Flexible | 📦 LightWeight
 ## 📖 目录
