@@ -858,13 +858,8 @@ We warmly welcome community contributions, and you can participate in the follow
 - Submit Pull Request: Fix bugs, add new features, and improve test cases
 - Participate in discussion: Exchange technical solutions and usage experience in the issue
 
-### Contribution standards
-1. Fork this project to personal warehouse
-2. Create feature branch （`feature/xxx` or `fix/xxx`）
-3. Submit code and maintain consistent code style
-4. Write/update test cases to ensure functionality is available
-5. Submit a PR that clearly describes the changes and the issues addressed
-6. 
+Please refer to [CONTRIBUTING-EN.md](./CONTRIBUTING-EN.md) for detailed contribution guidelines
+
 ## 📄 License
 This project is licensed under the **Apache License 2.0** open-source license. For details, please refer to the [LICENSE](LICENSE) file.
 

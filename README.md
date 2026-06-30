@@ -859,12 +859,7 @@ public class CurlApiExample {
 - 提交 Pull Request：修复bug、新增功能、完善测试用例
 - 参与讨论：在Issue中交流技术方案、使用经验
 
-### 贡献规范
-1. Fork 本项目到个人仓库
-2. 创建特性分支（`feature/xxx` 或 `fix/xxx`）
-3. 提交代码并保持代码风格统一
-4. 编写/更新测试用例，保证功能可用
-5. 提交PR，描述清楚变更内容和解决的问题
+详细的贡献指南请参考 [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## 📄 许可证
 本项目采用 **Apache License 2.0** 开源许可证，详情请查看 [LICENSE](LICENSE) 文件。
