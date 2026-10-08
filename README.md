@@ -11,7 +11,19 @@
   <a href="#quick-start"><img src="https://img.shields.io/badge/JDK-8%2B-orange.svg?style=flat-square" alt="JDK 8+" /></a>
   <a href="https://github.com/akullpp/awesome-java"><img src="https://awesome.re/mentioned-badge.svg" alt="Awesome Java" /></a>
 </p>
-
+<p align="center">
+  🌐 <a href="https://www.jquick.org">JQuick Website</a> ·
+  📖 <a href="https://github.com/paohaijiao">GitHub</a> ·
+  📦 <a href="https://central.sonatype.com/artifact/io.github.paohaijiao/javelin">Maven Central</a>
+</p>
+<p align="center">
+  🔗 <a href="https://github.com/paohaijiao/jquick-curl">jquick-curl</a> ·
+  📂 <a href="https://github.com/paohaijiao/jquick-path">jquick-path</a> ·
+  📊 <a href="https://github.com/paohaijiao/jquick-excel">jquick-excel</a> ·
+  📄 <a href="https://github.com/paohaijiao/jquick-pdf">jquick-pdf</a> ·
+  ☕ <a href="https://github.com/paohaijiao/jquick-java">jquick-java</a> ·
+  🗄️ <a href="https://github.com/paohaijiao/jquick-sql">jquick-sql</a>
+</p>
 <p align="center">
   <b>English</b> | <a href="./README-CN.md">简体中文</a>
 </p>
